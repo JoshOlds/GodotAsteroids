@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://dbg24vlf6oifs"]
+
+[ext_resource type="Script" path="res://Scripts/polygon_line_drawer.gd" id="1_cu0mg"]
+[ext_resource type="Script" path="res://Scripts/collision_polygon_generator.gd" id="2_08o5h"]
+
+[node name="AsteroidGenerator" type="RigidBody2D"]
+
+[node name="PolygonLineDrawer" type="Node2D" parent="."]
+script = ExtResource("1_cu0mg")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+script = ExtResource("2_08o5h")
+
+[connection signal="output_packed_2d_vector" from="PolygonLineDrawer" to="CollisionPolygon2D" method="_on_polygon_line_drawer_output_packed_2d_vector"]

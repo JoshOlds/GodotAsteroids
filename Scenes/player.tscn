@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://ch80ypvc86khs"]
+
+[ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_0ic20"]
+[ext_resource type="Script" path="res://Scripts/player_movement_controller.gd" id="2_74erm"]
+
+[node name="Player" type="RigidBody2D"]
+position = Vector2(917, 547)
+linear_damp = 1.0
+angular_damp = 1.0
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_0ic20")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(0, -0.0581055)
+rotation = 1.5708
+scale = Vector2(1.5, 1.5)
+polygon = PackedVector2Array(-13.2946, 10, -3.96124, 10, -5.96124, 15.3333, 6.03876, 15.3333, 4.03876, 10, 13.3721, 10, 0.0387573, -16)
+
+[node name="PlayerMovementController" type="Node" parent="." node_paths=PackedStringArray("player_rigid_body")]
+script = ExtResource("2_74erm")
+player_rigid_body = NodePath("..")
