@@ -1,16 +1,12 @@
 [gd_scene load_steps=3 format=3 uid="uid://diftxdy4qwugg"]
 
-[ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://Scenes/player.tscn" id="1_e7s2v"]
-[ext_resource type="PackedScene" uid="uid://dbg24vlf6oifs" path="res://Scenes/asteroid_generator.tscn" id="2_x8we5"]
+[ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://Scenes/player/player.tscn" id="1_e7s2v"]
+[ext_resource type="PackedScene" uid="uid://clta6frbe4k0r" path="res://Scenes/asteroids/asteroid_generator/asteroid_generator.tscn" id="2_x8we5"]
 
 [node name="Main" type="Node"]
 
-[node name="AsteroidGenerator4" parent="." instance=ExtResource("2_x8we5")]
-position = Vector2(1200, 600)
-
-[node name="PolygonLineDrawer" parent="AsteroidGenerator4" index="0"]
-size_scalar = 20.0
-vertice_count = 3.0
+[node name="AsteroidGenerator" parent="." node_paths=PackedStringArray("parent_node") instance=ExtResource("2_x8we5")]
+parent_node = NodePath("../AsteroidHolder")
 
 [node name="PlayerStartPosition" type="Marker2D" parent="."]
 position = Vector2(960, 540)
@@ -19,23 +15,4 @@ position = Vector2(960, 540)
 position = Vector2(960, 540)
 rotation = -1.5708
 
-[node name="AsteroidGenerator" parent="." instance=ExtResource("2_x8we5")]
-position = Vector2(961, 367)
-
-[node name="AsteroidGenerator2" parent="." instance=ExtResource("2_x8we5")]
-position = Vector2(400, 600)
-
-[node name="PolygonLineDrawer" parent="AsteroidGenerator2" index="0"]
-size_scalar = 60.0
-vertice_count = 7.0
-
-[node name="AsteroidGenerator3" parent="." instance=ExtResource("2_x8we5")]
-position = Vector2(1400, 700)
-
-[node name="PolygonLineDrawer" parent="AsteroidGenerator3" index="0"]
-size_scalar = 150.0
-vertice_count = 15.0
-
-[editable path="AsteroidGenerator4"]
-[editable path="AsteroidGenerator2"]
-[editable path="AsteroidGenerator3"]
+[node name="AsteroidHolder" type="Node2D" parent="."]

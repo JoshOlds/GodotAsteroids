@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://5wpnnaycvnem"]
+
+[ext_resource type="Script" path="res://Scenes/asteroids/proc_asteroid/proc_asteroid.gd" id="1_dugt1"]
+
+[node name="proc_asteroid" type="RigidBody2D"]
+mass = 5.0
+script = ExtResource("1_dugt1")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]

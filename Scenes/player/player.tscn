@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://ch80ypvc86khs"]
 
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_0ic20"]
-[ext_resource type="Script" path="res://Scripts/player_movement_controller.gd" id="2_74erm"]
+[ext_resource type="Script" path="res://Scenes/player/player_movement_controller.gd" id="2_74erm"]
 
 [node name="Player" type="RigidBody2D"]
 position = Vector2(917, 547)

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://clta6frbe4k0r"]
+
+[ext_resource type="Script" path="res://Scenes/asteroids/asteroid_generator/asteroid_generator.gd" id="1_wbyyg"]
+
+[node name="asteroid_generator" type="Node"]
+script = ExtResource("1_wbyyg")
