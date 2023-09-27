@@ -1,12 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=6 format=3 uid="uid://diftxdy4qwugg"]
 
+[ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://Scenes/player/player.tscn" id="1_e7s2v"]
 [ext_resource type="PackedScene" uid="uid://clta6frbe4k0r" path="res://Scenes/asteroids/asteroid_generator/asteroid_generator.tscn" id="2_x8we5"]
+[ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_manager.gd" id="4_eimha"]
+
+[sub_resource type="Curve2D" id="Curve2D_fhsfm"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -8, -8, 0, 0, 0, 0, 1928, -8, 0, 0, 0, 0, 1928, 1088, 0, 0, 0, 0, -8, 1088, 0, 0, 0, 0, -8, -8)
+}
+point_count = 5
 
 [node name="Main" type="Node"]
 
-[node name="AsteroidGenerator" parent="." node_paths=PackedStringArray("parent_node") instance=ExtResource("2_x8we5")]
-parent_node = NodePath("../AsteroidHolder")
+[node name="AsteroidSpawnManager" type="Node" parent="." node_paths=PackedStringArray("asteroid_generator")]
+script = ExtResource("1_2bohu")
+asteroid_generator = NodePath("../AsteroidGenerator")
+
+[node name="AsteroidGenerator" parent="." node_paths=PackedStringArray("parent_node", "asteroid_spawn_location", "asteroid_manager") instance=ExtResource("2_x8we5")]
+parent_node = NodePath("../AsteroidManager")
+asteroid_spawn_location = NodePath("AsteroidSpawnPath/AsteroidSpawnLocation")
+asteroid_manager = NodePath("../AsteroidManager")
+
+[node name="AsteroidSpawnPath" type="Path2D" parent="AsteroidGenerator"]
+curve = SubResource("Curve2D_fhsfm")
+
+[node name="AsteroidSpawnLocation" type="PathFollow2D" parent="AsteroidGenerator/AsteroidSpawnPath"]
+position = Vector2(-8, -8)
 
 [node name="PlayerStartPosition" type="Marker2D" parent="."]
 position = Vector2(960, 540)
@@ -15,4 +35,5 @@ position = Vector2(960, 540)
 position = Vector2(960, 540)
 rotation = -1.5708
 
-[node name="AsteroidHolder" type="Node2D" parent="."]
+[node name="AsteroidManager" type="Node2D" parent="."]
+script = ExtResource("4_eimha")
