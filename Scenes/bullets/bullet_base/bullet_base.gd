@@ -75,8 +75,8 @@ func spawn_death_particles():
 	# Set particle angle (direction of scatter) to the normal of the previous collision
 	particles.rotation = previous_collision_normal.angle()
 	# Set initial particle velocity based on velocity of the bullet
-	particle_process_material.initial_velocity_min = previous_velocity.length() / 3
-	particle_process_material.initial_velocity_max = previous_velocity.length() / 2
+	#particle_process_material.initial_velocity_min = previous_velocity.length() / 1.5
+	#particle_process_material.initial_velocity_max = previous_velocity.length()
 		
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
