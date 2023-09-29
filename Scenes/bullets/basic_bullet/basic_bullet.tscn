@@ -1,0 +1,37 @@
+[gd_scene load_steps=8 format=3 uid="uid://bmblxdubn3q71"]
+
+[ext_resource type="Script" path="res://Scenes/bullets/basic_bullet/basic_bullet.gd" id="1_25fgb"]
+[ext_resource type="Script" path="res://Scenes/debug/debug_circle/debug_circle.gd" id="2_bffy1"]
+[ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://Scenes/bullets/basic_bullet/basic_bullet_death_particle.tscn" id="2_e5s6m"]
+[ext_resource type="Script" path="res://Scenes/systems/health/health_base.gd" id="3_ob3vc"]
+[ext_resource type="Script" path="res://Scenes/systems/damage/damage_applyer.gd" id="4_0iclw"]
+[ext_resource type="Script" path="res://Scenes/systems/damage/damage_receiver.gd" id="5_8d0t2"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j3pol"]
+bounce = 0.3
+
+[node name="BasicBullet" type="RigidBody2D"]
+position = Vector2(200, 200)
+physics_material_override = SubResource("PhysicsMaterial_j3pol")
+script = ExtResource("1_25fgb")
+damage = 10.0
+death_particle_scene = ExtResource("2_e5s6m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="CircleDrawer" type="Node2D" parent="."]
+script = ExtResource("2_bffy1")
+color = Color(1, 1, 1, 1)
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_ob3vc")
+health = 10.0
+
+[node name="DamageApplyer" type="Node" parent="."]
+script = ExtResource("4_0iclw")
+
+[node name="DamageReceiver" type="Node" parent="."]
+script = ExtResource("5_8d0t2")
+
+[connection signal="health_expired" from="Health" to="." method="_on_death"]
+[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_receiver_damage_received"]

@@ -1,9 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=8 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://Scenes/player/player.tscn" id="1_e7s2v"]
 [ext_resource type="PackedScene" uid="uid://clta6frbe4k0r" path="res://Scenes/asteroids/asteroid_generator/asteroid_generator.tscn" id="2_x8we5"]
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_manager.gd" id="4_eimha"]
+[ext_resource type="Script" path="res://Scenes/bullets/bullet_manager.gd" id="5_ys07q"]
+[ext_resource type="PackedScene" uid="uid://qseewheqjvi0" path="res://Scenes/debug/fps_counter/fps_counter.tscn" id="6_chemb"]
 
 [sub_resource type="Curve2D" id="Curve2D_fhsfm"]
 _data = {
@@ -35,5 +37,17 @@ position = Vector2(960, 540)
 position = Vector2(960, 540)
 rotation = -1.5708
 
+[node name="GunManager" parent="Player" index="3" node_paths=PackedStringArray("bullet_manager")]
+bullet_manager = NodePath("../../BulletManager")
+
 [node name="AsteroidManager" type="Node2D" parent="."]
 script = ExtResource("4_eimha")
+
+[node name="BulletManager" type="Node" parent="."]
+script = ExtResource("5_ys07q")
+bullet_x_boundary = Vector2(-10, 1930)
+bullet_y_boundary = Vector2(-10, 1090)
+
+[node name="FPSCounter" parent="." instance=ExtResource("6_chemb")]
+
+[editable path="Player"]

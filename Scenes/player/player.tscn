@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://ch80ypvc86khs"]
+[gd_scene load_steps=6 format=3 uid="uid://ch80ypvc86khs"]
 
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_0ic20"]
 [ext_resource type="Script" path="res://Scenes/player/player_movement_controller.gd" id="2_74erm"]
+[ext_resource type="Script" path="res://Scenes/guns/gun_manager/gun_manager.gd" id="3_0wm37"]
+[ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://Scenes/bullets/basic_bullet/basic_bullet.tscn" id="4_urpsu"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_diq1j"]
+polygon = PackedVector2Array(24, 0, -15, 20, -15, 6, -23, 9, -23, -9, -15, -6, -15, -20)
 
 [node name="Player" type="RigidBody2D"]
-position = Vector2(917, 547)
 linear_damp = 1.0
 angular_damp = 1.0
 
@@ -22,3 +26,15 @@ polygon = PackedVector2Array(-13.2946, 10, -3.96124, 10, -5.96124, 15.3333, 6.03
 [node name="PlayerMovementController" type="Node" parent="." node_paths=PackedStringArray("player_rigid_body")]
 script = ExtResource("2_74erm")
 player_rigid_body = NodePath("..")
+
+[node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body")]
+script = ExtResource("3_0wm37")
+bullet_scene = ExtResource("4_urpsu")
+spawn_rigid_body = NodePath("..")
+bullet_spawn_impulse = 1000.0
+
+[node name="BulletSpawnLocation" type="Marker2D" parent="GunManager"]
+position = Vector2(35, 0)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_diq1j")

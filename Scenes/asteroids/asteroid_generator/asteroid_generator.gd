@@ -13,8 +13,13 @@ extends Node
 ## Maximum attempts to spawn an asteroid before aborting (spawns are not allowed to overlap existing asteroids)
 @export var max_spawn_attempts : int = 25
 
-var screen_x_max : int
-var screen_y_max : int
+## A random value between 0 and asteroid_trajectory_randomness will be applied to the force vector of newly spawned asteroids.
+## 0 causes asteroids to always move towards screen center, larger values cause asteroids to deviate from a center trajectory
+@export var asteroid_trajectory_randomness : float = 0.5
+
+
+var screen_x_max : float
+var screen_y_max : float
 var screen_center : Vector2
 
 ## Preloaded ProcAsteroid Scene
@@ -37,7 +42,7 @@ func generate_asteroid(radius: int, vertice_count: int, jaggedness : float, spaw
 	asteroid.position = spawn_position
 	parent_node.add_child(asteroid)
 	asteroid_manager.add_asteroid(asteroid)
-	asteroid.apply_central_force(force_vector)
+	asteroid.apply_central_impulse(force_vector)
 	
 	
 ## Attempts to spawn an asteroid at a random position along a given path (or defaults to the Inspector set path if none provided)
@@ -61,6 +66,10 @@ func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int
 		
 		# Solve for inward vector towards center of screen 
 		var in_vector : Vector2 = spawn_position.direction_to(screen_center)
+		# Apply randomness to vector
+		in_vector.x += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
+		in_vector.y += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
+		# Scale by force value
 		force_vector = in_vector * force
 		
 		var expanded_radius = radius + (radius * jaggedness)

@@ -15,11 +15,11 @@ enum RotationalControlMode {
 
 @export_category("Motion & Thrust")
 ## Player Thrust in linear directions
-@export var linear_thrust : float = 50000
+@export var linear_thrust : float = 1000
 ## Max player speed in pixels/s
 @export var max_speed : float = 500 
 ## Torque force used to rotate towards cursor
-@export var rotational_torque : float = 3000
+@export var rotational_torque : float = 5000
 ## Rotational velocity to count as 'over-rotating'. Controller will attempt to apply torque to stop rotation when exceeding this threshold
 @export var over_rotating_velocity_threshold : float = PI * 8
 
@@ -77,7 +77,7 @@ var integral : float = 0
 func _physics_process(delta):
 	update_player_motion_variables()
 	update_speed_limit_flags()
-	apply_linear_motions(delta)
+	apply_linear_motions()
 	apply_rotations(delta)
 	
 	
@@ -129,38 +129,38 @@ func update_speed_limit_flags():
 	
 	
 ## Route to the correct linear control mode method - intended to be called once per _physics_process
-func apply_linear_motions(delta : float):
+func apply_linear_motions():
 	match (linear_control_mode):
 		LinearControlMode.CARDINAL:
-			control_cardinal_mode(delta)
+			control_cardinal_mode()
 		LinearControlMode.HEADING:
-			control_heading_mode(delta)
+			control_heading_mode()
 
 		
 ## Executes Heading Mode control - applies thrusts based on Player's relative heading and control inputs
-func control_heading_mode(delta : float):
+func control_heading_mode():
 	# Apply thrust if limits are not exceeded
 	if Input.is_action_pressed("move_forward") and not heading_forward_limit_exceeded:
-		player_rigid_body.apply_central_force(player_forward_vector * linear_thrust * delta)
+		player_rigid_body.apply_central_force(player_forward_vector * linear_thrust)
 	if Input.is_action_pressed("move_backward") and not heading_backward_limit_exceeded:
-		player_rigid_body.apply_central_force(player_backward_vec * linear_thrust * delta)
+		player_rigid_body.apply_central_force(player_backward_vec * linear_thrust)
 	if Input.is_action_pressed("strafe_left") and not heading_left_limit_exceeded:
-		player_rigid_body.apply_central_force(player_left_vec * linear_thrust * delta)
+		player_rigid_body.apply_central_force(player_left_vec * linear_thrust)
 	if Input.is_action_pressed("strafe_right") and not heading_right_limit_exceeded:
-		player_rigid_body.apply_central_force(player_right_vec * linear_thrust * delta)
+		player_rigid_body.apply_central_force(player_right_vec * linear_thrust)
 		
 	
 ## Executes Cardinal Mode control - applies thrusts based on absolute cardinal directions
-func control_cardinal_mode(delta : float):
+func control_cardinal_mode():
 	# Apply thrust if limits are not exceeded
 	if Input.is_action_pressed("move_forward") and not cardinal_up_limit_exceeded:
-		player_rigid_body.apply_central_force(Vector2.UP * linear_thrust * delta)
+		player_rigid_body.apply_central_force(Vector2.UP * linear_thrust)
 	if Input.is_action_pressed("move_backward") and not cardinal_down_limit_exceeded:
-		player_rigid_body.apply_central_force(Vector2.DOWN * linear_thrust * delta)
+		player_rigid_body.apply_central_force(Vector2.DOWN * linear_thrust)
 	if Input.is_action_pressed("strafe_left") and not cardinal_left_limit_exceeded:
-		player_rigid_body.apply_central_force(Vector2.LEFT * linear_thrust * delta)
+		player_rigid_body.apply_central_force(Vector2.LEFT * linear_thrust)
 	if Input.is_action_pressed("strafe_right") and not cardinal_right_limit_exceeded:
-		player_rigid_body.apply_central_force(Vector2.RIGHT * linear_thrust * delta)
+		player_rigid_body.apply_central_force(Vector2.RIGHT * linear_thrust)
 	
 		
 ## Applies rotational forces. Calls correct rotation method based on control scheme and over-rotation detection - intended to be called once per _physics_process
