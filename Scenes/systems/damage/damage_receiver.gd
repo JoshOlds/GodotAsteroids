@@ -1,5 +1,6 @@
 class_name DamageReceiver
 extends Node
+## Part of the damage system. Node that is capable of receiving damage from a DamageApplyer. Broadcasts a signal when damage received
 
 signal damage_received(damage_value : float)
 

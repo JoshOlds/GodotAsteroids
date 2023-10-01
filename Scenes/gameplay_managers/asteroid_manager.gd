@@ -1,24 +1,37 @@
 class_name AsteroidManager
 extends Node
+## Tracks all asteroids currently in the game, and handles cleaning up any asteroids that move off-screen
 
-## Array that holds all active asteroids
-var asteroids : Array[ProcAsteroid]
+# Size of the game world. Must be set by parent
+var world_size : Vector2
+
+## Array that holds all active asteroids. 
+var asteroids : Array[ProcAsteroid] 
+		
+		
+func _process(delta):
+	delete_offscreen_asteroids()
+
 
 func add_asteroid(asteroid : ProcAsteroid):
 	asteroids.append(asteroid)
 
+
 func remove_asteroid(asteroid : ProcAsteroid):
 	asteroids.erase(asteroid)
 	
-func _process(_delta):
-	#clear_invalid_asteroids()
-	pass
+
+func delete_offscreen_asteroids():
+	assert(world_size.x > 0 and world_size.y > 0, "AsteroidManager: World Size has not yet been set up. Please set when instantiating.")
 	
-func clear_invalid_asteroids():
-	var invalid_asteroids : Array[ProcAsteroid] = []
-	for node in asteroids:
-		if is_instance_valid(node) == false:
-			invalid_asteroids.append(node)
-	for node in invalid_asteroids:
-		asteroids.erase(node)
-			
+	var asteroids_to_delete : Array[ProcAsteroid] = []
+	for asteroid in asteroids:
+		if asteroid.position.x < 0 - asteroid.max_radius \
+			or asteroid.position.x > world_size.x + asteroid.max_radius \
+			or asteroid.position.y < 0 - asteroid.max_radius \
+			or asteroid.position.y > world_size.y + asteroid.max_radius:
+				asteroids_to_delete.append(asteroid)
+	
+	for to_delete in asteroids_to_delete:
+		asteroids.erase(to_delete)
+		to_delete.queue_free()

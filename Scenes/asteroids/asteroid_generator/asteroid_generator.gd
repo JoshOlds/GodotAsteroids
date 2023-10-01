@@ -1,11 +1,11 @@
 class_name AsteroidGenerator
 extends Node
+## Class which handles generating asteroids. 
+##
+## Functionality is provided to spawn asteroids along a Path2D, and for generating this Path2D based on world_size.
 
 ## The node in which generated asteroids will be child to
 @export var parent_node: Node
-
-## Asteroids will be spawned at a random location along the Path2D that this PathFollow2D object belongs to
-@export var asteroid_spawn_location : PathFollow2D
 
 ## Reference to AsteroidManager used to track all active asteroids. Newly generated asteroids will be added to AsteroidManager's array of Asteroids
 @export var asteroid_manager : AsteroidManager
@@ -17,39 +17,50 @@ extends Node
 ## 0 causes asteroids to always move towards screen center, larger values cause asteroids to deviate from a center trajectory
 @export var asteroid_trajectory_randomness : float = 0.5
 
+## The size of the world in pixels. Used to generate spawn path and for solving trajectory of asteroids
+@export var world_size : Vector2
 
-var screen_x_max : float
-var screen_y_max : float
-var screen_center : Vector2
+## Asteroids will be spawned at a random location along this Path2D. Use generate_spawn_path() to procedurally create this path based on world size
+@onready var asteroid_spawn_path : Path2D = get_node("Path2D")
+
+@onready var asteroid_spawn_path_follow : PathFollow2D = get_node("Path2D/PathFollow2D")
+
+## Flag specifying if the Path2D has been setup (generate_spawn_path() has been called)
+var path_has_been_setup : bool = false
 
 ## Preloaded ProcAsteroid Scene
 var proc_asteroid = preload("res://Scenes/asteroids/proc_asteroid/proc_asteroid.tscn")
-
-
-func _ready():
-	# Grab and store the viewport information 
-	var viewport_rect = get_viewport().get_visible_rect()
-	screen_center = viewport_rect.get_center()
-	screen_x_max = screen_center.x * 2
-	screen_y_max = screen_center.y * 2
 	
+
+## Procedurally generates the asteroid spawn path based on world size. Path will follow the outside edge of the world
+func generate_spawn_path():
+	var curve = Curve2D.new()
+	curve.add_point(Vector2(0, 0))
+	curve.add_point(Vector2(world_size.x, 0))
+	curve.add_point(Vector2(world_size.x, world_size.y))
+	curve.add_point(Vector2(0, world_size.y))
+	curve.add_point(Vector2(0, 0))
+	asteroid_spawn_path.curve = curve
+	path_has_been_setup = true
+
 
 ## Generate a procedural asteroid in motion (with a force)
-func generate_asteroid(radius: int, vertice_count: int, jaggedness : float, spawn_position: Vector2, force_vector : Vector2):
+func generate_asteroid(radius: int, vertice_count: int, jaggedness : float, spawn_position: Vector2, force_vector : Vector2, angular_velocity : float):
 	# Instantiate a ProcAsteroid scene
-	var asteroid = proc_asteroid.instantiate()
-	asteroid.setup(radius, vertice_count, jaggedness)
+	var asteroid = proc_asteroid.instantiate() as ProcAsteroid
+	asteroid.setup(radius, vertice_count, jaggedness, asteroid_manager)
 	asteroid.position = spawn_position
 	parent_node.add_child(asteroid)
-	asteroid_manager.add_asteroid(asteroid)
+	asteroid.angular_velocity = angular_velocity
 	asteroid.apply_central_impulse(force_vector)
+
 	
-	
-## Attempts to spawn an asteroid at a random position along a given path (or defaults to the Inspector set path if none provided)
-func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int, jaggedness : float, force : float, path : PathFollow2D = null) -> bool:
-	# If no path provided, use the member variable path set from editor
-	if path == null:
-		path =  asteroid_spawn_location
+## Attempts to spawn an asteroid at a random position along a given path (or defaults to the generated member path if none provided)
+func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int, jaggedness : float, force : float, angular_velocity : float, path_follow : PathFollow2D = null) -> bool:
+	# If no path provided, use the member variable path 
+	if path_follow == null:
+		assert(path_has_been_setup, "AsteroidGenerator: Path2D has not been setup. Please call generate_spawn_path() before attempting to spawn asteroids with default path.")
+		path_follow = asteroid_spawn_path_follow
 	var spawn_position : Vector2 
 	var force_vector : Vector2
 
@@ -57,15 +68,18 @@ func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int
 	var position_clear = false
 	var spawn_attempts = 0
 	while position_clear == false:
+		# Log warning if failed to spawn
 		if spawn_attempts > max_spawn_attempts:
+			push_warning("Failed to find clear space to spawn asteroid")
 			return false
 			
 		# Set a random progress % along the path (get random location along path)
-		path.progress_ratio = randf()
-		spawn_position = path.position
+		path_follow.progress_ratio = randf()
+		spawn_position = path_follow.position
 		
-		# Solve for inward vector towards center of screen 
-		var in_vector : Vector2 = spawn_position.direction_to(screen_center)
+		# Solve for inward vector towards center of world 
+		var world_center = Vector2(world_size.x / 2, world_size.y / 2)
+		var in_vector : Vector2 = spawn_position.direction_to(world_center)
 		# Apply randomness to vector
 		in_vector.x += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
 		in_vector.y += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
@@ -74,33 +88,23 @@ func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int
 		
 		var expanded_radius = radius + (radius * jaggedness)
 		
-		# Move asteroid spawn away from screen center by its expanded radius, to place just off screen
+		# Move asteroid spawn away from world center by its expanded radius, to place just off screen
 		if spawn_position.x <= 0:
 			spawn_position.x -= expanded_radius
 		elif spawn_position.y <= 0:
 			spawn_position.y -= expanded_radius
-		elif spawn_position.x >= screen_x_max:
+		elif spawn_position.x >= world_size.x:
 			spawn_position.x += expanded_radius
-		elif spawn_position.y >= screen_y_max:
+		elif spawn_position.y >= world_size.y:
 			spawn_position.y += expanded_radius
 			
-		# check if position is clear, continue to attempt if not
+		# check if position is clear, retry spawn if not
 		position_clear = check_position_is_clear_of_asteroids(expanded_radius, spawn_position)
 		spawn_attempts += 1
 		
 	# Successfully spawn the asteroid
-	generate_asteroid(radius, vertice_count, jaggedness, spawn_position, force_vector)
+	generate_asteroid(radius, vertice_count, jaggedness, spawn_position, force_vector, angular_velocity)
 	return true
-	
-
-## Spawns an asteroid at a random location within the screen. Used for debug only	
-func spawn_asteroid_at_random_location():
-	var radius = randf_range(30, 300)
-	var vertices = randf_range(6, 30)
-	var jaggedness = randf_range(0.02, 0.3)
-	var spawn_x = randf_range(0, 1920)
-	var spawn_y = randf_range(0, 1280)
-	generate_asteroid(radius, vertices, jaggedness, Vector2(spawn_x, spawn_y), Vector2(0,-10000))
 	
 	
 ## Checks supplied position and radius against all existing asteroids in the AsteroidManager and returns whether the supplied position is free of overlap

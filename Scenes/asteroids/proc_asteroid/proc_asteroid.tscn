@@ -18,4 +18,5 @@ script = ExtResource("1_dugt1")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 
+[connection signal="health_expired" from="Health" to="." method="kill_asteroid"]
 [connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]

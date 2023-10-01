@@ -22,6 +22,11 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 
+[editor]
+
+movie_writer/mix_rate=44100
+movie_writer/movie_file="C:/Users/Joshu/Videos/Godot_Recordings/godot_capture.avi"
+
 [input]
 
 strafe_left={

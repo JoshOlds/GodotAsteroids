@@ -1,5 +1,6 @@
 class_name DamageApplyer
 extends Node
+## Part of the Damage System. Node that handles applying damage to any other node that has a DamageReceiver component
 
 
 func apply_damage_to_node(node : Node, damage_value : float):

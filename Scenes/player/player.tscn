@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://ch80ypvc86khs"]
 
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_0ic20"]
-[ext_resource type="Script" path="res://Scenes/player/player_movement_controller.gd" id="2_74erm"]
+[ext_resource type="Script" path="res://Scenes/player/asteroid_player_movement_controller.gd" id="2_4b80y"]
 [ext_resource type="Script" path="res://Scenes/guns/gun_manager/gun_manager.gd" id="3_0wm37"]
 [ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://Scenes/bullets/basic_bullet/basic_bullet.tscn" id="4_urpsu"]
 
@@ -23,9 +23,10 @@ rotation = 1.5708
 scale = Vector2(1.5, 1.5)
 polygon = PackedVector2Array(-13.2946, 10, -3.96124, 10, -5.96124, 15.3333, 6.03876, 15.3333, 4.03876, 10, 13.3721, 10, 0.0387573, -16)
 
-[node name="PlayerMovementController" type="Node" parent="." node_paths=PackedStringArray("player_rigid_body")]
-script = ExtResource("2_74erm")
+[node name="AsteroidPlayerMovementController" type="Node" parent="." node_paths=PackedStringArray("player_rigid_body", "main_camera")]
+script = ExtResource("2_4b80y")
 player_rigid_body = NodePath("..")
+main_camera = NodePath("../Camera2D")
 
 [node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body")]
 script = ExtResource("3_0wm37")
@@ -38,3 +39,8 @@ position = Vector2(35, 0)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_diq1j")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position_smoothing_enabled = true
+position_smoothing_speed = 10.0
+editor_draw_limits = true

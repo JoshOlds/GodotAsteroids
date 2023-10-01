@@ -13,9 +13,9 @@ extends RigidBody2D
 @export var death_particle_scene : PackedScene
 
 ## Bullet manager this bullet will be childed to on spawn. Bullet manager handles cleaning up off-screen bullets
-@export var bullet_manager : BulletManager # TODO: delete when we add a different way of cleaning up off-screen bullets
+@export var bullet_manager : BulletManager
 
-## The health of this bullet. Bullet will die with health reaches zero
+## The health of this bullet. Bullet will die when health reaches zero
 @onready var health = get_node("Health") as HealthBase
 
 ## The DamageApplyer of this bullet
@@ -71,13 +71,8 @@ func _physics_process(delta):
 func spawn_death_particles():
 	var particles = death_particle_scene.instantiate() as GPUParticles2DOneshotFree
 	var particle_process_material = particles.process_material as ParticleProcessMaterial
-	
 	# Set particle angle (direction of scatter) to the normal of the previous collision
 	particles.rotation = previous_collision_normal.angle()
-	# Set initial particle velocity based on velocity of the bullet
-	#particle_process_material.initial_velocity_min = previous_velocity.length() / 1.5
-	#particle_process_material.initial_velocity_max = previous_velocity.length()
-		
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
 	get_tree().root.add_child(particles)

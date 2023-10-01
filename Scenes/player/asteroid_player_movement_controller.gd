@@ -1,3 +1,4 @@
+class_name AsteroidPlayerMovementController
 extends Node
 
 ## Linear Control Modes - How input affects player linear motion (W,A,S,D)
@@ -12,6 +13,8 @@ enum RotationalControlMode {
 }
 
 @export var player_rigid_body : RigidBody2D
+
+@export var main_camera : Camera2D
 
 @export_category("Motion & Thrust")
 ## Player Thrust in linear directions
@@ -178,8 +181,15 @@ func apply_rotations(delta : float):
 		
 ## Rotates the player to face the cursor using PID - intended to be called once per _physics_process
 func rotate_to_cursor(delta : float):
+	
+	# Calculate the mouse position and account for the moving camera
+	# Mouse viewport coordinates do not take into account moving camera. (top-left is 0,0 always)
 	var mouse_position : Vector2 = get_viewport().get_mouse_position()
-	var angle_to_cursor = player_rigid_body.global_position.angle_to_point(mouse_position)
+	var viewport_size : Vector2 = get_viewport().get_visible_rect().size
+	var mouse_coordinates : Vector2 = mouse_position + main_camera.get_screen_center_position() - (viewport_size / 2)
+	
+	# Get the angle to the cursor
+	var angle_to_cursor = player_rigid_body.global_position.angle_to_point(mouse_coordinates)
 	var angle_error = (angle_to_cursor - player_rotation)
 	# Normalize the angle to -PI to PI
 	if angle_error < -PI:
