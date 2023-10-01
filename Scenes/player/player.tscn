@@ -1,14 +1,17 @@
-[gd_scene load_steps=6 format=3 uid="uid://ch80ypvc86khs"]
+[gd_scene load_steps=8 format=3 uid="uid://ch80ypvc86khs"]
 
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_0ic20"]
 [ext_resource type="Script" path="res://Scenes/player/asteroid_player_movement_controller.gd" id="2_4b80y"]
 [ext_resource type="Script" path="res://Scenes/guns/gun_manager/gun_manager.gd" id="3_0wm37"]
 [ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://Scenes/bullets/basic_bullet/basic_bullet.tscn" id="4_urpsu"]
+[ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://Scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="5_degbh"]
+[ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://Scenes/systems/health/health.tscn" id="6_hdalh"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_diq1j"]
 polygon = PackedVector2Array(24, 0, -15, 20, -15, 6, -23, 9, -23, -9, -15, -6, -15, -20)
 
-[node name="Player" type="RigidBody2D"]
+[node name="Player" type="RigidBody2D" groups=["player"]]
+mass = 2.0
 linear_damp = 1.0
 angular_damp = 1.0
 
@@ -27,6 +30,8 @@ polygon = PackedVector2Array(-13.2946, 10, -3.96124, 10, -5.96124, 15.3333, 6.03
 script = ExtResource("2_4b80y")
 player_rigid_body = NodePath("..")
 main_camera = NodePath("../Camera2D")
+linear_thrust = 2000.0
+rotational_torque = 10000.0
 
 [node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body")]
 script = ExtResource("3_0wm37")
@@ -44,3 +49,11 @@ occluder = SubResource("OccluderPolygon2D_diq1j")
 position_smoothing_enabled = true
 position_smoothing_speed = 10.0
 editor_draw_limits = true
+
+[node name="DamageReceiver" parent="." instance=ExtResource("5_degbh")]
+
+[node name="Health" parent="." instance=ExtResource("6_hdalh")]
+health = 100.0
+max_health = 100.0
+
+[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]

@@ -5,6 +5,9 @@ extends Node
 ## Signal broadcast when health reaches 0
 signal health_expired
 
+## signal broadcast whenever health changes value
+signal health_changed(previous_value : float, new_value : float)
+
 ## Health of this node
 @export var health : float
 
@@ -25,20 +28,26 @@ func _on_damage_received(damage_value : float):
 
 ## Sets the health of this node to a value
 func set_health(health_value : float):
+	var prev_health = health
 	health = health_value
 	_check_health()
+	health_changed.emit(prev_health, health)
 	
 
 ## Apply damage to this health node
 func receive_damage(damage_value : float):
+	var prev_health = health
 	health -= damage_value
 	_check_health()
-		
+	health_changed.emit(prev_health, health)
+	
 
 ## Add health to the existing health of this node
 func add_health(health_value : float):
+	var prev_health = health
 	health += health_value
 	_check_health()
+	health_changed.emit(prev_health, health)
 			
 			
 ## Clamps health within bounds and emits signal if health has expired

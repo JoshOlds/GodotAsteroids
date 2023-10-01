@@ -13,12 +13,15 @@ extends Node
 ## Maximum attempts to spawn an asteroid before aborting (spawns are not allowed to overlap existing asteroids)
 @export var max_spawn_attempts : int = 25
 
-## A random value between 0 and asteroid_trajectory_randomness will be applied to the force vector of newly spawned asteroids.
-## 0 causes asteroids to always move towards screen center, larger values cause asteroids to deviate from a center trajectory
-@export var asteroid_trajectory_randomness : float = 0.5
-
 ## The size of the world in pixels. Used to generate spawn path and for solving trajectory of asteroids
 @export var world_size : Vector2
+
+## Asteroid trajectory will be rotated by +- this value. Value in radians
+## 0 causes asteroids to always move towards screen center, larger values cause asteroids to deviate from a center trajectory
+@export var asteroid_trajectory_angle_randomness : float = PI / 4
+
+## Multiplier for asteroid mass. Asteroid mass = radius * mass_multiplier
+@export var asteroid_mass_multiplier : float = 5
 
 ## Asteroids will be spawned at a random location along this Path2D. Use generate_spawn_path() to procedurally create this path based on world size
 @onready var asteroid_spawn_path : Path2D = get_node("Path2D")
@@ -48,7 +51,7 @@ func generate_spawn_path():
 func generate_asteroid(radius: int, vertice_count: int, jaggedness : float, spawn_position: Vector2, force_vector : Vector2, angular_velocity : float):
 	# Instantiate a ProcAsteroid scene
 	var asteroid = proc_asteroid.instantiate() as ProcAsteroid
-	asteroid.setup(radius, vertice_count, jaggedness, asteroid_manager)
+	asteroid.setup(radius, asteroid_mass_multiplier, vertice_count, jaggedness, asteroid_manager)
 	asteroid.position = spawn_position
 	parent_node.add_child(asteroid)
 	asteroid.angular_velocity = angular_velocity
@@ -81,8 +84,8 @@ func spawn_asteroid_at_random_location_on_path(radius : int, vertice_count : int
 		var world_center = Vector2(world_size.x / 2, world_size.y / 2)
 		var in_vector : Vector2 = spawn_position.direction_to(world_center)
 		# Apply randomness to vector
-		in_vector.x += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
-		in_vector.y += randf_range(-asteroid_trajectory_randomness, asteroid_trajectory_randomness)
+		in_vector = in_vector.rotated(randf_range(-asteroid_trajectory_angle_randomness, asteroid_trajectory_angle_randomness))
+
 		# Scale by force value
 		force_vector = in_vector * force
 		

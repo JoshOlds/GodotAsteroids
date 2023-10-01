@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=10 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://Scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
@@ -7,6 +7,8 @@
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_manager.gd" id="4_eimha"]
 [ext_resource type="PackedScene" uid="uid://qseewheqjvi0" path="res://Scenes/debug/fps_counter/fps_counter.tscn" id="6_chemb"]
 [ext_resource type="Script" path="res://Scenes/bullets/bullet_manager/bullet_manager.gd" id="6_qk726"]
+[ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://Scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
+[ext_resource type="Theme" uid="uid://2nb4h33hdxcm" path="res://Scenes/user_interface/player_health_bar/player_health_bar_theme.tres" id="9_2lg31"]
 
 [node name="Main" type="Node"]
 
@@ -20,13 +22,16 @@ asteroid_manager = NodePath("AsteroidManager")
 [node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator")]
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
-spawn_interval_seconds = 0.3
+spawn_interval_seconds = 0.5
 radius_range = Vector2i(10, 200)
 force_range = Vector2i(150, 350)
 
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")
 asteroid_manager = NodePath("../../AsteroidManager")
+max_spawn_attempts = null
+world_size = null
+asteroid_mass_multiplier = 1.0
 
 [node name="PlayerStartPosition" type="Marker2D" parent="AsteroidLevel"]
 position = Vector2(960, 540)
@@ -44,8 +49,37 @@ script = ExtResource("4_eimha")
 [node name="BulletManager" type="Node" parent="AsteroidLevel"]
 script = ExtResource("6_qk726")
 
-[node name="FPSCounter" parent="AsteroidLevel" node_paths=PackedStringArray("main_camera") instance=ExtResource("6_chemb")]
-main_camera = NodePath("../Player/Camera2D")
+[node name="UICanvasLayer" type="CanvasLayer" parent="AsteroidLevel"]
+
+[node name="FPSCounter" parent="AsteroidLevel/UICanvasLayer" instance=ExtResource("6_chemb")]
+offset_right = 1.0
+offset_bottom = 23.0
+
+[node name="MarginContainer" type="MarginContainer" parent="AsteroidLevel/UICanvasLayer"]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -44.0
+offset_right = 480.0
+offset_bottom = -19.0004
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_right = 0
+metadata/_edit_use_anchors_ = true
+
+[node name="PlayerHealthBar" parent="AsteroidLevel/UICanvasLayer/MarginContainer" node_paths=PackedStringArray("player_health") instance=ExtResource("8_d3snr")]
+layout_mode = 2
+size_flags_vertical = 1
+theme = ExtResource("9_2lg31")
+player_health = NodePath("../../../Player/Health")
+
+[node name="HealthLabel" type="Label" parent="AsteroidLevel/UICanvasLayer/MarginContainer"]
+layout_mode = 2
+text = "Structural Integrity"
 
 [editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
 [editable path="AsteroidLevel/Player"]

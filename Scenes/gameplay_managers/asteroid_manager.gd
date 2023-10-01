@@ -2,7 +2,7 @@ class_name AsteroidManager
 extends Node
 ## Tracks all asteroids currently in the game, and handles cleaning up any asteroids that move off-screen
 
-# Size of the game world. Must be set by parent
+# Ssize of the game world. Must be set by parent
 var world_size : Vector2
 
 ## Array that holds all active asteroids. 

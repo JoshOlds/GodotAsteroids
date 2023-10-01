@@ -9,14 +9,13 @@
 [node name="proc_asteroid" type="RigidBody2D" groups=["asteroids"]]
 collision_layer = 3
 collision_mask = 3
-mass = 50.0
+mass = 5.0
 script = ExtResource("1_dugt1")
 
 [node name="DamageReceiver" parent="." instance=ExtResource("3_vhqcd")]
 
 [node name="DamageApplyer" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_jrd8y")]
 parent = NodePath("..")
-group_blacklist = Array[String](["asteroids"])
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
@@ -27,7 +26,6 @@ group_blacklist = Array[String](["asteroids"])
 [node name="CollisionForceDamageApplyer" parent="." node_paths=PackedStringArray("parent_rigid_body", "damage_applyer") instance=ExtResource("4_i0lg5")]
 parent_rigid_body = NodePath("..")
 damage_applyer = NodePath("../DamageApplyer")
-damage_multiplier = 0.01
 
 [connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]
 [connection signal="health_expired" from="Health" to="." method="kill_asteroid"]

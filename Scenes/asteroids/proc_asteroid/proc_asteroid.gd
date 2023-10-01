@@ -17,8 +17,8 @@ var jaggedness : float
 ## The maximum potential radius given the jaggedness value and the base radius
 var max_radius : float
 
-## This value is multiplied by the default mass of this Asteroid
-var mass_multiplier : float = 0.1
+## Mass of asteroid is equal to mass_multiplier * radius
+var mass_multiplier : float = 1
 
 ## Baseline health value - this value is multiplied by the asteroid radius to determine final health
 var health_baseline : float = 1
@@ -62,12 +62,14 @@ var proc_asteroid = preload("res://Scenes/asteroids/proc_asteroid/proc_asteroid.
 
 
 ## Sets up this object. Must be called after instantiating scene, before adding to scene tree
-func setup(_radius: float, _vertice_count: int, _jaggedness: float, _asteroid_manager : AsteroidManager):
+func setup(_radius: float, _mass_multiplier : float, _vertice_count: int, _jaggedness: float, _asteroid_manager : AsteroidManager):
 	radius = _radius
+	mass_multiplier = _mass_multiplier
 	vertice_count = _vertice_count
 	jaggedness = _jaggedness
 	max_radius = radius + (radius * jaggedness)
 	asteroid_manager = _asteroid_manager
+	mass = radius * mass_multiplier
 
 
 ## Calculates vertices, sets CollisionPolygon, and mass of Rigidbody
@@ -86,8 +88,7 @@ func _ready():
 	occluder.polygon = vertices
 	light_occluder.occluder = occluder
 	
-	# Set mass & inertia of RigidBody based on asteroid size
-	mass = mass * radius * mass_multiplier
+	
 	# Set health of asteroid based on size
 	health.health = health_baseline * radius
 	
@@ -157,5 +158,5 @@ func generate_child_asteroid(input_radius : float = 0) -> ProcAsteroid:
 	if child_vertice_count < 6:
 		child_vertice_count = 6
 		
-	child.setup(child_radius, child_vertice_count, jaggedness, asteroid_manager)
+	child.setup(child_radius, mass_multiplier, child_vertice_count, jaggedness, asteroid_manager)
 	return child
