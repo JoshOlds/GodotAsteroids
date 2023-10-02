@@ -42,7 +42,6 @@ func _ready():
 
 	
 func _on_rigid_body_body_entered(body : Node):
-	print("Velocity: " + str(linear_velocity.length()))
 	last_collision_node = body
 	damage_applyer.apply_damage_to_node(body, damage)
 	health.set_health(0)

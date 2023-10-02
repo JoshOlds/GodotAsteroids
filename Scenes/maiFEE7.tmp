@@ -23,11 +23,9 @@ world_barrier_generator = NodePath("WorldBarrierGenerator")
 [node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator")]
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
-spawn_interval_seconds = 0.05
-radius_range = Vector2i(10, 100)
-vertices_range = Vector2i(6, 15)
-jaggedness_range = Vector2(0.03, 0.2)
-force_range = Vector2i(150, 900)
+spawn_interval_seconds = 0.5
+radius_range = Vector2i(10, 200)
+force_range = Vector2i(150, 350)
 
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")

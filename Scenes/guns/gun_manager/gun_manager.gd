@@ -19,18 +19,14 @@ extends Node2D
 ## The rate to fire, in bullets per second, when holding down the fire button
 @export var fire_rate = 5
 
-## If true, the gun is on cooldown (cannot shoot)
-var _on_cooldown : bool = false
-
 ## Timer used to update gun cooldown
-var _cooldown_timer : Timer
+var _cooldown_timer : CooldownTimer
 
 
 func _ready():
 	# set up cooldown timer
-	_cooldown_timer = Timer.new()
-	_cooldown_timer.one_shot = true
-	_cooldown_timer.timeout.connect(_reset_cooldown)
+	_cooldown_timer = CooldownTimer.new()
+	_cooldown_timer.cooldown_time = 1.0 / fire_rate
 	add_child(_cooldown_timer)
 
 
@@ -39,19 +35,13 @@ func _physics_process(delta):
 	if Input.is_action_pressed("mouse_left_click"):
 		shoot()
 		
-		
-## Callback function to reset the fire cooldown. Meant to be called from cooldown timer
-func _reset_cooldown():
-	_on_cooldown = false
-		
 
 # Spawns a bullet if off cooldown
 func shoot():
-	if not _on_cooldown:
+	if not _cooldown_timer.is_on_cooldown():
 		# Go on cooldown and set timer
-		_on_cooldown = true
 		_cooldown_timer.wait_time = 1.0 / fire_rate
-		_cooldown_timer.start()
+		_cooldown_timer.start_cooldown()
 		spawn_bullet()
 		
 	
