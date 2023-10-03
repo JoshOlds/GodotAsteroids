@@ -9,11 +9,6 @@ extends Node
 
 ## Damage applied = impact_force * damage_multiplier. Adjust depending on expected magnitude of collisions
 @export var damage_multiplier : float = 0.001
-
-func _ready():
-	parent_rigid_body.contact_monitor = true
-	parent_rigid_body.max_contacts_reported = 10
-	parent_rigid_body.body_entered.connect(_on_rigid_body_body_entered)
 	
 
 func _on_rigid_body_body_entered(body : Node):

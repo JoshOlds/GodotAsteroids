@@ -1,15 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://5wpnnaycvnem"]
+[gd_scene load_steps=7 format=3 uid="uid://5wpnnaycvnem"]
 
 [ext_resource type="Script" path="res://Scenes/asteroids/proc_asteroid/proc_asteroid.gd" id="1_dugt1"]
 [ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://Scenes/systems/health/health.tscn" id="2_3fgry"]
 [ext_resource type="PackedScene" uid="uid://jieiaksrndq7" path="res://Scenes/systems/damage/damage_applyer/damage_applyer.tscn" id="3_jrd8y"]
 [ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://Scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="3_vhqcd"]
 [ext_resource type="PackedScene" uid="uid://ccah8dv58rh1n" path="res://Scenes/systems/damage/collision_force_damage_applyer/collision_force_damage_applyer.tscn" id="4_i0lg5"]
+[ext_resource type="PackedScene" uid="uid://bbh4o7doyx1qw" path="res://Scenes/physics/collision_cooldown/collision_cooldown.tscn" id="6_pajvs"]
 
 [node name="proc_asteroid" type="RigidBody2D" groups=["asteroids"]]
 collision_layer = 3
 collision_mask = 3
 mass = 50.0
+max_contacts_reported = 10
+contact_monitor = true
 script = ExtResource("1_dugt1")
 
 [node name="DamageReceiver" parent="." instance=ExtResource("3_vhqcd")]
@@ -29,5 +32,10 @@ parent_rigid_body = NodePath("..")
 damage_applyer = NodePath("../DamageApplyer")
 damage_multiplier = 0.01
 
+[node name="CollisionCooldown" parent="." node_paths=PackedStringArray("rigidbody_to_connect") instance=ExtResource("6_pajvs")]
+rigidbody_to_connect = NodePath("..")
+
+[connection signal="body_entered" from="." to="CollisionCooldown" method="_on_rigid_body_body_entered"]
 [connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]
 [connection signal="health_expired" from="Health" to="." method="kill_asteroid"]
+[connection signal="body_entered" from="CollisionCooldown" to="CollisionForceDamageApplyer" method="_on_rigid_body_body_entered"]

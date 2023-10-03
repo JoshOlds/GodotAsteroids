@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=11 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://Scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" path="res://Scenes/bullets/bullet_manager/bullet_manager.gd" id="6_qk726"]
 [ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://Scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
 [ext_resource type="Script" path="res://Scenes/levels/world_barrier_generator/world_barrier_generator.gd" id="9_33mhb"]
+[ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://Scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
 
 [node name="Main" type="Node"]
 
@@ -65,6 +66,8 @@ player_health = NodePath("../../../Player/Health")
 
 [node name="WorldBarrierGenerator" type="Node" parent="AsteroidLevel"]
 script = ExtResource("9_33mhb")
+
+[node name="QuitOnKey" parent="." instance=ExtResource("10_28qfs")]
 
 [editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
 [editable path="AsteroidLevel/Player"]

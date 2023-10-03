@@ -2,15 +2,26 @@ class_name AsteroidManager
 extends Node
 ## Tracks all asteroids currently in the game, and handles cleaning up any asteroids that move off-screen
 
-# Ssize of the game world. Must be set by parent
+## Time (in seconds) between deleting off-world asteroids
+@export var off_world_delete_interval : float = 1.0
+
+# Size of the game world. Must be set by parent
 var world_size : Vector2
 
 ## Array that holds all active asteroids. 
 var asteroids : Array[ProcAsteroid] 
 		
+## Timer for clearing offscreen bullets
+var _cleanup_timer : Timer		
 		
-func _process(delta):
-	delete_offscreen_asteroids()
+		
+func _ready():
+	# set up cleanup timer
+	_cleanup_timer = Timer.new()
+	add_child(_cleanup_timer)
+	_cleanup_timer.wait_time = off_world_delete_interval
+	_cleanup_timer.timeout.connect(delete_off_world_asteroids)
+	_cleanup_timer.start()
 
 
 func add_asteroid(asteroid : ProcAsteroid):
@@ -21,7 +32,8 @@ func remove_asteroid(asteroid : ProcAsteroid):
 	asteroids.erase(asteroid)
 	
 
-func delete_offscreen_asteroids():
+## Deletes any asteroids that are fully outside of the world bounds
+func delete_off_world_asteroids():
 	assert(world_size.x > 0 and world_size.y > 0, "AsteroidManager: World Size has not yet been set up. Please set when instantiating.")
 	
 	var asteroids_to_delete : Array[ProcAsteroid] = []
