@@ -10,7 +10,7 @@ extends Node2D
 ## Bullet manager all new bullets will be added to
 @export var bullet_manager : BulletManager
 
-# RigidBody of the parent of this bullet. Used to get values such as linear_velocity of the parent
+## RigidBody of the parent of this bullet. Used to get values such as linear_velocity of the parent
 @export var spawn_rigid_body : RigidBody2D
 
 ## Impulse to apply to bullet on spawn

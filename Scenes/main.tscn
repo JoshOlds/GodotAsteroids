@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=12 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://Scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://Scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
 [ext_resource type="Script" path="res://Scenes/levels/world_barrier_generator/world_barrier_generator.gd" id="9_33mhb"]
 [ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://Scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
+[ext_resource type="PackedScene" uid="uid://dijb6ukr4vmvs" path="res://Scenes/particles/background_star_particles.tscn" id="10_l2jfq"]
 
 [node name="Main" type="Node"]
 
@@ -24,11 +25,11 @@ world_barrier_generator = NodePath("WorldBarrierGenerator")
 [node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator")]
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
-spawn_interval_seconds = 0.05
+spawn_interval_seconds = 0.5
 radius_range = Vector2i(10, 100)
 vertices_range = Vector2i(6, 15)
 jaggedness_range = Vector2(0.03, 0.2)
-force_range = Vector2i(150, 900)
+force_range = Vector2i(150, 500)
 
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")
@@ -66,6 +67,9 @@ player_health = NodePath("../../../Player/Health")
 
 [node name="WorldBarrierGenerator" type="Node" parent="AsteroidLevel"]
 script = ExtResource("9_33mhb")
+
+[node name="background_star_particles" parent="AsteroidLevel" instance=ExtResource("10_l2jfq")]
+position = Vector2(1500, 1500)
 
 [node name="QuitOnKey" parent="." instance=ExtResource("10_28qfs")]
 
