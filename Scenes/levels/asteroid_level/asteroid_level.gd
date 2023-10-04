@@ -19,6 +19,7 @@ extends Node
 
 @export var world_barrier_generator : WorldBarrierGenerator
 
+
 func _ready():
 	# Setup main camera limits (so won't scroll off screen)
 	main_camera.limit_left = 0
@@ -40,3 +41,4 @@ func _ready():
 	world_barrier_generator.barrier_damage = 10
 	world_barrier_generator.barrier_width = 5
 	world_barrier_generator.generate_static_barriers()
+	

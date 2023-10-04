@@ -35,7 +35,6 @@ damage_multiplier = 0.01
 [node name="CollisionCooldown" parent="." node_paths=PackedStringArray("rigidbody_to_connect") instance=ExtResource("6_pajvs")]
 rigidbody_to_connect = NodePath("..")
 
-[connection signal="body_entered" from="." to="CollisionCooldown" method="_on_rigid_body_body_entered"]
 [connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]
 [connection signal="health_expired" from="Health" to="." method="kill_asteroid"]
 [connection signal="body_entered" from="CollisionCooldown" to="CollisionForceDamageApplyer" method="_on_rigid_body_body_entered"]

@@ -6,7 +6,7 @@ extends Node
 signal health_expired
 
 ## signal broadcast whenever health changes value
-signal health_changed(previous_value : float, new_value : float)
+signal health_changed(previous_value : float, new_value : float, max_health : float)
 
 ## Health of this node
 @export var health : float
@@ -18,7 +18,7 @@ signal health_changed(previous_value : float, new_value : float)
 @export var health_can_be_negative : bool
 
 ## Flag specifying whether health has expired (reached 0)
-var _has_expired
+var _has_expired : bool = false
 
 
 ## Callback when damage is received. Intended to be connected to a DamageReceiver's signal
@@ -31,7 +31,7 @@ func set_health(health_value : float):
 	var prev_health = health
 	health = health_value
 	_check_health()
-	health_changed.emit(prev_health, health)
+	health_changed.emit(prev_health, health, max_health)
 	
 
 ## Apply damage to this health node
@@ -39,7 +39,7 @@ func receive_damage(damage_value : float):
 	var prev_health = health
 	health -= damage_value
 	_check_health()
-	health_changed.emit(prev_health, health)
+	health_changed.emit(prev_health, health, max_health)
 	
 
 ## Add health to the existing health of this node
@@ -47,7 +47,7 @@ func add_health(health_value : float):
 	var prev_health = health
 	health += health_value
 	_check_health()
-	health_changed.emit(prev_health, health)
+	health_changed.emit(prev_health, health, max_health)
 			
 			
 ## Clamps health within bounds and emits signal if health has expired

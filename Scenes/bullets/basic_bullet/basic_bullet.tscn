@@ -35,4 +35,4 @@ parent = NodePath("..")
 script = ExtResource("6_fobm3")
 
 [connection signal="health_expired" from="Health" to="." method="_on_death"]
-[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_receiver_damage_received"]
+[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]

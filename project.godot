@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.1", "Forward Plus")
 boot_splash/bg_color=Color(0.0352941, 0.0352941, 0.0352941, 1)
 config/icon="res://icon.svg"
 
+[autoload]
+
+SignalBroker="*res://Scenes/asteroid_game/signal_broker/signal_broker.gd"
+
 [display]
 
 window/size/viewport_width=1920

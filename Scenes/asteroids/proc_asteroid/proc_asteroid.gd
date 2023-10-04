@@ -29,6 +29,12 @@ var health_baseline : float = 1
 ## The color with which to draw this asteroid
 @export var draw_color : Color = Color.WHITE
 
+## Whether or not to fill the asteroid with color
+@export var draw_fill : bool = true
+
+## The color of the draw fill
+@export var draw_fill_color : Color = Color.BLACK
+
 # The width of the lines used to draw this asteroid
 @export var draw_width : float = 2.0
 
@@ -80,6 +86,7 @@ func _ready():
 		var jag = 1 + randf_range(-jaggedness, jaggedness)
 		var vertex = Vector2(cos(x * angle_step) * radius * jag, sin(x * angle_step) * radius * jag)
 		vertices.append(vertex) 
+	vertices.append(vertices[0]) # Add the original vertices to the end of the array so draw calls can close the polygon
 		
 	# Update CollisionPolygon with vertices
 	collision_poly.polygon = vertices
@@ -98,10 +105,10 @@ func _ready():
 
 ## Draw this asteroid as vector lines
 func _draw():
-	for i in vertices.size() - 1:
-		draw_line(vertices[i], vertices[i+1], draw_color, draw_width, true)
-	draw_line(vertices[vertices.size()-1], vertices[0], draw_color, draw_width, true)
-	
+	if draw_fill:
+		draw_colored_polygon(vertices, draw_fill_color)
+	draw_polyline(vertices, draw_color, draw_width, true)	
+
 	
 func kill_asteroid():
 	if radius >= min_split_radius:
@@ -137,8 +144,10 @@ func split_asteroid():
 	child_asteroid_1.linear_velocity = child_asteroid_1.linear_velocity.rotated(randf_range(0, split_velocity_angle_randomness))
 	child_asteroid_2.linear_velocity = child_asteroid_2.linear_velocity.rotated(randf_range(0, -split_velocity_angle_randomness))
 	
-	asteroid_manager.add_child(child_asteroid_1)
-	asteroid_manager.add_child(child_asteroid_2)
+	asteroid_manager.call_deferred("add_child", child_asteroid_1)
+	asteroid_manager.call_deferred("add_child", child_asteroid_2)
+	#asteroid_manager.add_child(child_asteroid_1)
+	#asteroid_manager.add_child(child_asteroid_2)
 	
 	
 ## Generates a child asteroid. If radius is provided, it will be used for child radius. If not, a radius will be generated based on parent's radius

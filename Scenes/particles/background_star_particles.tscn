@@ -18,6 +18,7 @@ orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_1j0qw")
 
 [node name="BackgroundStarParticles" type="GPUParticles2D"]
+z_index = -99
 amount = 1000
 process_material = SubResource("ParticleProcessMaterial_3sbo5")
 lifetime = 10.0

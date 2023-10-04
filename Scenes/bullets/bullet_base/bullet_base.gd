@@ -52,7 +52,7 @@ func _on_death():
 	queue_death = true
 	
 	
-func _physics_process(delta):
+func _physics_process(_delta):
 	previous_velocity = linear_velocity
 	
 
@@ -70,7 +70,6 @@ func _physics_process(delta):
 	
 func spawn_death_particles():
 	var particles = death_particle_scene.instantiate() as GPUParticles2DOneshotFree
-	var particle_process_material = particles.process_material as ParticleProcessMaterial
 	# Set particle angle (direction of scatter) to the normal of the previous collision
 	particles.rotation = previous_collision_normal.angle()
 	# Add particle to the root node to prevent despawning when bullet despawns

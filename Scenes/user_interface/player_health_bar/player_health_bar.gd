@@ -5,11 +5,11 @@ extends ProgressBar
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	max_value = player_health.max_health
-	value = player_health.health
-	player_health.health_changed.connect(_on_player_health_changed)
+	#max_value = player_health.max_health
+	#value = player_health.health
+	SignalBroker.player_health_changed.connect(_on_player_health_changed)
 	
 
-func _on_player_health_changed(prev_health : float, new_health : float):
-	max_value = player_health.max_health
-	value = player_health.health
+func _on_player_health_changed(_prev_health : float, new_health : float, max_health : float):
+	max_value = max_health
+	value = new_health

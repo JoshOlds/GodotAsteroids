@@ -7,5 +7,8 @@ export_presets.cfg
 # Mono-specific ignores
 .mono/
 
+# VSCode Workspace
+*.code-workspace
+
 .godot/
 *.translation

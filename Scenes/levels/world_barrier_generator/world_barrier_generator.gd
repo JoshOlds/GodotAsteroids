@@ -7,15 +7,6 @@ var world_size : Vector2
 
 @export var barrier_damage : float
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
-
 
 func generate_static_barriers():
 	assert(barrier_width > 0 and barrier_damage > 0, "wWorldBarrierGenerator: Params not initialized.")
