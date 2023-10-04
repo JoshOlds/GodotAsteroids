@@ -3,7 +3,7 @@ extends Node
 ## Base node for the Health system. Broadcasts a signal when health expires.
 
 ## Signal broadcast when health reaches 0
-signal health_expired
+signal health_expired(damage_source_node : Node)
 
 ## signal broadcast whenever health changes value
 signal health_changed(previous_value : float, new_value : float, max_health : float)
@@ -20,10 +20,13 @@ signal health_changed(previous_value : float, new_value : float, max_health : fl
 ## Flag specifying whether health has expired (reached 0)
 var _has_expired : bool = false
 
+## The last node to cause damage to this HealthBase
+var _last_damage_source_node : Node
+
 
 ## Callback when damage is received. Intended to be connected to a DamageReceiver's signal
-func _on_damage_received(damage_value : float):
-	receive_damage(damage_value)
+func _on_damage_received(damage_source_node : Node, damage_value : float):
+	receive_damage(damage_source_node, damage_value)
 	
 
 ## Sets the health of this node to a value
@@ -35,9 +38,10 @@ func set_health(health_value : float):
 	
 
 ## Apply damage to this health node
-func receive_damage(damage_value : float):
+func receive_damage(damage_source_node : Node, damage_value : float):
 	var prev_health = health
 	health -= damage_value
+	_last_damage_source_node = damage_source_node
 	_check_health()
 	health_changed.emit(prev_health, health, max_health)
 	
@@ -57,7 +61,7 @@ func _check_health():
 			health = 0
 		## Only emit health expired if this is the first time health reached zero
 		if not _has_expired:
-			health_expired.emit()
+			health_expired.emit(_last_damage_source_node)
 			_has_expired = true
 	# Clamp to max health
 	elif max_health > 0:

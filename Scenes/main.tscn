@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=15 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://Scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://qseewheqjvi0" path="res://Scenes/debug/fps_counter/fps_counter.tscn" id="6_chemb"]
 [ext_resource type="Script" path="res://Scenes/bullets/bullet_manager/bullet_manager.gd" id="6_qk726"]
 [ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://Scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
+[ext_resource type="PackedScene" uid="uid://djtsbh35lkceg" path="res://Scenes/user_interface/player_experience_bar/player_experience_bar.tscn" id="8_t8mrf"]
 [ext_resource type="Script" path="res://Scenes/levels/world_barrier_generator/world_barrier_generator.gd" id="9_33mhb"]
 [ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://Scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
 [ext_resource type="PackedScene" uid="uid://dijb6ukr4vmvs" path="res://Scenes/particles/background_star_particles.tscn" id="10_l2jfq"]
@@ -29,11 +30,10 @@ world_barrier_generator = NodePath("WorldContainer/WorldBarrierGenerator")
 [node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator")]
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
-spawn_interval_seconds = 0.5
-radius_range = Vector2i(10, 100)
+radius_range = Vector2i(5, 50)
 vertices_range = Vector2i(6, 15)
 jaggedness_range = Vector2(0.03, 0.2)
-force_range = Vector2i(150, 500)
+force_range = Vector2i(100, 300)
 
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")
@@ -62,6 +62,8 @@ offset_bottom = 23.0
 
 [node name="ProgressBar" parent="AsteroidLevel/UserInterface/PlayerHealthBar" index="0" node_paths=PackedStringArray("player_health")]
 player_health = NodePath("../../../Player/Health")
+
+[node name="PlayerExperienceBar" parent="AsteroidLevel/UserInterface" instance=ExtResource("8_t8mrf")]
 
 [node name="AsteroidManager" type="Node2D" parent="AsteroidLevel"]
 script = ExtResource("4_eimha")

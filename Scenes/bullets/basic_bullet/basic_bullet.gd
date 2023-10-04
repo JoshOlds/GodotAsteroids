@@ -15,5 +15,5 @@ func _ready():
 	$CircleDrawer.radius = radius
 	$CircleDrawer.color = Color.WHITE
 	
-func _on_death():
-	super._on_death()
+func _on_health_expired(damage_source_node : Node):
+	super._on_health_expired(damage_source_node)

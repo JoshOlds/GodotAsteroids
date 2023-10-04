@@ -14,9 +14,12 @@ signal score_changed(previous_value : int, new_value : int)
 ## Emitted when player level ups
 signal player_level_up(previous_level : int, new_level : int)
 
-## Emmitted when the player
+## Emitted when player experience changes
+signal player_experience_changed(previous_value : int, new_value : int, experience_to_next_level : int)
+
 
 ## Enemy Signals -------------------------------------------------------
+
 ## Emitted any time a proc asteroid is spawned
 signal asteroid_proc_spawned
 

@@ -47,7 +47,7 @@ func _on_rigid_body_body_entered(body : Node):
 	health.set_health(0)
 	
 	
-func _on_death():
+func _on_health_expired(_damage_source_node : Node):
 	bullet_manager.remove_bullet(self)
 	queue_death = true
 	

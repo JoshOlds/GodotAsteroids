@@ -102,6 +102,9 @@ func _ready():
 	## Add this asteroid to the manager. Used for tracking deletion and efficient querying of all asteroids
 	asteroid_manager.add_asteroid(self)
 
+	# Emit spawn signal 
+	SignalBroker.asteroid_proc_spawned.emit()
+
 
 ## Draw this asteroid as vector lines
 func _draw():
@@ -110,10 +113,12 @@ func _draw():
 	draw_polyline(vertices, draw_color, draw_width, true)	
 
 	
-func kill_asteroid():
+func on_health_expired(damage_source_node : Node):
 	if radius >= min_split_radius:
 		split_asteroid()
 	asteroid_manager.asteroids.erase(self)
+	if damage_source_node.is_in_group("player_projectiles"):
+		SignalBroker.asteroid_proc_killed.emit()
 	queue_free()
 	
 func split_asteroid():
@@ -144,10 +149,9 @@ func split_asteroid():
 	child_asteroid_1.linear_velocity = child_asteroid_1.linear_velocity.rotated(randf_range(0, split_velocity_angle_randomness))
 	child_asteroid_2.linear_velocity = child_asteroid_2.linear_velocity.rotated(randf_range(0, -split_velocity_angle_randomness))
 	
+	# Call deferred as immediately was throwing physics warnings
 	asteroid_manager.call_deferred("add_child", child_asteroid_1)
 	asteroid_manager.call_deferred("add_child", child_asteroid_2)
-	#asteroid_manager.add_child(child_asteroid_1)
-	#asteroid_manager.add_child(child_asteroid_2)
 	
 	
 ## Generates a child asteroid. If radius is provided, it will be used for child radius. If not, a radius will be generated based on parent's radius

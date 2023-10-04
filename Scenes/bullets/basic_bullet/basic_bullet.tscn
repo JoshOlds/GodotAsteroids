@@ -14,7 +14,9 @@ bounce = 0.3
 position = Vector2(200, 200)
 physics_material_override = SubResource("PhysicsMaterial_j3pol")
 script = ExtResource("1_25fgb")
+radius = null
 damage = 10.0
+max_contacts_reported_export = null
 death_particle_scene = ExtResource("2_e5s6m")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -34,5 +36,5 @@ parent = NodePath("..")
 [node name="DamageReceiver" type="Node" parent="."]
 script = ExtResource("6_fobm3")
 
-[connection signal="health_expired" from="Health" to="." method="_on_death"]
+[connection signal="health_expired" from="Health" to="." method="_on_health_expired"]
 [connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]

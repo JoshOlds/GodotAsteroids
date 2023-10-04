@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 SignalBroker="*res://Scenes/asteroid_game/signal_broker/signal_broker.gd"
+AsteroidGameGlobals="*res://Scenes/asteroid_game/asteroid_game_globals/asteroid_game_globals.gd"
 
 [display]
 
@@ -26,6 +27,7 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 window/stretch/aspect="ignore"
+window/vsync/vsync_mode=2
 
 [editor]
 
