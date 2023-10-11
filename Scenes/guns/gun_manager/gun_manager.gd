@@ -16,43 +16,48 @@ extends Node2D
 ## The WeaponModifiers object used to determine modifiers for this GumManager
 @export var weapon_modifiers : WeaponModifiers
 
+# ---------- Gun Modifiers ---------------------
+## Causes this GunManager to spawn multiple projectiles when firing
+@export var multiple_projectiles : int = 1
+## multiple_projectiles value after modifiers have been applied
+var modified_multiple_projectiles : int
+
 ## Impulse to apply to bullet on spawn
 @export var bullet_spawn_impulse : float = 1000
+## bullet_spawn_impulse value after modifiers have been applied
+var modified_bullet_spawn_impulse : float
 
 ## The rate to fire, in bullets per second, when holding down the fire button
-@export var fire_rate = 1
+@export var fire_rate : float = 1
+## fire_rate value after modifiers have been applied
+var modified_fire_rate : float
 
 ## Recoil impulse to apply when firing this gun
-@export var recoil = 500
+@export var recoil : float = 500
+## recoil value after modifiers have been applied
+var modified_recoil : float
+
+## Default spread value (rad). Used for seperation angle between multiple projectiles
+@export var spread : float = PI / 18.0
+## spread value after modifiers have been applied
+var modified_spread : float
 
 ## Inaccuracy values over 0 inject error into the spawn angle of each projectile
-@export var inaccuracy = PI / 18
+@export var inaccuracy : float = PI / 18
+## inaccuracy value after modifiers have been applied
+var modified_inaccuracy : float
 
 ## Timer used to update gun cooldown
 var _cooldown_timer : CooldownTimer
 
-# --------- Gun Defaults ----------
-## Default spread value (rad). Used for seperation angle between multiple projectiles in standard guns
-var spread : float = PI / 18.0
-
-# --------- Modifiers -------------
-## Causes this GunManager to spawn multiple projectiles when firing
-@export var multiple_projectiles_mod : int = 1
-
-## Multiplier for the cooldown (time between shots)
-@export var fire_rate_mod = 1.0
-
-## Multiplier for the bullet spread when firing multiple projectiles. No effect for single projectile gun
-@export var spread_mod : float = 1.0
-
-## Multiplier for inaccuracy. Inaccuracy over 0 inject error into the fire angle of projectiles
-@export var inaccuracy_mod : float = 1.0
-
 
 func _ready():
+	# Get initial modifier values
+	_on_weapon_modifiers_changed()
+
 	# set up cooldown timer
 	_cooldown_timer = CooldownTimer.new()
-	_cooldown_timer.cooldown_time = (1.0 / (fire_rate * fire_rate_mod))
+	_cooldown_timer.cooldown_time = (1.0 / modified_fire_rate)
 	add_child(_cooldown_timer)
 
 	# Connect to WeaponModifiers signal
@@ -65,26 +70,29 @@ func _physics_process(_delta):
 		
 ## Updates all Weapon Modifiers on signal
 func _on_weapon_modifiers_changed():
-	multiple_projectiles_mod = weapon_modifiers.multiple_projectiles_mod
-	fire_rate_mod = weapon_modifiers.fire_rate_mod
-	spread_mod = weapon_modifiers.spread_mod
+	modified_multiple_projectiles = multiple_projectiles + weapon_modifiers.multiple_projectiles_mod
+	modified_bullet_spawn_impulse = weapon_modifiers.spawn_impulse_mod.get_modified_value(bullet_spawn_impulse)
+	modified_fire_rate = weapon_modifiers.fire_rate_mod.get_modified_value(fire_rate)
+	modified_recoil = weapon_modifiers.recoil_mod.get_modified_value(recoil)
+	modified_spread = weapon_modifiers.spread_mod.get_modified_value(spread)
+	modified_inaccuracy = weapon_modifiers.inaccuracy_mod.get_modified_value(inaccuracy)
 
 
 ## Spawns a bullet if off cooldown
 func shoot():
 	if not _cooldown_timer.is_on_cooldown():
+		weapon_modifiers.fire_rate_mod.add_more_mod_value(0.1)
+		weapon_modifiers.weapon_modifiers_changed.emit()
 		# Go on cooldown and set timer
-		_cooldown_timer.wait_time = (1.0 / (fire_rate * fire_rate_mod))
+		_cooldown_timer.cooldown_time = (1.0 / modified_fire_rate)
 		_cooldown_timer.start_cooldown()
 		spawn_bullets()
-		apply_recoil(recoil)
 
 
 ## Applies recoil to the parent rigidbody
-func apply_recoil(recoil_amount : float):
-	var parent_rotation = spawn_rigid_body.rotation
-	var reverse_vec = Vector2(cos(parent_rotation), sin(parent_rotation)) * -1
-	var recoil_vector = reverse_vec * recoil_amount
+func apply_recoil(recoil_angle : float, recoil_value : float):
+	var recoil_forward_vector = Vector2(cos(recoil_angle), sin(recoil_angle))
+	var recoil_vector = recoil_forward_vector * recoil_value
 	spawn_rigid_body.apply_central_impulse(recoil_vector)
 		
 	
@@ -98,14 +106,17 @@ func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	bullet.position = spawn_offset_position
 	bullet.linear_velocity = spawn_velocity
 	bullet.bullet_manager = bullet_manager
-	bullet.apply_central_impulse(forward_vec * bullet_spawn_impulse)
+	bullet.apply_central_impulse(forward_vec * modified_bullet_spawn_impulse)
 	bullet_manager.add_child(bullet)
+	
+	var recoil_angle = spawn_rotation - PI
+	apply_recoil(recoil_angle, modified_recoil)
 
 
 ## Spawns bullets accounting for multiple projectiles modifier. Calls spawn_bullet() per bullet instantiated
 func spawn_bullets():
-	var projectile_count : int = multiple_projectiles_mod
-	var projectile_seperation = spread * spread_mod
+	var projectile_count : int = modified_multiple_projectiles
+	var projectile_seperation = modified_spread
 	var original_spawn_position = $BulletSpawnLocation.global_position
 	var parent_to_spawn_vector = original_spawn_position - global_position
 
@@ -116,7 +127,7 @@ func spawn_bullets():
 		if projectile_count % 2 == 0:
 			first_bullet_angle_offset = -1 * projectile_seperation / 2
 
-	var inaccuracy_angle = randf_range(-inaccuracy, inaccuracy)
+	var inaccuracy_angle = randf_range(-modified_inaccuracy, modified_inaccuracy)
 	var rotated_parent_to_spawn_vector = parent_to_spawn_vector.rotated(first_bullet_angle_offset)
 	var spawn_position = global_position + (rotated_parent_to_spawn_vector)
 	var spawn_rotation = global_rotation + first_bullet_angle_offset + inaccuracy_angle
@@ -130,12 +141,12 @@ func spawn_bullets():
 			right_angle_offset += projectile_seperation
 			rotated_parent_to_spawn_vector = parent_to_spawn_vector.rotated(right_angle_offset + first_bullet_angle_offset)
 			spawn_position = global_position + (rotated_parent_to_spawn_vector)
-			spawn_rotation = global_rotation + right_angle_offset + first_bullet_angle_offset + randf_range(-inaccuracy, inaccuracy)
+			spawn_rotation = global_rotation + right_angle_offset + first_bullet_angle_offset + randf_range(-modified_inaccuracy, modified_inaccuracy)
 			spawn_bullet(spawn_position, spawn_rotation)
 		else:
 			left_angle_offset -= projectile_seperation
 			rotated_parent_to_spawn_vector = parent_to_spawn_vector.rotated(left_angle_offset + first_bullet_angle_offset)
 			spawn_position = global_position + (rotated_parent_to_spawn_vector)
-			spawn_rotation = global_rotation + left_angle_offset + first_bullet_angle_offset + randf_range(-inaccuracy, inaccuracy)
+			spawn_rotation = global_rotation + left_angle_offset + first_bullet_angle_offset + randf_range(-modified_inaccuracy, modified_inaccuracy)
 			spawn_bullet(spawn_position, spawn_rotation)
 				

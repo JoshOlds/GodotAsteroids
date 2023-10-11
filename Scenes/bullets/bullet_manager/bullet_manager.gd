@@ -34,19 +34,14 @@ func remove_bullet(bullet : BulletBase):
 	
 ## Delete all bullets that are outside the world
 func delete_off_world_bullets():
-	assert(world_size.x > 0 and world_size.y > 0, "BulletManager: World Size has not yet been set up. Please set when instantiating.")
-	
-	var bullets_to_delete : Array[BulletBase] = []
+	assert(world_size.x > 0 and world_size.y > 0, "BulletManager: World Size has not yet been set up. Please set when instantiating.") 
+	var bullets_to_keep : Array[BulletBase] = []
 	for bullet in bullet_array:
 		if (bullet.position.x < 0 
 			or bullet.position.x > world_size.x
 			or bullet.position.y < 0
 			or bullet.position.y > world_size.y):
-				bullets_to_delete.append(bullet)
-
-	for bullet in bullets_to_delete:
-		bullet.queue_free()
-		bullet_array.erase(bullet)
-				
-	
-
+				bullet.queue_free()
+		else:
+			bullets_to_keep.append(bullet)
+	bullet_array = bullets_to_keep

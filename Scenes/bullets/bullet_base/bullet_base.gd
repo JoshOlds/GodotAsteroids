@@ -3,8 +3,6 @@ extends RigidBody2D
 ## Base class for all Bullets. Handles the concepts of:
 ## Detecting collisions and applying damage
 
-## The damage this bullet will deal
-@export var damage : float
 
 ## RigidBody2D collision max contacts reported (see docs)
 @export var max_contacts_reported_export : int = 10
@@ -21,6 +19,9 @@ extends RigidBody2D
 ## The DamageApplyer of this bullet
 @onready var damage_applyer = get_node("DamageApplyer") as DamageApplyer
 
+## The WeaponModifiers that this BulletBase will use to calculate modified values
+var weapon_modifiers : WeaponModifiers
+
 ## The last node that collided with this bullet
 var last_collision_node : Node2D
 
@@ -33,13 +34,66 @@ var previous_collision_normal : Vector2 = Vector2(0, 0)
 ## Flag to queue death of this bullet. Death is queued from Physics process to allow for final raycasts after collision
 var queue_death = false
 
+# ------------- Modifiers -------------------------
+## Mass of this bullet. Overwrites the rigidBody mass on _ready()
+@export var base_mass : float = 1.0
+## The base_mass value after modifiers have been applied
+var modified_base_mass : float
+
+## Damage that this bullet applies on collision with another body.
+@export var damage : float = 1.0
+## The damage value after modifiers have been applied
+var modified_damage : float
+
+## Critical Damage Chance chance of this bullet. A 'critical' hit applies (damage * (crit_damage_modifier)) damage.
+@export var crit_chance : float = 0.03
+## The crit_chance value after modifiers have been applied
+var modified_crit_chance : float
+
+## Critical Damage Multiplier of this bullet. 
+@export var crit_damage_multiplier : float = 3.0
+## The crit_damage value after modifiers have been applied
+var modified_crit_damage_multiplier : float
+
+## Size of this bullet. BulletBase does not include any drawing information for bullet - size is expected to be utilized by derived classes when drawing
+@export var size : float = 1.0
+## The size value after modifiers have been applied
+var modified_size : float
+
+## Area of Effect of this bullet. Damage will be applied to any body within the AoE radius on collision
+@export var area_of_effect : float = 1.0
+## The crit_damage value after modifiers have been applied
+var modified_area_of_effect : float
+
+## Lifespan of this bullet (in seconds). Bullet will de-spawn after lifespan expires. 
+@export var lifespan : float = 10.0
+## The crit_damage value after modifiers have been applied
+var modified_lifespan : float
+
+
 
 func _ready():
+	# Check for missing weapon_modifiers - soft error if missing
+	if weapon_modifiers == null:
+		push_warning("bulletBase: WeaponModifiers is null on _ready(). No modifiers will be processed. Please assign weapon_modifiers before adding to scene.")
+		weapon_modifiers = WeaponModifiers.new()
+	apply_weapon_modifiers()
+		
 	max_contacts_reported = max_contacts_reported_export
 	contact_monitor = true
 	body_entered.connect(_on_rigid_body_body_entered)
 	bullet_manager.add_bullet(self) 
 
+
+func apply_weapon_modifiers():
+	modified_base_mass = weapon_modifiers.mass_mod.get_modified_value(base_mass)
+	modified_damage = weapon_modifiers.damage_mod.get_modified_value(damage)
+	modified_crit_chance = weapon_modifiers.crit_chance_mod.get_modified_value(crit_chance)
+	modified_crit_damage_multiplier = weapon_modifiers.crit_damage_mod.get_modified_value(crit_damage_multiplier)
+	modified_size = weapon_modifiers.size_mod.get_modified_value(size)
+	modified_area_of_effect = weapon_modifiers.area_of_effect_mod.get_modified_value(area_of_effect)
+	modified_lifespan = weapon_modifiers.lifespan_mod.get_modified_value(lifespan)
+	
 	
 func _on_rigid_body_body_entered(body : Node):
 	last_collision_node = body

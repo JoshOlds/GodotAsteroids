@@ -46,7 +46,6 @@ script = ExtResource("3_0wm37")
 bullet_scene = ExtResource("4_urpsu")
 spawn_rigid_body = NodePath("..")
 weapon_modifiers = NodePath("WeaponModifiers")
-bullet_spawn_impulse = 1000.0
 
 [node name="BulletSpawnLocation" type="Marker2D" parent="GunManager"]
 position = Vector2(35, 0)
