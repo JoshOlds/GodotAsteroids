@@ -32,6 +32,7 @@ health = 10.0
 [node name="DamageApplyer" type="Node" parent="." node_paths=PackedStringArray("parent")]
 script = ExtResource("5_rtb40")
 parent = NodePath("..")
+group_blacklist = Array[String](["player_projectiles"])
 
 [node name="DamageReceiver" type="Node" parent="."]
 script = ExtResource("6_fobm3")

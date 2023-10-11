@@ -27,13 +27,15 @@ world_barrier_generator = NodePath("WorldContainer/WorldBarrierGenerator")
 
 [node name="AsteroidGameMetrics" parent="AsteroidLevel" instance=ExtResource("2_kou5g")]
 
-[node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator")]
+[node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator", "asteroid_game_metrics")]
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
+asteroid_game_metrics = NodePath("../AsteroidGameMetrics")
+spawn_interval_seconds = 1.0
 radius_range = Vector2i(5, 50)
 vertices_range = Vector2i(6, 15)
 jaggedness_range = Vector2(0.03, 0.2)
-force_range = Vector2i(100, 300)
+force_range = Vector2i(100, 400)
 
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")
@@ -51,6 +53,10 @@ rotation = -1.5708
 
 [node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("bullet_manager")]
 bullet_manager = NodePath("../../BulletManager")
+fire_rate = 1
+recoil = 500
+inaccuracy = 0.175
+multiple_projectiles_mod = 5
 
 [node name="UserInterface" type="CanvasLayer" parent="AsteroidLevel"]
 

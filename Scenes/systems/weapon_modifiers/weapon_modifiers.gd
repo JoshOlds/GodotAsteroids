@@ -14,36 +14,36 @@ var mass_mod : float = 1.0 :
 ## Multiplier for damage of a projectile
 var damage_mod : float = 1.0 :
 	set(new_value):
-			damage_mod = new_value
-			weapon_modifiers_changed.emit()
+		damage_mod = new_value
+		weapon_modifiers_changed.emit()
 
 
 ## Multiplier for size of a projectile
 var size_mod : float = 1.0 :
 	set(new_value):
-			size_mod = new_value
-			weapon_modifiers_changed.emit()
+		size_mod = new_value
+		weapon_modifiers_changed.emit()
 
 
 ## -------------- Gun Modifiers -----------------
 
-## Multiplier for cooldown time of a gun
-var cooldown_mod : float = 1.0 :
+## Multiplier for fire rate of a gun
+var fire_rate_mod : float = 1.0 :
 	set(new_value):
-			cooldown_mod = new_value
-			weapon_modifiers_changed.emit()
+		fire_rate_mod = new_value
+		weapon_modifiers_changed.emit()
 
 ## Multiplier for multiple projectiles fired from a gun
 var multiple_projectiles_mod : int = 1 :
 	set(new_value):
-			multiple_projectiles_mod = new_value
-			weapon_modifiers_changed.emit()
+		multiple_projectiles_mod = new_value
+		weapon_modifiers_changed.emit()
 
 
 ## Multiplier for the spread of projectiles fired from a gun
 var spread_mod : float = 1.0 :
 	set(new_value):
-			spread_mod = new_value
-			weapon_modifiers_changed.emit()
+		spread_mod = new_value
+		weapon_modifiers_changed.emit()
 
 

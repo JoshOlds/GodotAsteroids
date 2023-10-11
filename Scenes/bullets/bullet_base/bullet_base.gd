@@ -44,7 +44,8 @@ func _ready():
 func _on_rigid_body_body_entered(body : Node):
 	last_collision_node = body
 	damage_applyer.apply_damage_to_node(body, damage)
-	health.set_health(0)
+	if not body.is_in_group("player_projectiles"):
+		health.set_health(0)
 	
 	
 func _on_health_expired(_damage_source_node : Node):
