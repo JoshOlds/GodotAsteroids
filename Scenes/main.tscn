@@ -59,6 +59,9 @@ fire_rate = 10000.0
 spread = 3.142
 inaccuracy = 0.25
 
+[node name="Camera2D" parent="AsteroidLevel/Player" index="5"]
+process_callback = 0
+
 [node name="UserInterface" type="CanvasLayer" parent="AsteroidLevel"]
 
 [node name="FPSCounter" parent="AsteroidLevel/UserInterface" instance=ExtResource("6_chemb")]

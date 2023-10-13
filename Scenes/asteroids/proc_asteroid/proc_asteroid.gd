@@ -106,6 +106,11 @@ func _ready():
 	SignalBroker.asteroid_proc_spawned.emit()
 
 
+func _process(_delta):
+	# Redraw the asteroid every frame
+	queue_redraw()
+
+
 ## Draw this asteroid as vector lines
 func _draw():
 	if draw_fill:

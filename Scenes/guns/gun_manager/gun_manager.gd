@@ -47,26 +47,35 @@ var modified_spread : float
 ## inaccuracy value after modifiers have been applied
 var modified_inaccuracy : float
 
-## Timer used to update gun cooldown
-var _cooldown_timer : CooldownTimer
+## ----------- Privates ----------------------
+
+@onready var last_fire_time = Time.get_ticks_msec()
+
+## True if fire button is currently pressed
+var _fire_pressed : bool = false
 
 
 func _ready():
 	# Get initial modifier values
 	_on_weapon_modifiers_changed()
 
-	# set up cooldown timer
-	_cooldown_timer = CooldownTimer.new()
-	_cooldown_timer.cooldown_time = (1.0 / modified_fire_rate)
-	add_child(_cooldown_timer)
-
 	# Connect to WeaponModifiers signal
 	weapon_modifiers.weapon_modifiers_changed.connect(_on_weapon_modifiers_changed)
 
 
-func _physics_process(_delta):
+## Process is used to handle inputs
+func _process(_delta):
+	## TODO - put this on callbacks instead of every frame
 	if Input.is_action_pressed("mouse_left_click"):
+		_fire_pressed = true
+	else:
+		_fire_pressed = false
+
+
+func _physics_process(_delta):
+	if _fire_pressed:
 		shoot()
+
 		
 ## Updates all Weapon Modifiers on signal
 func _on_weapon_modifiers_changed():
@@ -80,12 +89,9 @@ func _on_weapon_modifiers_changed():
 
 ## Spawns a bullet if off cooldown
 func shoot():
-	if not _cooldown_timer.is_on_cooldown():
-		#weapon_modifiers.fire_rate_mod.add_more_mod_value(0.1)
-		weapon_modifiers.weapon_modifiers_changed.emit()
-		# Go on cooldown and set timer
-		_cooldown_timer.cooldown_time = (1.0 / modified_fire_rate)
-		_cooldown_timer.start_cooldown()
+	var now = Time.get_ticks_msec()
+	if ((now - last_fire_time) > ((1.0 / modified_fire_rate) * 1000)):
+		last_fire_time = now
 		spawn_bullets()
 
 
@@ -106,6 +112,7 @@ func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	bullet.position = spawn_offset_position
 	bullet.linear_velocity = spawn_velocity
 	bullet.bullet_manager = bullet_manager
+	bullet.weapon_modifiers = weapon_modifiers
 	bullet.apply_central_impulse(forward_vec * modified_bullet_spawn_impulse)
 	bullet_manager.add_child(bullet)
 	

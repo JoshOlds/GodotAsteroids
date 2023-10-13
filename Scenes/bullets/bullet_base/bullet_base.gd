@@ -184,6 +184,7 @@ func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
 	aoe_applyer.circle_radius = modified_area_of_effect
 	aoe_applyer.damage_to_apply = damage_to_apply
 	aoe_applyer.blacklist_bodies = blacklist_nodes
+	aoe_applyer.damage_applyer.group_blacklist.append("player_projectiles")
 	aoe_applyer.position = position
 	get_tree().root.add_child(aoe_applyer)
 	

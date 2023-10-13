@@ -42,7 +42,6 @@ func apply_area_damage() -> Array[Node2D]:
 	var overlapping_nodes : Array[Node2D] = []
 	overlapping_nodes = get_overlapping_bodies()
 	for node in overlapping_nodes:
-		print(node)
 		if node not in blacklist_bodies:
 			damage_applyer.apply_damage_to_node(node, damage_to_apply)
 	if free_after_damage_apply:
