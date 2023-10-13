@@ -17,7 +17,7 @@ physics_material_override = SubResource("PhysicsMaterial_j3pol")
 script = ExtResource("1_25fgb")
 collision_death_particle_scene = ExtResource("2_naimc")
 lifespan_death_particle_scene = ExtResource("3_3j0ri")
-damage = 10.0
+damage = 0.0
 area_of_effect = 100.0
 lifespan = 2.5
 

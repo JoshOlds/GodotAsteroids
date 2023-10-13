@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=16 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://Scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://Scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://Scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
 [ext_resource type="PackedScene" uid="uid://dijb6ukr4vmvs" path="res://Scenes/particles/background_star_particles.tscn" id="10_l2jfq"]
 [ext_resource type="PackedScene" uid="uid://cgppskqmct6sx" path="res://Scenes/user_interface/restart_on_signal/restart_on_signal.tscn" id="11_xsdx2"]
+[ext_resource type="Script" path="res://Scenes/tests/modifier_incrementer.gd" id="15_aqmre"]
 
 [node name="Main" type="Node"]
 
@@ -54,10 +55,10 @@ rotation = -1.5708
 [node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("bullet_manager")]
 bullet_manager = NodePath("../../BulletManager")
 bullet_spawn_impulse = 500.0
-fire_rate = 10000.0
+fire_rate = 3.0
 recoil = 5.0
 spread = 0.1
-inaccuracy = 1.0
+inaccuracy = 0.0
 
 [node name="UserInterface" type="CanvasLayer" parent="AsteroidLevel"]
 
@@ -93,6 +94,12 @@ use_global_signal_broker_signal = true
 signal_to_connect = "player_death"
 
 [node name="QuitOnKey" parent="." instance=ExtResource("10_28qfs")]
+
+[node name="Node" type="Node" parent="." node_paths=PackedStringArray("weapon_modifiers_ref")]
+script = ExtResource("15_aqmre")
+increment_time_seconds = 1.0
+weapon_modifiers_ref = NodePath("../AsteroidLevel/Player/GunManager/WeaponModifiers")
+size_increment = 0.2
 
 [editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
 [editable path="AsteroidLevel/Player"]

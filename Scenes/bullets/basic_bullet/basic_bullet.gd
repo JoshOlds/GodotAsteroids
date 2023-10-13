@@ -13,6 +13,10 @@ func _ready():
 	## Modify size
 	modified_radius = radius * modified_size
 
+	# Move self forward based on new radius (so we don't self collide with player)
+	var forward_vec = Vector2(cos(rotation), sin(rotation))
+	position += modified_radius * forward_vec
+
 	# Create a circle shape and add to collision shape child
 	var circle_shape = CircleShape2D.new()
 	circle_shape.radius = modified_radius

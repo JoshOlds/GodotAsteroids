@@ -107,9 +107,10 @@ func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	var bullet = bullet_scene.instantiate() as BasicBullet
 	var spawn_velocity : Vector2 = spawn_rigid_body.linear_velocity
 	var forward_vec =  Vector2(cos(spawn_rotation), sin(spawn_rotation))
-	var spawn_offset_position : Vector2 = spawn_position + (bullet.radius * forward_vec)
+	var spawn_offset_position : Vector2 = spawn_position + forward_vec
 	
 	bullet.position = spawn_offset_position
+	bullet.rotation = spawn_rotation
 	bullet.linear_velocity = spawn_velocity
 	bullet.bullet_manager = bullet_manager
 	bullet.weapon_modifiers = weapon_modifiers
