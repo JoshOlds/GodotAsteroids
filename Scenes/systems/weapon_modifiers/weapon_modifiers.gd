@@ -1,8 +1,6 @@
 class_name WeaponModifiers
 extends Node
 
-const WeaponModifier = preload("res://Scenes/systems/weapon_modifiers/weapon_modifier.gd")
-
 
 ## Emitted any time a modifier value changes
 signal weapon_modifiers_changed

@@ -174,7 +174,7 @@ func _physics_process(_delta):
 
 		# Spawn the death particles		
 		call_deferred("spawn_death_particles")
-		queue_free()
+		call_deferred("queue_free")
 	
 
 ## Applies AoE damage to all objects in area. Returns array of nodes that were inside the area
@@ -186,7 +186,7 @@ func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
 	aoe_applyer.blacklist_bodies = blacklist_nodes
 	aoe_applyer.damage_applyer.group_blacklist.append("player_projectiles")
 	aoe_applyer.position = position
-	get_tree().root.add_child(aoe_applyer)
+	get_tree().root.call_deferred("add_child", aoe_applyer)
 	
 
 ## Spawns death particles for this bullet
@@ -201,7 +201,7 @@ func spawn_death_particles():
 		particles.rotation = previous_collision_normal.angle()
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
-	get_tree().root.add_child(particles)
+	get_tree().root.call_deferred("add_child", particles)
 	
 
 ## Rolls for crit chance and returns the resulting damage value
