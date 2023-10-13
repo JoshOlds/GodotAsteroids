@@ -12,6 +12,6 @@ func _ready():
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 	viewport.canvas_transform = Transform2D(0, Vector2(camera_target.position.x, camera_target.position.y))
 	pass

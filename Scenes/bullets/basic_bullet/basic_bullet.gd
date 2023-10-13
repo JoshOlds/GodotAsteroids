@@ -3,17 +3,25 @@ extends BulletBase
 
 ## The radius of this bullet in pixels
 @export var radius : float = 3
+## the radius value after modifiers have been applied (uses size modifier)
+var modified_radius : float
+
 
 func _ready():
 	super()
+
+	## Modify size
+	modified_radius = radius * modified_size
+
 	# Create a circle shape and add to collision shape child
 	var circle_shape = CircleShape2D.new()
-	circle_shape.radius = radius
+	circle_shape.radius = modified_radius
 	$CollisionShape2D.shape = circle_shape
 	
 	# Setup the circle drawer
-	$CircleDrawer.radius = radius
+	$CircleDrawer.radius = modified_radius
 	$CircleDrawer.color = Color.WHITE
+
 	
 func _on_health_expired(damage_source_node : Node):
 	super._on_health_expired(damage_source_node)

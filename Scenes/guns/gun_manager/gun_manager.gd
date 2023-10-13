@@ -81,7 +81,7 @@ func _on_weapon_modifiers_changed():
 ## Spawns a bullet if off cooldown
 func shoot():
 	if not _cooldown_timer.is_on_cooldown():
-		weapon_modifiers.fire_rate_mod.add_more_mod_value(0.1)
+		#weapon_modifiers.fire_rate_mod.add_more_mod_value(0.1)
 		weapon_modifiers.weapon_modifiers_changed.emit()
 		# Go on cooldown and set timer
 		_cooldown_timer.cooldown_time = (1.0 / modified_fire_rate)

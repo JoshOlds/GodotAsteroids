@@ -21,6 +21,10 @@ config/icon="res://icon.svg"
 SignalBroker="*res://Scenes/asteroid_game/signal_broker/signal_broker.gd"
 AsteroidGameGlobals="*res://Scenes/asteroid_game/asteroid_game_globals/asteroid_game_globals.gd"
 
+[debug]
+
+settings/profiler/max_functions=65535
+
 [display]
 
 window/size/viewport_width=1920

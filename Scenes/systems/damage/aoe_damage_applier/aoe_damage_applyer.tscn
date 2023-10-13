@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://dilm7bhdxi6et"]
+
+[ext_resource type="Script" path="res://Scenes/systems/damage/aoe_damage_applier/aoe_damage_applyer.gd" id="1_8d0o5"]
+[ext_resource type="Script" path="res://Scenes/systems/damage/damage_applyer/damage_applyer.gd" id="2_vp64d"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rvtww"]
+
+[node name="AoeDamageApplyer" type="Area2D" node_paths=PackedStringArray("collision_shape", "damage_applyer")]
+script = ExtResource("1_8d0o5")
+collision_shape = NodePath("CollisionShape2D")
+damage_applyer = NodePath("DamageApplyer")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rvtww")
+
+[node name="DamageApplyer" type="Node" parent="." node_paths=PackedStringArray("parent")]
+script = ExtResource("2_vp64d")
+parent = NodePath("..")

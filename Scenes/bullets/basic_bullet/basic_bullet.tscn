@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bmblxdubn3q71"]
+[gd_scene load_steps=9 format=3 uid="uid://bmblxdubn3q71"]
 
 [ext_resource type="Script" path="res://Scenes/bullets/basic_bullet/basic_bullet.gd" id="1_25fgb"]
 [ext_resource type="Script" path="res://Scenes/debug/debug_circle/debug_circle.gd" id="2_bffy1"]
-[ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://Scenes/bullets/basic_bullet/basic_bullet_death_particle.tscn" id="2_e5s6m"]
+[ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://Scenes/bullets/basic_bullet/basic_bullet_collision_death_particle.tscn" id="2_naimc"]
+[ext_resource type="PackedScene" uid="uid://yr5a7sukpmih" path="res://Scenes/bullets/basic_bullet/basic_bullet_lifespan_death_particle.tscn" id="3_3j0ri"]
 [ext_resource type="Script" path="res://Scenes/systems/health/health_base.gd" id="3_ob3vc"]
 [ext_resource type="Script" path="res://Scenes/systems/damage/damage_applyer/damage_applyer.gd" id="5_rtb40"]
 [ext_resource type="Script" path="res://Scenes/systems/damage/damage_receiver/damage_receiver.gd" id="6_fobm3"]
@@ -14,10 +15,11 @@ bounce = 0.3
 position = Vector2(200, 200)
 physics_material_override = SubResource("PhysicsMaterial_j3pol")
 script = ExtResource("1_25fgb")
-radius = null
+collision_death_particle_scene = ExtResource("2_naimc")
+lifespan_death_particle_scene = ExtResource("3_3j0ri")
 damage = 10.0
-max_contacts_reported_export = null
-death_particle_scene = ExtResource("2_e5s6m")
+area_of_effect = 100.0
+lifespan = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 

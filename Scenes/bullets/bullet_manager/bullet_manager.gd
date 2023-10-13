@@ -20,7 +20,7 @@ func _ready():
 	_cleanup_timer = Timer.new()
 	add_child(_cleanup_timer)
 	_cleanup_timer.wait_time = off_world_bullet_cleanup_interval
-	_cleanup_timer.timeout.connect(delete_off_world_bullets)
+	#_cleanup_timer.timeout.connect(delete_off_world_bullets)
 	_cleanup_timer.start()
 	
 
