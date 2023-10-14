@@ -3,7 +3,7 @@ extends Node
 ## Time, in seconds, between when increments will be added
 @export var increment_time_seconds : float
 
-@export var weapon_modifiers_ref : WeaponModifiers
+@export var modifiers_ref : Modifiers
 
 @export var mass_increment : float = 0
 @export var damage_increment : float = 0
@@ -28,10 +28,10 @@ func _ready():
 
 
 func _on_increment_timer_timeout():
-	weapon_modifiers_ref.mass_mod.add_flat_mod_value(mass_increment)
-	weapon_modifiers_ref.damage_mod.add_flat_mod_value(damage_increment)
-	weapon_modifiers_ref.crit_chance_mod.add_flat_mod_value(crit_chance_increment)
-	weapon_modifiers_ref.crit_damage_mod.add_flat_mod_value(crit_damage_increment)
-	weapon_modifiers_ref.size_mod.add_flat_mod_value(size_increment)
-	weapon_modifiers_ref.area_of_effect_mod.add_flat_mod_value(aoe_increment)
-	weapon_modifiers_ref.lifespan_mod.add_flat_mod_value(lifespan_increment)
+	modifiers_ref.mass_mod.add_flat_mod_value(mass_increment)
+	modifiers_ref.damage_mod.add_flat_mod_value(damage_increment)
+	modifiers_ref.crit_chance_mod.add_flat_mod_value(crit_chance_increment)
+	modifiers_ref.crit_damage_mod.add_flat_mod_value(crit_damage_increment)
+	modifiers_ref.size_mod.add_flat_mod_value(size_increment)
+	modifiers_ref.area_of_effect_mod.add_flat_mod_value(aoe_increment)
+	modifiers_ref.lifespan_mod.add_flat_mod_value(lifespan_increment)

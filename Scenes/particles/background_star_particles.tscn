@@ -9,15 +9,14 @@ gradient = SubResource("Gradient_2hg63")
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_3sbo5"]
 lifetime_randomness = 1.0
+particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1500, 1500, 1)
-particle_flag_disable_z = true
 gravity = Vector3(0, 0, 0)
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
 color_ramp = SubResource("GradientTexture1D_1j0qw")
 
 [node name="BackgroundStarParticles" type="GPUParticles2D"]
+process_mode = 3
 z_index = -99
 amount = 1000
 process_material = SubResource("ParticleProcessMaterial_3sbo5")

@@ -1,0 +1,130 @@
+[gd_scene load_steps=4 format=3 uid="uid://fld2odmyean1"]
+
+[ext_resource type="StyleBox" uid="uid://d1kyx61qnaua7" path="res://resources/style_box_flat/LevelUpPanel.tres" id="1_7ab1g"]
+[ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://SVGs/ArrowOpenBack.svg" id="1_r8msf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kgeug"]
+font_size = 48
+shadow_size = 0
+
+[node name="LevelUpSelectionScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BoxContainer" type="BoxContainer" parent="."]
+custom_minimum_size = Vector2(1440, 810)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Panel" type="Panel" parent="BoxContainer/MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_7ab1g")
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_r8msf")
+
+[node name="Label" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Upgrade 1"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Panel" type="Panel" parent="BoxContainer/MarginContainer2"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_7ab1g")
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer2"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_r8msf")
+
+[node name="Label" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Upgrade 2
+"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Panel" type="Panel" parent="BoxContainer/MarginContainer3"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_7ab1g")
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer3"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer3/CenterContainer"]
+layout_mode = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+texture = ExtResource("1_r8msf")
+
+[node name="Label" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Upgrade 3
+"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1

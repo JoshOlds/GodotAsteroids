@@ -26,8 +26,8 @@ var lifespan_timer : Timer
 ## True if this bullet died by expired lifespan rather than collision
 var lifespan_expired : bool = false
 
-## The WeaponModifiers that this BulletBase will use to calculate modified values
-var weapon_modifiers : WeaponModifiers
+## The Modifiers that this BulletBase will use to calculate modified values
+var modifiers : Modifiers
 
 ## The last node that collided with this bullet
 var last_collision_node : Node2D
@@ -83,11 +83,11 @@ var modified_lifespan : float
 
 
 func _ready():
-	# Check for missing weapon_modifiers - soft error if missing
-	if weapon_modifiers == null:
-		push_warning("bulletBase: WeaponModifiers is null on _ready(). No modifiers will be processed. Please assign weapon_modifiers before adding to scene.")
-		weapon_modifiers = WeaponModifiers.new()
-	apply_weapon_modifiers()
+	# Check for missing modifiers - soft error if missing
+	if modifiers == null:
+		push_warning("bulletBase: Modifiers is null on _ready(). No modifiers will be processed. Please assign modifiers before adding to scene.")
+		modifiers = Modifiers.new()
+	apply_modifiers()
 
 	# Modifiers on _ready()
 	mass = modified_base_mass
@@ -111,14 +111,14 @@ func _ready():
 
 
 ## Updates the modifier 'modified_xxx' values. Only run on _ready() as we don't want bullet mods changing while they are alive
-func apply_weapon_modifiers():
-	modified_base_mass = weapon_modifiers.mass_mod.get_modified_value(base_mass)
-	modified_damage = weapon_modifiers.damage_mod.get_modified_value(damage)
-	modified_crit_chance = weapon_modifiers.crit_chance_mod.get_modified_value(crit_chance)
-	modified_crit_damage_multiplier = weapon_modifiers.crit_damage_mod.get_modified_value(crit_damage_multiplier)
-	modified_size = weapon_modifiers.size_mod.get_modified_value(size)
-	modified_area_of_effect = weapon_modifiers.area_of_effect_mod.get_modified_value(area_of_effect)
-	modified_lifespan = weapon_modifiers.lifespan_mod.get_modified_value(lifespan)
+func apply_modifiers():
+	modified_base_mass = modifiers.mass_mod.get_modified_value(base_mass)
+	modified_damage = modifiers.damage_mod.get_modified_value(damage)
+	modified_crit_chance = modifiers.crit_chance_mod.get_modified_value(crit_chance)
+	modified_crit_damage_multiplier = modifiers.crit_damage_mod.get_modified_value(crit_damage_multiplier)
+	modified_size = modifiers.size_mod.get_modified_value(size)
+	modified_area_of_effect = modifiers.area_of_effect_mod.get_modified_value(area_of_effect)
+	modified_lifespan = modifiers.lifespan_mod.get_modified_value(lifespan)
 	
 	
 func _on_rigid_body_body_entered(body : Node):

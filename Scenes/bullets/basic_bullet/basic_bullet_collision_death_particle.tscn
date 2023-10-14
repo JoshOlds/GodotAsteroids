@@ -7,11 +7,9 @@ lifetime_randomness = 0.4
 particle_flag_disable_z = true
 direction = Vector3(0, 0, 0)
 spread = 90.0
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = 200.0
 initial_velocity_max = 600.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 0, 0)
 damping_min = 10.0
 damping_max = 30.0
 collision_mode = 1
@@ -19,6 +17,7 @@ collision_friction = 0.0
 collision_bounce = 1.0
 
 [node name="GPUParticles2D" type="GPUParticles2D"]
+process_mode = 3
 amount = 20
 process_material = SubResource("ParticleProcessMaterial_2p51x")
 lifetime = 0.4

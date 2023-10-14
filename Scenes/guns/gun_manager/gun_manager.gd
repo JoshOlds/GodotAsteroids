@@ -13,8 +13,8 @@ extends Node2D
 ## RigidBody of the parent of this bullet. Used to get values such as linear_velocity of the parent
 @export var spawn_rigid_body : RigidBody2D
 
-## The WeaponModifiers object used to determine modifiers for this GumManager
-@export var weapon_modifiers : WeaponModifiers
+## The Modifiers object used to determine modifiers for this GumManager
+@export var modifiers : Modifiers
 
 # ---------- Gun Modifiers ---------------------
 ## Causes this GunManager to spawn multiple projectiles when firing
@@ -57,10 +57,10 @@ var _fire_pressed : bool = false
 
 func _ready():
 	# Get initial modifier values
-	_on_weapon_modifiers_changed()
+	_on_modifiers_changed()
 
-	# Connect to WeaponModifiers signal
-	weapon_modifiers.weapon_modifiers_changed.connect(_on_weapon_modifiers_changed)
+	# Connect to Modifiers signal
+	modifiers.modifiers_changed.connect(_on_modifiers_changed)
 
 
 ## Process is used to handle inputs
@@ -78,13 +78,13 @@ func _physics_process(_delta):
 
 		
 ## Updates all Weapon Modifiers on signal
-func _on_weapon_modifiers_changed():
-	modified_multiple_projectiles = multiple_projectiles + weapon_modifiers.multiple_projectiles_mod
-	modified_bullet_spawn_impulse = weapon_modifiers.spawn_impulse_mod.get_modified_value(bullet_spawn_impulse)
-	modified_fire_rate = weapon_modifiers.fire_rate_mod.get_modified_value(fire_rate)
-	modified_recoil = weapon_modifiers.recoil_mod.get_modified_value(recoil)
-	modified_spread = weapon_modifiers.spread_mod.get_modified_value(spread)
-	modified_inaccuracy = weapon_modifiers.inaccuracy_mod.get_modified_value(inaccuracy)
+func _on_modifiers_changed():
+	modified_multiple_projectiles = multiple_projectiles + modifiers.multiple_projectiles_mod
+	modified_bullet_spawn_impulse = modifiers.spawn_impulse_mod.get_modified_value(bullet_spawn_impulse)
+	modified_fire_rate = modifiers.fire_rate_mod.get_modified_value(fire_rate)
+	modified_recoil = modifiers.recoil_mod.get_modified_value(recoil)
+	modified_spread = modifiers.spread_mod.get_modified_value(spread)
+	modified_inaccuracy = modifiers.inaccuracy_mod.get_modified_value(inaccuracy)
 
 
 ## Spawns a bullet if off cooldown
@@ -113,7 +113,7 @@ func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	bullet.rotation = spawn_rotation
 	bullet.linear_velocity = spawn_velocity
 	bullet.bullet_manager = bullet_manager
-	bullet.weapon_modifiers = weapon_modifiers
+	bullet.modifiers = modifiers
 	bullet.apply_central_impulse(forward_vec * modified_bullet_spawn_impulse)
 	bullet_manager.add_child(bullet)
 	

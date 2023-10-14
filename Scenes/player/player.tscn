@@ -8,7 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://Scenes/bullets/basic_bullet/basic_bullet.tscn" id="4_urpsu"]
 [ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://Scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="5_degbh"]
 [ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://Scenes/systems/health/health.tscn" id="6_hdalh"]
-[ext_resource type="Script" path="res://Scenes/systems/weapon_modifiers/weapon_modifiers.gd" id="7_6n5nh"]
+[ext_resource type="Script" path="res://Scenes/systems/modifiers/modifiers.gd" id="7_ige3e"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_diq1j"]
 polygon = PackedVector2Array(24, 0, -15, 20, -15, 6, -23, 9, -23, -9, -15, -6, -15, -20)
@@ -41,19 +41,20 @@ main_camera = NodePath("../Camera2D")
 linear_thrust = 2000.0
 rotational_torque = 10000.0
 
-[node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body", "weapon_modifiers")]
+[node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body", "modifiers")]
 script = ExtResource("3_0wm37")
 bullet_scene = ExtResource("4_urpsu")
 spawn_rigid_body = NodePath("..")
-weapon_modifiers = NodePath("WeaponModifiers")
+modifiers = NodePath("Modifiers")
+multiple_projectiles = 3
 bullet_spawn_impulse = 300.0
 recoil = 50.0
 
 [node name="BulletSpawnLocation" type="Marker2D" parent="GunManager"]
 position = Vector2(35, 0)
 
-[node name="WeaponModifiers" type="Node" parent="GunManager"]
-script = ExtResource("7_6n5nh")
+[node name="Modifiers" type="Node" parent="GunManager"]
+script = ExtResource("7_ige3e")
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
 occluder = SubResource("OccluderPolygon2D_diq1j")
