@@ -49,7 +49,7 @@ var modified_inaccuracy : float
 
 ## ----------- Privates ----------------------
 
-@onready var last_fire_time = Time.get_ticks_msec()
+var _delta_since_last_shoot = 99999 # Set large to start so player can shoot on first frame
 
 ## True if fire button is currently pressed
 var _fire_pressed : bool = false
@@ -72,9 +72,10 @@ func _process(_delta):
 		_fire_pressed = false
 
 
-func _physics_process(_delta):
+func _physics_process(delta):
+	_delta_since_last_shoot += delta
 	if _fire_pressed:
-		shoot()
+		shoot(delta)
 
 		
 ## Updates all Weapon Modifiers on signal
@@ -88,10 +89,9 @@ func _on_modifiers_changed():
 
 
 ## Spawns a bullet if off cooldown
-func shoot():
-	var now = Time.get_ticks_msec()
-	if ((now - last_fire_time) > ((1.0 / modified_fire_rate) * 1000)):
-		last_fire_time = now
+func shoot(delta):
+	if (_delta_since_last_shoot > (1.0 / modified_fire_rate)):
+		_delta_since_last_shoot = 0
 		spawn_bullets()
 
 

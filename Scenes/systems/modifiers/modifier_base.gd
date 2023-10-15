@@ -16,5 +16,5 @@ var icon_texture_path : String
 
 
 ## Applies modifiers of this compound class to a Modifier type
-func apply_modifier(modifiers : Modifiers):
+func apply_modifier(_modifiers : Modifiers):
 	pass

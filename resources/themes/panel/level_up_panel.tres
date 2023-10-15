@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://bdprt8e31g51g"]
+
+[ext_resource type="StyleBox" uid="uid://d1kyx61qnaua7" path="res://resources/themes/panel/level_up_panel_normal.tres" id="1_hgeat"]
+
+[resource]
+normal/base_type = &"Panel"
+normal/styles/panel = ExtResource("1_hgeat")

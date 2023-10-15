@@ -1,9 +1,0 @@
-[gd_resource type="Theme" load_steps=3 format=3 uid="uid://bdprt8e31g51g"]
-
-[ext_resource type="StyleBox" uid="uid://d1kyx61qnaua7" path="res://resources/style_box_flat/LevelUpPanel.tres" id="1_7toha"]
-[ext_resource type="StyleBox" uid="uid://hpu4igmiqjmq" path="res://resources/style_box_flat/SelectedLevelUpPanel.tres" id="2_ul6kl"]
-
-[resource]
-Panel/styles/panel = ExtResource("1_7toha")
-Selected/base_type = &"Panel"
-Selected/styles/panel = ExtResource("2_ul6kl")

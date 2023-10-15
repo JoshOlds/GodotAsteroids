@@ -26,44 +26,54 @@ var rolled_modifiers : Array[ModifierBase]
 @onready var desc3 : Label = $BoxContainer/MarginContainer3/CenterContainer/VBoxContainer/ModDescription
 @onready var flavor3 : Label = $BoxContainer/MarginContainer3/CenterContainer/VBoxContainer/FlavorText
 
+# Store theme styleboxe copies for coloring by rarity and highlighting on mouseover
+@onready var panel1_stylebox : StyleBoxFlat = panel1.get_theme_stylebox("panel").duplicate()
+@onready var panel2_stylebox : StyleBoxFlat = panel2.get_theme_stylebox("panel").duplicate()
+@onready var panel3_stylebox : StyleBoxFlat = panel3.get_theme_stylebox("panel").duplicate()
+
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	
+	# Override styleboxes (for later applying color and backgrounds
+	panel1.add_theme_stylebox_override("panel", panel1_stylebox)
+	panel2.add_theme_stylebox_override("panel", panel2_stylebox)
+	panel3.add_theme_stylebox_override("panel", panel3_stylebox)
+
 	# Roll modifiers
 	rolled_modifiers = modifier_pool.roll_for_modifiers(3)
 	
 	# Update UI
 	if rolled_modifiers.size() > 0:
-		update_modifier_ui_element(icon1, name1, desc1, flavor1, rolled_modifiers[0])
+		update_modifier_ui_element(icon1, name1, desc1, flavor1, panel1_stylebox, rolled_modifiers[0])
 	if rolled_modifiers.size() > 1:
-		update_modifier_ui_element(icon2, name2, desc2, flavor2, rolled_modifiers[1])
+		update_modifier_ui_element(icon2, name2, desc2, flavor2, panel2_stylebox, rolled_modifiers[1])
 	if rolled_modifiers.size() > 2:
-		update_modifier_ui_element(icon3, name3, desc3, flavor3, rolled_modifiers[2])
+		update_modifier_ui_element(icon3, name3, desc3, flavor3, panel3_stylebox, rolled_modifiers[2])
 	
 	# Hookup signals
 	if rolled_modifiers.size() > 0:
-		panel1.mouse_entered.connect(_on_mouseover_panel.bind(panel1))
-		panel1.mouse_exited.connect(_on_mouse_exit_panel.bind(panel1))
+		panel1.mouse_entered.connect(_on_mouseover_panel.bind(panel1, panel1_stylebox))
+		panel1.mouse_exited.connect(_on_mouse_exit_panel.bind(panel1, panel1_stylebox))
 		panel1.gui_input.connect(_on_input_event.bind(0))
 	
 	if rolled_modifiers.size() > 1:
-		panel2.mouse_entered.connect(_on_mouseover_panel.bind(panel2))
-		panel2.mouse_exited.connect(_on_mouse_exit_panel.bind(panel2))
+		panel2.mouse_entered.connect(_on_mouseover_panel.bind(panel2, panel2_stylebox))
+		panel2.mouse_exited.connect(_on_mouse_exit_panel.bind(panel2, panel2_stylebox))
 		panel2.gui_input.connect(_on_input_event.bind(1))
 	
 	if rolled_modifiers.size() > 2:
-		panel3.mouse_entered.connect(_on_mouseover_panel.bind(panel3))
-		panel3.mouse_exited.connect(_on_mouse_exit_panel.bind(panel3))
+		panel3.mouse_entered.connect(_on_mouseover_panel.bind(panel3, panel3_stylebox))
+		panel3.mouse_exited.connect(_on_mouse_exit_panel.bind(panel3, panel3_stylebox))
 		panel3.gui_input.connect(_on_input_event.bind(2))
 
 
-func _on_mouseover_panel(panel : Panel):
-	panel.theme_type_variation = "Selected"
+func _on_mouseover_panel(panel : Panel, stylebox : StyleBoxFlat):
+	stylebox.bg_color = Color.from_hsv(0, 0, .2)
 
 
-func _on_mouse_exit_panel(panel : Panel):
-	panel.theme_type_variation = ""
+func _on_mouse_exit_panel(panel : Panel, stylebox : StyleBoxFlat):
+	stylebox.bg_color = Color.from_hsv(0, 0, 0)
 	
 	
 func _on_input_event(event : InputEvent, panel_index : int):
@@ -77,8 +87,10 @@ func apply_modifier(selection : int):
 	SignalBroker.level_up_selection_complete.emit()
 	
 
-func update_modifier_ui_element(icon : TextureRect, mod_name : Label, mod_desc : Label, flavor_text : Label, mod : ModifierBase):
+func update_modifier_ui_element(icon : TextureRect, mod_name : Label, mod_desc : Label, flavor_text : Label, stylebox : StyleBoxFlat, mod : ModifierBase):
 	icon.texture = mod.icon_texture
 	mod_name.text = mod.modifier_name
 	mod_desc.text = mod.description
 	flavor_text.text = mod.flavor_text
+	stylebox.border_color = Rarity.get_rarity_color(mod.rarity.rarity)
+	

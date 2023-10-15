@@ -26,4 +26,19 @@ func roll_rarity() -> float:
 	if rarity == RarityEnum.LEGENDARY:
 		return randf() * 25
 	return 0
+	
+
+## Returns a color value for a given RarityEnum
+static func get_rarity_color(rarity_enum : RarityEnum) -> Color:
+	if rarity_enum == RarityEnum.COMMON:
+		return Color.GRAY
+	if rarity_enum == RarityEnum.UNCOMMON:
+		return Color.DARK_GREEN
+	if rarity_enum == RarityEnum.RARE:
+		return Color.NAVY_BLUE
+	if rarity_enum == RarityEnum.EPIC:
+		return Color.REBECCA_PURPLE
+	if rarity_enum == RarityEnum.LEGENDARY:
+		return Color.DARK_ORANGE
+	return Color.GRAY
 

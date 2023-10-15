@@ -25,7 +25,7 @@ func _ready():
 	# Setup the circle drawer
 	$CircleDrawer.radius = modified_radius
 	$CircleDrawer.color = Color.WHITE
-
 	
+
 func _on_health_expired(damage_source_node : Node):
 	super._on_health_expired(damage_source_node)

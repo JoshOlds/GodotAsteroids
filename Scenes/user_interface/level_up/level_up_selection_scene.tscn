@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" path="res://scenes/user_interface/level_up/level_up_selection_scene.gd" id="1_mqwnk"]
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://svg/ArrowOpenBack.svg" id="2_3bfbr"]
+[ext_resource type="Theme" uid="uid://bdprt8e31g51g" path="res://resources/themes/panel/level_up_panel.tres" id="2_yv2k1"]
 [ext_resource type="PackedScene" uid="uid://dgjogxci5crlh" path="res://scenes/systems/modifiers/modifier_pool/test_modifier_pool.tscn" id="4_bydh1"]
-[ext_resource type="Theme" uid="uid://bdprt8e31g51g" path="res://resources/panel/level_up_panel.tres" id="4_fqnpm"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_kgeug"]
 font_size = 36
@@ -50,7 +50,8 @@ theme_override_constants/margin_right = 25
 
 [node name="Selection1Panel" type="Panel" parent="BoxContainer/MarginContainer"]
 layout_mode = 2
-theme = ExtResource("4_fqnpm")
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
 
 [node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer"]
 layout_mode = 2
@@ -99,7 +100,8 @@ theme_override_constants/margin_right = 25
 
 [node name="Selection2Panel" type="Panel" parent="BoxContainer/MarginContainer2"]
 layout_mode = 2
-theme = ExtResource("4_fqnpm")
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
 
 [node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer2"]
 layout_mode = 2
@@ -148,7 +150,8 @@ theme_override_constants/margin_right = 25
 
 [node name="Selection3Panel" type="Panel" parent="BoxContainer/MarginContainer3"]
 layout_mode = 2
-theme = ExtResource("4_fqnpm")
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
 
 [node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer3"]
 layout_mode = 2
