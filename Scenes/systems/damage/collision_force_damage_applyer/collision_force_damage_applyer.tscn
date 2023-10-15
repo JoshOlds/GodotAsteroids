@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://ccah8dv58rh1n"]
 
-[ext_resource type="Script" path="res://Scenes/systems/damage/collision_force_damage_applyer/collision_force_damage_applyer.gd" id="1_yladm"]
+[ext_resource type="Script" path="res://scenes/systems/damage/collision_force_damage_applyer/collision_force_damage_applyer.gd" id="1_yladm"]
 
 [node name="CollisionForceDamageApplyer" type="Node"]
 script = ExtResource("1_yladm")

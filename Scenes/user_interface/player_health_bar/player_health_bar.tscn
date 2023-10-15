@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cf6xjra7orbi3"]
 
-[ext_resource type="Theme" uid="uid://2nb4h33hdxcm" path="res://Scenes/user_interface/player_health_bar/player_health_bar_theme.tres" id="1_1eobf"]
-[ext_resource type="Script" path="res://Scenes/user_interface/player_health_bar/player_health_bar.gd" id="1_wb3o3"]
+[ext_resource type="Theme" uid="uid://2nb4h33hdxcm" path="res://scenes/user_interface/player_health_bar/player_health_bar_theme.tres" id="1_1eobf"]
+[ext_resource type="Script" path="res://scenes/user_interface/player_health_bar/player_health_bar.gd" id="1_wb3o3"]
 
 [node name="PlayerHealthBar" type="Control"]
 layout_mode = 3

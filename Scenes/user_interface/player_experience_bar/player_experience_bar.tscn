@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://djtsbh35lkceg"]
 
-[ext_resource type="Script" path="res://Scenes/user_interface/player_experience_bar/player_experience_bar.gd" id="1_udaf3"]
+[ext_resource type="Script" path="res://scenes/user_interface/player_experience_bar/player_experience_bar.gd" id="1_udaf3"]
 [ext_resource type="Theme" uid="uid://dcbesqci0tmkq" path="res://resources/themes/monochrome_ui.tres" id="1_yls3p"]
 
 [node name="PlayerExperienceBar" type="Control" node_paths=PackedStringArray("progress_bar", "label")]

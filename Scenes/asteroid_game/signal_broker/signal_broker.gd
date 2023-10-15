@@ -27,6 +27,13 @@ signal asteroid_proc_spawned
 signal asteroid_proc_killed
 
 
+## Modifier System Signals --------------------------------------------
+
+## Emitted any time a new modifier should be applied to the player (typically level up selection)
+signal apply_modifier(modifier : ModifierBase)
 
 
+## User Interface Signals ---------------------------------------------
 
+## Emitted when the player has finished selecting a modifier from the level up screen
+signal level_up_selection_complete

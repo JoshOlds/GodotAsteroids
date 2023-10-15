@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cgppskqmct6sx"]
 
-[ext_resource type="Script" path="res://Scenes/user_interface/restart_on_signal/restart_on_signal.gd" id="1_mseti"]
+[ext_resource type="Script" path="res://scenes/user_interface/restart_on_signal/restart_on_signal.gd" id="1_mseti"]
 
 [node name="RestartOnSignal" type="Node"]
 script = ExtResource("1_mseti")

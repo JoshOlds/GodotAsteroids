@@ -1,4 +1,4 @@
-class_name Modifier
+class_name ModifierValue
 extends RefCounted
 ## Simple data type class that stores Modifier data
 ## Formula = (original_value + <flat_mod_value>) * <1.0 + increased_mod_value> * <1.0 + more_mod_value>

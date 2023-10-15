@@ -9,43 +9,43 @@ signal modifiers_changed
 # -------------- Projectile Modifiers --------------
 
 ## Multiplier for mass of a projectile
-var mass_mod : Modifier = Modifier.new():
+var mass_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		mass_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for damage of a projectile
-var damage_mod : Modifier = Modifier.new():
+var damage_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		damage_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for critical damage chance of the projectile
-var crit_chance_mod : Modifier = Modifier.new():
+var crit_chance_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		crit_chance_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for critical damage of the projectile
-var crit_damage_mod : Modifier = Modifier.new():
+var crit_damage_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		crit_damage_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for size of a projectile
-var size_mod : Modifier = Modifier.new():
+var size_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		size_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for area of effect of the projectile
-var area_of_effect_mod : Modifier = Modifier.new():
+var area_of_effect_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		area_of_effect_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for lifespan of the projectile
-var lifespan_mod : Modifier = Modifier.new():
+var lifespan_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		lifespan_mod = new_value
 		modifiers_changed.emit()
@@ -54,7 +54,7 @@ var lifespan_mod : Modifier = Modifier.new():
 ## -------------- Gun Modifiers -----------------
 
 ## Multiplier for fire rate of a gun
-var fire_rate_mod : Modifier = Modifier.new():
+var fire_rate_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		fire_rate_mod = new_value
 		modifiers_changed.emit()
@@ -66,25 +66,25 @@ var multiple_projectiles_mod : int = 0:
 		modifiers_changed.emit()
 
 ## Multiplier for the spread of projectiles fired from a gun
-var spread_mod : Modifier = Modifier.new():
+var spread_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		spread_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for the impulse strength of projectiles fired from a gun
-var spawn_impulse_mod : Modifier = Modifier.new():
+var spawn_impulse_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		spawn_impulse_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for the recoil strength of projectiles fired from a gun
-var recoil_mod : Modifier = Modifier.new():
+var recoil_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		recoil_mod = new_value
 		modifiers_changed.emit()
 
 ## Multiplier for inaccuracy (angle error when firing) of projectiles fired from a gun
-var inaccuracy_mod : Modifier = Modifier.new():
+var inaccuracy_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		inaccuracy_mod = new_value
 		modifiers_changed.emit()

@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dgjogxci5crlh"]
+
+[ext_resource type="Script" path="res://scenes/systems/modifiers/modifier_pool/test_add_all_modifiers_to_pool.gd" id="1_uphqx"]
+[ext_resource type="Script" path="res://scenes/systems/modifiers/modifier_pool/modifier_pool.gd" id="2_pjcja"]
+
+[node name="TestModifierPool" type="Node" node_paths=PackedStringArray("modifier_pool")]
+script = ExtResource("1_uphqx")
+modifier_pool = NodePath("ModifierPool")
+
+[node name="ModifierPool" type="Node" parent="."]
+script = ExtResource("2_pjcja")
