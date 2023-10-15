@@ -17,8 +17,7 @@ physics_material_override = SubResource("PhysicsMaterial_j3pol")
 script = ExtResource("1_pcyrm")
 collision_death_particle_scene = ExtResource("2_r71h3")
 lifespan_death_particle_scene = ExtResource("3_r8kr0")
-damage = 0.0
-area_of_effect = 100.0
+damage = 10.0
 lifespan = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

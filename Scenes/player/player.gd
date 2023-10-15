@@ -6,11 +6,17 @@ extends RigidBody2D
 ## Particle system to play on death
 @export var death_particles_scene : PackedScene
 
+@export_category("Debug")
+@export var debug_start_experience = 0
+
 ## Player experience system
 @onready var experience : PlayerExperience = PlayerExperience.new()
 
 
 func _ready():
+	# Debug
+	experience.add_experience(debug_start_experience)
+	
 	# Connect to signals
 	health_ref.health_changed.connect(_on_health_changed)
 	health_ref.health_expired.connect(_on_health_expired)

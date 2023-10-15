@@ -16,6 +16,7 @@ font_size = 24
 font_size = 20
 
 [node name="LevelUpSelectionScene" type="Control" node_paths=PackedStringArray("modifier_pool")]
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

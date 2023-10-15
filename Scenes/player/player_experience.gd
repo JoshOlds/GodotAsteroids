@@ -47,5 +47,5 @@ func _player_level_up():
 
 func _get_experience_to_next_level(current_level : int) -> int:
 	var experience_needed : int = 0
-	experience_needed = 10 * current_level
+	experience_needed = 1 * current_level
 	return experience_needed

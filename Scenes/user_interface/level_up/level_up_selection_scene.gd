@@ -1,4 +1,5 @@
 extends Control
+class_name LevelupScene
 
 ## Pool of modifiers to roll to populate GUI
 @export var modifier_pool : ModifierPool
@@ -27,6 +28,8 @@ var rolled_modifiers : Array[ModifierBase]
 
 
 func _ready():
+	process_mode = Node.PROCESS_MODE_ALWAYS
+	
 	# Roll modifiers
 	rolled_modifiers = modifier_pool.roll_for_modifiers(3)
 	
@@ -70,7 +73,7 @@ func _on_input_event(event : InputEvent, panel_index : int):
 	
 func apply_modifier(selection : int):
 	print(rolled_modifiers[selection].modifier_name)
-	SignalBroker.apply_modifier.emit(rolled_modifiers[selection])
+	SignalBroker.apply_levelup_modifier.emit(rolled_modifiers[selection])
 	SignalBroker.level_up_selection_complete.emit()
 	
 
