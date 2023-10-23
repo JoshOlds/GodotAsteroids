@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5oy6guwmmv1t"]
+
+[ext_resource type="Script" path="res://scenes/asteroid_game/levelup_manager/levelup_manager.gd" id="1_5jdao"]
+
+[node name="LevelupManager" type="Node"]
+script = ExtResource("1_5jdao")

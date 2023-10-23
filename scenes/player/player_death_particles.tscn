@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://kqyoccq5u5dt"]
+
+[ext_resource type="Script" path="res://scenes/particles/gpu_particles_2d_oneshot_free.gd" id="1_ecb4u"]
+
+[sub_resource type="Gradient" id="Gradient_61v7t"]
+offsets = PackedFloat32Array(0, 0.755656, 1)
+colors = PackedColorArray(1, 1, 0.8, 1, 0.233926, 0.233925, 0.233926, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_h0p0b"]
+gradient = SubResource("Gradient_61v7t")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_s4s34"]
+lifetime_randomness = 0.5
+particle_flag_disable_z = true
+direction = Vector3(0, 0, 0)
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 50.0
+initial_velocity_max = 500.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_max = 2.0
+color_ramp = SubResource("GradientTexture1D_h0p0b")
+collision_mode = 1
+collision_friction = 0.0
+collision_bounce = 1.0
+
+[node name="PlayerDeathParticles" type="GPUParticles2D"]
+amount = 1000
+process_material = SubResource("ParticleProcessMaterial_s4s34")
+lifetime = 10.0
+explosiveness = 1.0
+fixed_fps = 60
+script = ExtResource("1_ecb4u")

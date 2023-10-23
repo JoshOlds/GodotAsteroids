@@ -1,0 +1,208 @@
+[gd_scene load_steps=8 format=3 uid="uid://fld2odmyean1"]
+
+[ext_resource type="Script" path="res://scenes/user_interface/level_up/level_up_selection_scene.gd" id="1_mqwnk"]
+[ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://svg/ArrowOpenBack.svg" id="2_3bfbr"]
+[ext_resource type="Theme" uid="uid://bdprt8e31g51g" path="res://resources/themes/panel/level_up_panel.tres" id="2_yv2k1"]
+[ext_resource type="PackedScene" uid="uid://dgjogxci5crlh" path="res://scenes/systems/modifiers/modifier_pool/test_modifier_pool.tscn" id="4_bydh1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_kgeug"]
+font_size = 36
+shadow_size = 0
+
+[sub_resource type="LabelSettings" id="LabelSettings_tyoxb"]
+font_size = 24
+
+[sub_resource type="LabelSettings" id="LabelSettings_71x5g"]
+font_size = 20
+
+[node name="LevelUpSelectionScene" type="Control" node_paths=PackedStringArray("modifier_pool")]
+z_index = 10
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_mqwnk")
+modifier_pool = NodePath("TestModifierPool/ModifierPool")
+
+[node name="BoxContainer" type="BoxContainer" parent="."]
+custom_minimum_size = Vector2(1440, 810)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Selection1Panel" type="Panel" parent="BoxContainer/MarginContainer"]
+layout_mode = 2
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_3bfbr")
+
+[node name="ModName" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Mod Name"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mod Description"
+label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Flavor Text"
+label_settings = SubResource("LabelSettings_71x5g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer2" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Selection2Panel" type="Panel" parent="BoxContainer/MarginContainer2"]
+layout_mode = 2
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer2"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer2/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_3bfbr")
+
+[node name="ModName" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Mod Name"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mod Description"
+label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Flavor Text"
+label_settings = SubResource("LabelSettings_71x5g")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="MarginContainer3" type="MarginContainer" parent="BoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_right = 25
+
+[node name="Selection3Panel" type="Panel" parent="BoxContainer/MarginContainer3"]
+layout_mode = 2
+theme = ExtResource("2_yv2k1")
+theme_type_variation = &"normal"
+
+[node name="CenterContainer" type="CenterContainer" parent="BoxContainer/MarginContainer3"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BoxContainer/MarginContainer3/CenterContainer"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 100
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+layout_mode = 2
+mouse_filter = 2
+
+[node name="TextureRect" type="TextureRect" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer/AspectRatioContainer"]
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("2_3bfbr")
+
+[node name="ModName" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Mod Name"
+label_settings = SubResource("LabelSettings_kgeug")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Mod Description"
+label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "Flavor Text"
+label_settings = SubResource("LabelSettings_71x5g")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TestModifierPool" parent="." instance=ExtResource("4_bydh1")]
+
+[editable path="TestModifierPool"]

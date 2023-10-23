@@ -1,0 +1,114 @@
+[gd_scene load_steps=18 format=3 uid="uid://diftxdy4qwugg"]
+
+[ext_resource type="Script" path="res://scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
+[ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
+[ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://scenes/player/player.tscn" id="1_e7s2v"]
+[ext_resource type="PackedScene" uid="uid://1b84bo1266so" path="res://scenes/asteroid_game/asteroid_game_metrics/asteroid_game_metrics.tscn" id="2_kou5g"]
+[ext_resource type="PackedScene" uid="uid://clta6frbe4k0r" path="res://scenes/asteroids/asteroid_generator/asteroid_generator.tscn" id="2_x8we5"]
+[ext_resource type="Script" path="res://scenes/gameplay_managers/asteroid_manager.gd" id="4_eimha"]
+[ext_resource type="PackedScene" uid="uid://qseewheqjvi0" path="res://scenes/debug/fps_counter/fps_counter.tscn" id="6_chemb"]
+[ext_resource type="Script" path="res://scenes/bullets/bullet_manager/bullet_manager.gd" id="6_qk726"]
+[ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
+[ext_resource type="PackedScene" uid="uid://djtsbh35lkceg" path="res://scenes/user_interface/player_experience_bar/player_experience_bar.tscn" id="8_t8mrf"]
+[ext_resource type="Script" path="res://scenes/levels/world_barrier_generator/world_barrier_generator.gd" id="9_33mhb"]
+[ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
+[ext_resource type="PackedScene" uid="uid://dijb6ukr4vmvs" path="res://scenes/particles/background_star_particles.tscn" id="10_l2jfq"]
+[ext_resource type="PackedScene" uid="uid://cgppskqmct6sx" path="res://scenes/user_interface/restart_on_signal/restart_on_signal.tscn" id="11_xsdx2"]
+[ext_resource type="PackedScene" uid="uid://c5oy6guwmmv1t" path="res://scenes/asteroid_game/levelup_manager/levelup_manager.tscn" id="14_q5i2x"]
+[ext_resource type="Script" path="res://scenes/tests/modifier_incrementer.gd" id="15_aqmre"]
+[ext_resource type="Script" path="res://scenes/tests/pause_on_key.gd" id="16_qglh8"]
+
+[node name="Main" type="Node"]
+
+[node name="AsteroidLevel" parent="." node_paths=PackedStringArray("main_camera", "bullet_manager", "asteroid_spawn_manager", "asteroid_manager", "world_barrier_generator") instance=ExtResource("1_47v8o")]
+world_size = Vector2(3000, 3000)
+main_camera = NodePath("Player/Camera2D")
+bullet_manager = NodePath("BulletManager")
+asteroid_spawn_manager = NodePath("AsteroidSpawnManager")
+asteroid_manager = NodePath("AsteroidManager")
+world_barrier_generator = NodePath("WorldContainer/WorldBarrierGenerator")
+
+[node name="AsteroidGameMetrics" parent="AsteroidLevel" instance=ExtResource("2_kou5g")]
+
+[node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator", "asteroid_game_metrics")]
+script = ExtResource("1_2bohu")
+asteroid_generator = NodePath("AsteroidGenerator")
+asteroid_game_metrics = NodePath("../AsteroidGameMetrics")
+spawn_interval_seconds = 1.0
+radius_range = Vector2i(5, 50)
+vertices_range = Vector2i(6, 15)
+jaggedness_range = Vector2(0.03, 0.2)
+force_range = Vector2i(100, 400)
+
+[node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
+parent_node = NodePath("../../AsteroidManager")
+asteroid_manager = NodePath("../../AsteroidManager")
+asteroid_mass_multiplier = 1.0
+
+[node name="PlayerStartPosition" type="Marker2D" parent="AsteroidLevel"]
+position = Vector2(960, 540)
+
+[node name="Player" parent="AsteroidLevel" instance=ExtResource("1_e7s2v")]
+position = Vector2(960, 540)
+rotation = -1.5708
+
+[node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("bullet_manager")]
+bullet_manager = NodePath("../../BulletManager")
+bullet_spawn_impulse = 400.0
+fire_rate = 5.0
+spread = 0.1
+inaccuracy = 0.0
+
+[node name="UserInterface" type="CanvasLayer" parent="AsteroidLevel"]
+
+[node name="FPSCounter" parent="AsteroidLevel/UserInterface" instance=ExtResource("6_chemb")]
+offset_right = 1.0
+offset_bottom = 23.0
+
+[node name="PlayerHealthBar" parent="AsteroidLevel/UserInterface" instance=ExtResource("8_d3snr")]
+
+[node name="ProgressBar" parent="AsteroidLevel/UserInterface/PlayerHealthBar" index="0" node_paths=PackedStringArray("player_health")]
+player_health = NodePath("../../../Player/Health")
+
+[node name="PlayerExperienceBar" parent="AsteroidLevel/UserInterface" instance=ExtResource("8_t8mrf")]
+
+[node name="AsteroidManager" type="Node2D" parent="AsteroidLevel"]
+script = ExtResource("4_eimha")
+
+[node name="BulletManager" type="Node" parent="AsteroidLevel"]
+script = ExtResource("6_qk726")
+
+[node name="WorldContainer" type="Node" parent="AsteroidLevel"]
+
+[node name="background_star_particles" parent="AsteroidLevel/WorldContainer" instance=ExtResource("10_l2jfq")]
+position = Vector2(1500, 1500)
+amount = 10000
+
+[node name="WorldBarrierGenerator" type="Node" parent="AsteroidLevel/WorldContainer"]
+script = ExtResource("9_33mhb")
+
+[node name="RestartOnSignal" parent="AsteroidLevel/WorldContainer" instance=ExtResource("11_xsdx2")]
+scene_change_delay = 10.0
+use_global_signal_broker_signal = true
+signal_to_connect = "player_death"
+
+[node name="LevelupManager" parent="AsteroidLevel" node_paths=PackedStringArray("levelup_scene_parent", "modifiers") instance=ExtResource("14_q5i2x")]
+levelup_scene_parent = NodePath("../UserInterface")
+modifiers = NodePath("../Player/GunManager/Modifiers")
+
+[node name="TESTS" type="Node" parent="."]
+
+[node name="PauseUnpauseOnKeyTest" type="Node" parent="TESTS"]
+script = ExtResource("16_qglh8")
+
+[node name="ModifierIncrementerTest" type="Node" parent="TESTS" node_paths=PackedStringArray("modifiers_ref")]
+script = ExtResource("15_aqmre")
+increment_time_seconds = 1.0
+modifiers_ref = NodePath("../../AsteroidLevel/Player/GunManager/Modifiers")
+
+[node name="QuitOnKey" parent="TESTS" instance=ExtResource("10_28qfs")]
+
+[editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
+[editable path="AsteroidLevel/Player"]
+[editable path="AsteroidLevel/UserInterface/PlayerHealthBar"]
+[editable path="AsteroidLevel/LevelupManager"]

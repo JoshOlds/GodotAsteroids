@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbh4o7doyx1qw"]
+
+[ext_resource type="Script" path="res://scenes/physics/collision_cooldown/collision_cooldown.gd" id="1_v37xd"]
+
+[node name="CollisionCooldown" type="Node"]
+script = ExtResource("1_v37xd")
