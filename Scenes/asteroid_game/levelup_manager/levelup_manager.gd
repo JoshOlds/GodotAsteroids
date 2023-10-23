@@ -21,10 +21,6 @@ func _ready():
 	SignalBroker.apply_levelup_modifier.connect(_on_apply_levelup_modifier)
 	SignalBroker.level_up_selection_complete.connect(_on_level_up_selection_complete)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
 	
 func _on_player_levelup(_previous_level : int, _new_level : int):
 	# Pause the game, spawn the levelup scene, wait for levelup complete signal

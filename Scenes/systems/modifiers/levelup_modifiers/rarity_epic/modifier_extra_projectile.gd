@@ -10,9 +10,8 @@ func _init():
 	description = "+1 Extra Projectile"
 	flavor_text = "Another!"
 	
-	icon_texture_path = "res://SVGs/ArrowOpenBack.svg"
-	icon_texture = CompressedTexture2D.new()
-	icon_texture.load(icon_texture_path)
+	icon_texture_path = "res://svg/ArrowOpenBack.svg"
+	icon_texture = load(icon_texture_path)
 
 func apply_modifier(modifiers : Modifiers):
 	modifiers.multiple_projectiles_mod += 1

@@ -9,9 +9,8 @@ func _init():
 	description = "10% Increased Projectile Size\n10% Increased Projectile Mass\n5% Increased Damage\n5% Reduced Projectile Impulse"
 	flavor_text = "Bigger is always better"
 	
-	icon_texture_path = "res://SVGs/ArrowOpenBack.svg"
-	icon_texture = CompressedTexture2D.new()
-	icon_texture.load(icon_texture_path)
+	icon_texture_path = "res://svg/ArrowOpenBack.svg"
+	icon_texture = load(icon_texture_path)
 
 func apply_modifier(modifiers : Modifiers):
 	modifiers.mass_mod.add_increased_mod_value(0.1)

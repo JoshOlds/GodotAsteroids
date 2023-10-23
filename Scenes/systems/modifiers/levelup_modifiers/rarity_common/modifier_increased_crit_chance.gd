@@ -1,20 +1,18 @@
-# meta-description: Base template for all Vecteroids Modifiers
-
-extends _BASE_
-class_name _CLASS_
+extends ModifierBase
+class_name ModifierIncreasedCritChance
 
 
 func _init():
 	rarity = Rarity.new()
 	rarity.rarity = rarity.RarityEnum.COMMON
 
-	modifier_name = ""
-	description = ""
-	flavor_text = ""
+	modifier_name = "Critical Chance"
+	description = "Adds 3% Critical Chance"
+	flavor_text = "Lucky shot"
 	
 	icon_texture_path = "res://svg/ArrowOpenBack.svg"
 	icon_texture = load(icon_texture_path)
 
 func apply_modifier(modifiers : Modifiers):
-	#modifiers.mass_mod.add_increased_mod_value(0.1)
-	pass
+	modifiers.crit_chance_mod.add_flat_mod_value(0.03)
+

@@ -72,17 +72,20 @@ mouse_filter = 2
 texture = ExtResource("2_3bfbr")
 
 [node name="ModName" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Mod Name"
 label_settings = SubResource("LabelSettings_kgeug")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Mod Description"
 label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer/CenterContainer/VBoxContainer"]
@@ -122,17 +125,20 @@ mouse_filter = 2
 texture = ExtResource("2_3bfbr")
 
 [node name="ModName" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Mod Name"
 label_settings = SubResource("LabelSettings_kgeug")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Mod Description"
 label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer2/CenterContainer/VBoxContainer"]
@@ -172,18 +178,22 @@ mouse_filter = 2
 texture = ExtResource("2_3bfbr")
 
 [node name="ModName" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 100)
 layout_mode = 2
 size_flags_vertical = 3
 text = "Mod Name"
 label_settings = SubResource("LabelSettings_kgeug")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="ModDescription" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
 layout_mode = 2
 text = "Mod Description"
 label_settings = SubResource("LabelSettings_tyoxb")
+horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="FlavorText" type="Label" parent="BoxContainer/MarginContainer3/CenterContainer/VBoxContainer"]
 layout_mode = 2
@@ -191,6 +201,7 @@ text = "Flavor Text"
 label_settings = SubResource("LabelSettings_71x5g")
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="TestModifierPool" parent="." instance=ExtResource("4_bydh1")]
 

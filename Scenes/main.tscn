@@ -43,8 +43,6 @@ force_range = Vector2i(100, 400)
 [node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
 parent_node = NodePath("../../AsteroidManager")
 asteroid_manager = NodePath("../../AsteroidManager")
-max_spawn_attempts = null
-world_size = null
 asteroid_mass_multiplier = 1.0
 
 [node name="PlayerStartPosition" type="Marker2D" parent="AsteroidLevel"]
@@ -56,10 +54,8 @@ rotation = -1.5708
 
 [node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("bullet_manager")]
 bullet_manager = NodePath("../../BulletManager")
-multiple_projectiles = 1
-bullet_spawn_impulse = 500.0
-fire_rate = 2.0
-recoil = 5.0
+bullet_spawn_impulse = 400.0
+fire_rate = 5.0
 spread = 0.1
 inaccuracy = 0.0
 

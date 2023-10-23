@@ -1,20 +1,18 @@
-# meta-description: Base template for all Vecteroids Modifiers
-
-extends _BASE_
-class_name _CLASS_
+extends ModifierBase
+class_name ModifierHoneIn
 
 
 func _init():
 	rarity = Rarity.new()
 	rarity.rarity = rarity.RarityEnum.COMMON
 
-	modifier_name = ""
-	description = ""
-	flavor_text = ""
+	modifier_name = "Hone In"
+	description = "-1 Degree Inaccuracy"
+	flavor_text = "Breathe, Aim, ..."
 	
 	icon_texture_path = "res://svg/ArrowOpenBack.svg"
 	icon_texture = load(icon_texture_path)
 
 func apply_modifier(modifiers : Modifiers):
-	#modifiers.mass_mod.add_increased_mod_value(0.1)
-	pass
+	modifiers.inaccuracy_mod.subtract_flat_mod_value(PI/180)
+

@@ -22,9 +22,9 @@ var increased_mod_value : float = 1.0
 var more_mod_value : float = 1.0
 
 
-## Accepts a value and applies this Modifier values to it. Returns the resulting value.
+## Accepts a value and applies this Modifier values to it. Returns the resulting value. Clamped to >=0
 func get_modified_value(original_value : float) -> float:
-	return (original_value + flat_mod_value) * clamp(increased_mod_value, 0, INF) * clamp(more_mod_value, 0, INF)
+	return clamp((original_value + flat_mod_value) * clamp(increased_mod_value, 0, INF) * clamp(more_mod_value, 0, INF), 0, INF)
 
 
 ## Adds a value to this Modifier's flat_mod_value

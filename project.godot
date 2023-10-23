@@ -38,6 +38,7 @@ window/vsync/vsync_mode=2
 
 movie_writer/mix_rate=44100
 movie_writer/movie_file="C:/Users/Joshu/Videos/Godot_Recordings/godot_capture.avi"
+run/main_run_args="--verbose"
 
 [input]
 
