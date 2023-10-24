@@ -73,7 +73,7 @@ var modified_size : float
 ## The crit_damage value after modifiers have been applied
 var modified_area_of_effect : float
 ## Scene used to spawn an AoE Damage Applyer. Spawning packed scene is faster than generating all the nodes in code
-var aoe_scene = preload("res://Scenes/systems/damage/aoe_damage_applier/aoe_damage_applyer.tscn")
+var aoe_scene = load("res://scenes/systems/damage/aoe_damage_applier/aoe_damage_applyer.tscn")
 
 ## Lifespan of this bullet (in seconds). Bullet will de-spawn after lifespan expires. 
 @export var lifespan : float = 10.0

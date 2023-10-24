@@ -8,7 +8,7 @@ func _init():
 
 	modifier_name = "Time Dilating Barrel"
 	description = "25% More Fire Rate"
-	flavor_text = "Each round collapses antimatter to reverse time"
+	flavor_text = "Quark coated barrel stretches time itself"
 	
 	icon_texture_path = "res://svg/ArrowOpenBack.svg"
 	icon_texture = load(icon_texture_path)

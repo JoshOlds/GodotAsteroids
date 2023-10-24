@@ -39,11 +39,11 @@ func roll_for_modifiers(modifier_amount : int) -> Array[ModifierBase]:
 		var epic_rr = _new_rolled_rarity(Rarity.RarityEnum.EPIC)
 		var legendary_rr = _new_rolled_rarity(Rarity.RarityEnum.LEGENDARY)
 		
-		print("Common: " + str(common_rr.roll))
-		print("Uncommon: " + str(uncommon_rr.roll))
-		print("Rare: " + str(rare_rr.roll))
-		print("Epic: " + str(epic_rr.roll))
-		print("Legendary: " + str(legendary_rr.roll))
+		#print("Common: " + str(common_rr.roll))
+		#print("Uncommon: " + str(uncommon_rr.roll))
+		#print("Rare: " + str(rare_rr.roll))
+		#print("Epic: " + str(epic_rr.roll))
+		#print("Legendary: " + str(legendary_rr.roll))
 		
 		# Use the pool from the highest rarity rolled
 		var rarity_pool = temp_common_pool

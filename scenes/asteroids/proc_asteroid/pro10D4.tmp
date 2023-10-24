@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://5wpnnaycvnem"]
 
-[ext_resource type="Script" path="res://Scenes/asteroids/proc_asteroid/proc_asteroid.gd" id="1_dugt1"]
-[ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://Scenes/systems/health/health.tscn" id="2_3fgry"]
-[ext_resource type="PackedScene" uid="uid://jieiaksrndq7" path="res://Scenes/systems/damage/damage_applyer/damage_applyer.tscn" id="3_jrd8y"]
-[ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://Scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="3_vhqcd"]
-[ext_resource type="PackedScene" uid="uid://ccah8dv58rh1n" path="res://Scenes/systems/damage/collision_force_damage_applyer/collision_force_damage_applyer.tscn" id="4_i0lg5"]
+[ext_resource type="Script" path="res://scenes/asteroids/proc_asteroid/proc_asteroid.gd" id="1_dugt1"]
+[ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://scenes/systems/health/health.tscn" id="2_3fgry"]
+[ext_resource type="PackedScene" uid="uid://jieiaksrndq7" path="res://scenes/systems/damage/damage_applyer/damage_applyer.tscn" id="3_jrd8y"]
+[ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="3_vhqcd"]
+[ext_resource type="PackedScene" uid="uid://ccah8dv58rh1n" path="res://scenes/systems/damage/collision_force_damage_applyer/collision_force_damage_applyer.tscn" id="4_i0lg5"]
 
 [node name="proc_asteroid" type="RigidBody2D" groups=["asteroids"]]
 collision_layer = 3

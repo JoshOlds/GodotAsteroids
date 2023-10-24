@@ -24,16 +24,16 @@ static func roll_rarity(rarity_enum : RarityEnum) -> float:
 	if rarity_enum == RarityEnum.COMMON:
 		return randf() * 1000
 	if rarity_enum == RarityEnum.UNCOMMON:
-		return randf() * 1000
+		return randf() * 850
 		#return randf() * 800
 	if rarity_enum == RarityEnum.RARE:
-		return randf() * 1000
+		return randf() * 750
 		#return randf() * 500
 	if rarity_enum == RarityEnum.EPIC:
-		return randf() * 1000
+		return randf() * 650
 		#return randf() * 300
 	if rarity_enum == RarityEnum.LEGENDARY:
-		return randf() * 1000
+		return randf() * 500
 		#return randf() * 100
 	return 0
 	

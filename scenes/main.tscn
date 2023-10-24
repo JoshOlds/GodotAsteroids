@@ -55,7 +55,7 @@ rotation = -1.5708
 [node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("bullet_manager")]
 bullet_manager = NodePath("../../BulletManager")
 bullet_spawn_impulse = 400.0
-fire_rate = 5.0
+fire_rate = 2.0
 spread = 0.1
 inaccuracy = 0.0
 

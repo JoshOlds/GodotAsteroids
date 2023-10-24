@@ -32,7 +32,7 @@ extends Node
 var path_has_been_setup : bool = false
 
 ## Preloaded ProcAsteroid Scene
-var proc_asteroid = preload("res://Scenes/asteroids/proc_asteroid/proc_asteroid.tscn")
+var proc_asteroid = load("res://scenes/asteroids/proc_asteroid/proc_asteroid.tscn")
 	
 
 ## Procedurally generates the asteroid spawn path based on world size. Path will follow the outside edge of the world
