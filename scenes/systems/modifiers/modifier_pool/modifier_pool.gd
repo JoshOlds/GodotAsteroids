@@ -65,43 +65,8 @@ func roll_for_modifiers(modifier_amount : int) -> Array[ModifierBase]:
 		var random_index : int = randi_range(0, rarity_pool.size() - 1)
 		return_modifiers.append(rarity_pool[random_index])
 		rarity_pool.remove_at(random_index)
-	
 	return return_modifiers
-		
-	#var return_array : Array[ModifierBase] = []
-	#var rolled_array : Array[RolledModifier] = []
-	#for pool_mod : ModifierBase in modifier_pool:
-		#print("MOD: " + pool_mod.modifier_name)
-		## Create a RolledModifier to store modifier and rarity roll together
-		#var rmod : RolledModifier = RolledModifier.new()
-		#rmod.mod = pool_mod
-		#rmod.roll = pool_mod.rarity.roll_rarity()
-		## If our return_array is not yet full, add without checking existing rolls
-		#if rolled_array.size() < modifier_amount:
-			#rolled_array.push_back(rmod)	
-		#else:
-			## Iterate through the existing rolled array. 
-			#for i in range(rolled_array.size()):
-				## If rmod.roll value is greater than an existing roll, insert and delete the last element the gets pushed out
-				#if rolled_array[i].roll < rmod.roll:
-					#print("Adding " + rmod.mod.modifier_name)
-					#rolled_array.insert(i, rmod)
-					#var removed : RolledModifier= rolled_array.pop_back() # delete last element
-					#print("Removing " + removed.mod.modifier_name)
-					#break
-		## Sort by roll so that we know the last element is always the smallest roll (thus popping back works to remove smallest roll)
-		#rolled_array.sort_custom(_sort_rolled_modifiers)
-	## Fill out the array to return
-	#for rmod : RolledModifier in rolled_array:
-		#return_array.append(rmod.mod)	
-	#return return_array
 
-
-### Custom sort function used to sort modifiers 
-#func _sort_rolled_modifiers(a : RolledModifier, b : RolledModifier) -> bool:
-	#if a.roll < b.roll:
-		#return false
-	#return true
 	
 ## Constructs and returns a new RolledRarity for a given RarityEnum
 func _new_rolled_rarity(rarity_enum : Rarity.RarityEnum) -> RolledRarity:
