@@ -21,7 +21,7 @@ var max_radius : float
 var mass_multiplier : float = 1
 
 ## Baseline health value - this value is multiplied by the asteroid radius to determine final health
-var health_baseline : float = 1
+var health_multiplier : float = 1
 
 ## The asteroid manager to add this asteroid to on spawn
 @export var asteroid_manager : AsteroidManager
@@ -68,9 +68,10 @@ var proc_asteroid = load("res://scenes/asteroids/proc_asteroid/proc_asteroid.tsc
 
 
 ## Sets up this object. Must be called after instantiating scene, before adding to scene tree
-func setup(_radius: float, _mass_multiplier : float, _vertice_count: int, _jaggedness: float, _asteroid_manager : AsteroidManager):
+func setup(_radius: float, _mass_multiplier : float, _health_multiplier : float, _vertice_count: int, _jaggedness: float, _asteroid_manager : AsteroidManager):
 	radius = _radius
 	mass_multiplier = _mass_multiplier
+	health_multiplier = _health_multiplier
 	vertice_count = _vertice_count
 	jaggedness = _jaggedness
 	max_radius = radius + (radius * jaggedness)
@@ -97,7 +98,7 @@ func _ready():
 	
 	
 	# Set health of asteroid based on size
-	health.health = health_baseline * radius
+	health.health = health_multiplier * radius
 	
 	## Add this asteroid to the manager. Used for tracking deletion and efficient querying of all asteroids
 	asteroid_manager.add_asteroid(self)
@@ -171,5 +172,5 @@ func generate_child_asteroid(input_radius : float = 0) -> ProcAsteroid:
 	if child_vertice_count < 6:
 		child_vertice_count = 6
 		
-	child.setup(child_radius, mass_multiplier, child_vertice_count, jaggedness, asteroid_manager)
+	child.setup(child_radius, mass_multiplier, health_multiplier, child_vertice_count, jaggedness, asteroid_manager)
 	return child

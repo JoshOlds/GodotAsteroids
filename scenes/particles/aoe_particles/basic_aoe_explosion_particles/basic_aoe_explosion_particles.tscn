@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://de6e7b2yn1en7"]
+[gd_scene load_steps=3 format=3 uid="uid://de6e7b2yn1en7"]
 
-[ext_resource type="Script" path="res://scenes/particles/aoe_particles/basic_aoe_explosion_particles/basic_aoe_explosion_particles.gd" id="1_jbp0y"]
-[ext_resource type="Script" path="res://scenes/particles/gpu_particles_2d_oneshot_free.gd" id="2_8up5o"]
+[ext_resource type="Script" path="res://scenes/particles/aoe_particles/basic_aoe_explosion_particles/aoe_particles.gd" id="1_gx3nf"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_awe86"]
 particle_flag_disable_z = true
@@ -15,11 +14,7 @@ initial_velocity_min = 500.0
 initial_velocity_max = 500.0
 gravity = Vector3(0, 0, 0)
 
-[node name="BasicAoeExplosionParticles" type="Node2D" node_paths=PackedStringArray("particles")]
-script = ExtResource("1_jbp0y")
-particles = NodePath("AoeExplosionParticles")
-
-[node name="AoeExplosionParticles" type="GPUParticles2D" parent="."]
+[node name="AoeExplosionParticles" type="GPUParticles2D"]
 amount = 32
 process_material = SubResource("ParticleProcessMaterial_awe86")
 lifetime = 0.1
@@ -29,4 +24,4 @@ trail_enabled = true
 trail_lifetime = 0.05
 trail_sections = 4
 trail_section_subdivisions = 2
-script = ExtResource("2_8up5o")
+script = ExtResource("1_gx3nf")

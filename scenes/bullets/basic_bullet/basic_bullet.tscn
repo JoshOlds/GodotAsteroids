@@ -20,6 +20,7 @@ collision_death_particle_scene = ExtResource("2_r71h3")
 lifespan_death_particle_scene = ExtResource("3_r8kr0")
 aoe_particle_scene = ExtResource("4_10rek")
 damage = 10.0
+area_of_effect = 100.0
 lifespan = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -27,6 +28,7 @@ lifespan = 2.5
 [node name="CircleDrawer" type="Node2D" parent="."]
 script = ExtResource("4_6q6pu")
 color = Color(1, 1, 1, 1)
+streak = false
 
 [node name="Health" type="Node" parent="."]
 script = ExtResource("5_wbc34")

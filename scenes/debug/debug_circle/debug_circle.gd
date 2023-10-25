@@ -9,10 +9,15 @@ extends Node2D
 
 @onready var previous_global_position : Vector2 = global_position
 
+func _ready():
+	if streak:
+		process_mode = Node.PROCESS_MODE_INHERIT
+	else:
+		process_mode = Node.PROCESS_MODE_DISABLED
+
 func _process(_delta):
 	if streak:
 		queue_redraw()
-
 
 func _draw():
 	if not streak:

@@ -23,6 +23,9 @@ extends Node
 ## Multiplier for asteroid mass. Asteroid mass = radius * mass_multiplier
 @export var asteroid_mass_multiplier : float = 5
 
+## Multiplier for asteroid health. Health = radius * health_multiplier
+@export var asteroid_health_multiplier : float = 1
+
 ## Asteroids will be spawned at a random location along this Path2D. Use generate_spawn_path() to procedurally create this path based on world size
 @onready var asteroid_spawn_path : Path2D = get_node("Path2D")
 
@@ -51,7 +54,7 @@ func generate_spawn_path():
 func generate_asteroid(radius: int, vertice_count: int, jaggedness : float, spawn_position: Vector2, force_vector : Vector2, angular_velocity : float):
 	# Instantiate a ProcAsteroid scene
 	var asteroid = proc_asteroid.instantiate() as ProcAsteroid
-	asteroid.setup(radius, asteroid_mass_multiplier, vertice_count, jaggedness, asteroid_manager)
+	asteroid.setup(radius, asteroid_mass_multiplier, asteroid_health_multiplier, vertice_count, jaggedness, asteroid_manager)
 	asteroid.position = spawn_position
 	parent_node.add_child(asteroid)
 	asteroid.angular_velocity = angular_velocity

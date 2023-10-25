@@ -19,6 +19,7 @@ script = ExtResource("1_dugt1")
 
 [node name="DamageApplyer" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_jrd8y")]
 parent = NodePath("..")
+group_blacklist = Array[String](["asteroids"])
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 

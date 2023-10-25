@@ -110,6 +110,9 @@ func _ready():
 	lifespan_timer.one_shot = true
 	lifespan_timer.timeout.connect(_on_lifespan_expired)
 	lifespan_timer.start()
+	
+	# disable physics process until we have die (since we only process death there to use raycasts!)
+	set_physics_process(false)
 
 
 ## Updates the modifier 'modified_xxx' values. Only run on _ready() as we don't want bullet mods changing while they are alive
@@ -146,6 +149,7 @@ func _on_rigid_body_body_entered(body : Node):
 	
 func _on_health_expired(_damage_source_node : Node):
 	queue_death = true
+	set_physics_process(true)
 
 
 ## Executes when lifespan timer elapses
@@ -157,11 +161,10 @@ func _on_lifespan_expired():
 		apply_area_damage(damage_to_apply, [])
 	# Queue death for this object
 	queue_death = true
+	set_physics_process(true)
 	
 	
 func _physics_process(_delta):
-	previous_velocity = linear_velocity
-	
 	if queue_death:
 		#bullet_manager.remove_bullet(self)
 		# Only calculate if we died from collision, not lifespan expired
@@ -187,6 +190,7 @@ func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
 	aoe_applyer.damage_to_apply = damage_to_apply
 	aoe_applyer.blacklist_bodies = blacklist_nodes
 	aoe_applyer.damage_applyer.group_blacklist.append("player_projectiles")
+	aoe_applyer.damage_applyer.group_blacklist.append("player")
 	aoe_applyer.position = position
 	get_tree().root.call_deferred("add_child", aoe_applyer)
 	
@@ -204,8 +208,8 @@ func spawn_death_particles():
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
 	get_tree().root.call_deferred("add_child", particles)
-	if aoe_particle_scene != null:
-			var aoe_particles : AoeParticleBase = aoe_particle_scene.instantiate() as AoeParticleBase
+	if aoe_particle_scene != null and modified_area_of_effect > 0:
+			var aoe_particles : AoeParticles = aoe_particle_scene.instantiate() as AoeParticles
 			aoe_particles.position = position
 			aoe_particles.aoe_radius = modified_area_of_effect
 			get_tree().root.call_deferred("add_child", aoe_particles)
