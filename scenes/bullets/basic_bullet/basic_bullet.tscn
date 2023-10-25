@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://bmblxdubn3q71"]
+[gd_scene load_steps=10 format=3 uid="uid://bmblxdubn3q71"]
 
 [ext_resource type="Script" path="res://scenes/bullets/basic_bullet/basic_bullet.gd" id="1_pcyrm"]
 [ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://scenes/bullets/basic_bullet/basic_bullet_collision_death_particle.tscn" id="2_r71h3"]
 [ext_resource type="PackedScene" uid="uid://yr5a7sukpmih" path="res://scenes/bullets/basic_bullet/basic_bullet_lifespan_death_particle.tscn" id="3_r8kr0"]
 [ext_resource type="Script" path="res://scenes/debug/debug_circle/debug_circle.gd" id="4_6q6pu"]
+[ext_resource type="PackedScene" uid="uid://de6e7b2yn1en7" path="res://scenes/particles/aoe_particles/basic_aoe_explosion_particles/basic_aoe_explosion_particles.tscn" id="4_10rek"]
 [ext_resource type="Script" path="res://scenes/systems/health/health_base.gd" id="5_wbc34"]
 [ext_resource type="Script" path="res://scenes/systems/damage/damage_applyer/damage_applyer.gd" id="6_cko3w"]
 [ext_resource type="Script" path="res://scenes/systems/damage/damage_receiver/damage_receiver.gd" id="7_w2kjy"]
@@ -17,6 +18,7 @@ physics_material_override = SubResource("PhysicsMaterial_j3pol")
 script = ExtResource("1_pcyrm")
 collision_death_particle_scene = ExtResource("2_r71h3")
 lifespan_death_particle_scene = ExtResource("3_r8kr0")
+aoe_particle_scene = ExtResource("4_10rek")
 damage = 10.0
 lifespan = 2.5
 

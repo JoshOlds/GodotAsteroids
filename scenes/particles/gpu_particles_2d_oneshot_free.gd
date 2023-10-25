@@ -4,6 +4,8 @@ extends GPUParticles2D
 
 
 func _ready():
+	one_shot = true
+	emitting = true
 	var free_timer = Timer.new()
 	add_child(free_timer)
 	free_timer.one_shot = true

@@ -11,6 +11,8 @@ extends RigidBody2D
 @export var collision_death_particle_scene : PackedScene
 ## The scene (particles) to instantiate when this bullet dies due to lifespan expiration
 @export var lifespan_death_particle_scene : PackedScene
+## The scene to instantiate if this bullet has an AoE modifier greater than 0
+@export var aoe_particle_scene : PackedScene
 
 ## Bullet manager this bullet will be childed to on spawn. Bullet manager handles cleaning up off-screen bullets
 @export var bullet_manager : BulletManager
@@ -202,6 +204,11 @@ func spawn_death_particles():
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
 	get_tree().root.call_deferred("add_child", particles)
+	if aoe_particle_scene != null:
+			var aoe_particles : AoeParticleBase = aoe_particle_scene.instantiate() as AoeParticleBase
+			aoe_particles.position = position
+			aoe_particles.aoe_radius = modified_area_of_effect
+			get_tree().root.call_deferred("add_child", aoe_particles)
 	
 
 ## Rolls for crit chance and returns the resulting damage value
