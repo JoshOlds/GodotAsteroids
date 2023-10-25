@@ -9,12 +9,16 @@ extends Node2D
 
 @onready var previous_global_position : Vector2 = global_position
 
+func _process(_delta):
+	if streak:
+		queue_redraw()
+
 
 func _draw():
-	var previous_local_position = to_local(previous_global_position)
 	if not streak:
 		draw_circle(position, radius, color)
 	else:
+		var previous_local_position = to_local(previous_global_position)
 		draw_circle(previous_local_position, radius, color)
 		draw_circle(position, radius, color)
 		draw_line(previous_local_position, position, color, 2.0 * radius, true)
