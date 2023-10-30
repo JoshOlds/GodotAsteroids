@@ -6,6 +6,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_rvtww"]
 
 [node name="AoeDamageApplyer" type="Area2D" node_paths=PackedStringArray("collision_shape", "damage_applyer")]
+collision_layer = 0
+collision_mask = 0
+monitorable = false
 script = ExtResource("1_cweap")
 collision_shape = NodePath("CollisionShape2D")
 damage_applyer = NodePath("DamageApplyer")
