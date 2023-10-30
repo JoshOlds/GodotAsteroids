@@ -64,7 +64,7 @@ var health_multiplier : float = 1
 
 
 ## Preloaded ProcAsteroid Scene (for spawning children)
-var proc_asteroid = load("res://scenes/asteroids/proc_asteroid/proc_asteroid.tscn")
+var proc_asteroid = preload("res://scenes/asteroids/proc_asteroid/proc_asteroid.tscn")
 
 
 ## Sets up this object. Must be called after instantiating scene, before adding to scene tree

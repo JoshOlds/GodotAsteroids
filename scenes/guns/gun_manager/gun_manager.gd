@@ -105,16 +105,16 @@ func apply_recoil(recoil_angle : float, recoil_value : float):
 ## Instantiates a bullet. Applies impulse to bullet
 func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	var bullet = bullet_scene.instantiate() as BasicBullet
+	
 	var spawn_velocity : Vector2 = spawn_rigid_body.linear_velocity
 	var forward_vec =  Vector2(cos(spawn_rotation), sin(spawn_rotation))
 	var spawn_offset_position : Vector2 = spawn_position + forward_vec
 	
 	bullet.position = spawn_offset_position
 	bullet.rotation = spawn_rotation
-	bullet.linear_velocity = spawn_velocity
-	bullet.bullet_manager = bullet_manager
+	
+	bullet.velocity = spawn_velocity + (forward_vec * modified_bullet_spawn_impulse)
 	bullet.modifiers = modifiers
-	bullet.apply_central_impulse(forward_vec * modified_bullet_spawn_impulse)
 	bullet_manager.add_child(bullet)
 	
 	var recoil_angle = spawn_rotation - PI

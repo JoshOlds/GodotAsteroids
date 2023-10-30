@@ -2,7 +2,7 @@ extends Node
 class_name LevelupManager
 
 ## The levelup scene to instantiate when player levels up
-var packed_levelup_scene : PackedScene = load("res://scenes/user_interface/level_up/level_up_selection_scene.tscn")
+var packed_levelup_scene : PackedScene = preload("res://scenes/user_interface/level_up/level_up_selection_scene.tscn")
 
 ## Node to parent the LevelupScene to when it is instantiated
 @export var levelup_scene_parent : Node

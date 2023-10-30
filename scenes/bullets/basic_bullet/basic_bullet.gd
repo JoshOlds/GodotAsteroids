@@ -29,3 +29,6 @@ func _ready():
 
 func _on_health_expired(damage_source_node : Node):
 	super._on_health_expired(damage_source_node)
+	
+func _on_hit():
+	print("Child Virtual!")

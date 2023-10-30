@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bmblxdubn3q71"]
+[gd_scene load_steps=9 format=3 uid="uid://bmblxdubn3q71"]
 
 [ext_resource type="Script" path="res://scenes/bullets/basic_bullet/basic_bullet.gd" id="1_pcyrm"]
 [ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://scenes/bullets/basic_bullet/basic_bullet_collision_death_particle.tscn" id="2_r71h3"]
@@ -9,17 +9,19 @@
 [ext_resource type="Script" path="res://scenes/systems/damage/damage_applyer/damage_applyer.gd" id="6_cko3w"]
 [ext_resource type="Script" path="res://scenes/systems/damage/damage_receiver/damage_receiver.gd" id="7_w2kjy"]
 
-[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_j3pol"]
-bounce = 0.3
-
-[node name="BasicBullet" type="RigidBody2D" groups=["player_projectiles"]]
+[node name="BasicBullet" type="Area2D" node_paths=PackedStringArray("health_ref", "damage_applyer_ref") groups=["player_projectiles"]]
 position = Vector2(200, 200)
-physics_material_override = SubResource("PhysicsMaterial_j3pol")
+collision_layer = 2
+collision_mask = 4
+monitorable = false
 script = ExtResource("1_pcyrm")
+health_ref = NodePath("Health")
+damage_applyer_ref = NodePath("DamageApplyer")
 collision_death_particle_scene = ExtResource("2_r71h3")
 lifespan_death_particle_scene = ExtResource("3_r8kr0")
 aoe_particle_scene = ExtResource("4_10rek")
 damage = 10.0
+area_of_effect = 10.0
 lifespan = 2.5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

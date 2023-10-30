@@ -1,12 +1,13 @@
 class_name BulletBase
-extends RigidBody2D
+extends Area2D
 ## Base class for all Bullets. Handles the concepts of:
 ## Detecting collisions and applying damage
 
-
-## RigidBody2D collision max contacts reported (see docs)
-@export var max_contacts_reported_export : int = 10
-
+@export_category("References")
+## The health of this bullet. Bullet will die when health reaches zero
+@export var health_ref : HealthBase
+## The DamageApplyer of this bullet
+@export var damage_applyer_ref : DamageApplyer
 ## The scene (particles) to instantiate when this bullet collides with something
 @export var collision_death_particle_scene : PackedScene
 ## The scene (particles) to instantiate when this bullet dies due to lifespan expiration
@@ -14,14 +15,8 @@ extends RigidBody2D
 ## The scene to instantiate if this bullet has an AoE modifier greater than 0
 @export var aoe_particle_scene : PackedScene
 
-## Bullet manager this bullet will be childed to on spawn. Bullet manager handles cleaning up off-screen bullets
-@export var bullet_manager : BulletManager
-
-## The health of this bullet. Bullet will die when health reaches zero
-@onready var health = get_node("Health") as HealthBase
-
-## The DamageApplyer of this bullet
-@onready var damage_applyer = get_node("DamageApplyer") as DamageApplyer
+## The current velocity of this projectile. Moved by this amount each _physics_process
+var velocity : Vector2
 
 ## Timer used to destroy this bullet after lifespan expires
 var lifespan_timer : Timer
@@ -35,16 +30,15 @@ var modifiers : Modifiers
 var last_collision_node : Node2D
 var last_collision_position : Vector2
 
-## The velocity of this node on the previous physics step
-var previous_velocity : Vector2 = Vector2(0, 0)
-
 ## The normal vector of the previous collision
 var previous_collision_normal : Vector2 = Vector2(0, 0)
 
 ## Flag to queue death of this bullet. Death is queued from Physics process to allow for final raycasts after collision
 var queue_death = false
 
+
 # ------------- Modifiers -------------------------
+@export_category("Modifiers")
 ## Mass of this bullet. Overwrites the rigidBody mass on _ready()
 @export var base_mass : float = 1.0
 ## The base_mass value after modifiers have been applied
@@ -75,7 +69,7 @@ var modified_size : float
 ## The crit_damage value after modifiers have been applied
 var modified_area_of_effect : float
 ## Scene used to spawn an AoE Damage Applyer. Spawning packed scene is faster than generating all the nodes in code
-var aoe_scene = load("res://scenes/systems/damage/aoe_damage_applier/aoe_damage_applyer.tscn")
+var aoe_scene = preload("res://scenes/systems/damage/aoe_damage_applier/aoe_damage_applyer.tscn")
 
 ## Lifespan of this bullet (in seconds). Bullet will de-spawn after lifespan expires. 
 @export var lifespan : float = 10.0
@@ -91,16 +85,9 @@ func _ready():
 		modifiers = Modifiers.new()
 	apply_modifiers()
 
-	# Modifiers on _ready()
-	mass = modified_base_mass
-
-	# Set up Rigidbody for monitoring & hook up signal
-	max_contacts_reported = max_contacts_reported_export
-	contact_monitor = true
+	# body_entered only fires when a RigidBody (not Area) enters. Assumes all enemies are RigidBodies
+	# This means bullets (areas) cannot currently collied
 	body_entered.connect(_on_rigid_body_body_entered)
-
-	# add to bullet manager for tracking (and deletion off screen)
-	#bullet_manager.add_bullet(self) 
 
 	# Set up lifespan timer
 	lifespan_timer = Timer.new()
@@ -111,9 +98,6 @@ func _ready():
 	lifespan_timer.timeout.connect(_on_lifespan_expired)
 	lifespan_timer.start()
 	
-	# disable physics process until we have die (since we only process death there to use raycasts!)
-	set_physics_process(false)
-
 
 ## Updates the modifier 'modified_xxx' values. Only run on _ready() as we don't want bullet mods changing while they are alive
 func apply_modifiers():
@@ -128,28 +112,35 @@ func apply_modifiers():
 	
 func _on_rigid_body_body_entered(body : Node):
 	# only process collision if we did not collide with another
+	# TODO: remove and replace with layer filtering
 	if  body.is_in_group("player_projectiles"):
 		return
 
 	# Roll for crit
+	# TODO: Roll once at spawn - use value later
 	var damage_to_apply = get_crit_result()
 
 	# Apply damage to collided body - 
 	last_collision_node = body
 	last_collision_position = last_collision_node.position
-	damage_applyer.apply_damage_to_node(body, damage_to_apply)
+	damage_applyer_ref.apply_damage_to_node(body, damage_to_apply)
 
 	# spawn an AoE damage applyer to apply AoE
 	if modified_area_of_effect > 0:
 		apply_area_damage(damage_to_apply, [last_collision_node])
 
-	# Kill this bullet
-	health.set_health(0)
+	_on_hit()
 
+	# Kill this bullet
+	health_ref.set_health(0)
+	
+	
+func _on_hit():
+	print("PArent func")
+	pass
 	
 func _on_health_expired(_damage_source_node : Node):
 	queue_death = true
-	set_physics_process(true)
 
 
 ## Executes when lifespan timer elapses
@@ -161,10 +152,10 @@ func _on_lifespan_expired():
 		apply_area_damage(damage_to_apply, [])
 	# Queue death for this object
 	queue_death = true
-	set_physics_process(true)
 	
 	
 func _physics_process(_delta):
+	position += velocity * _delta
 	if queue_death:
 		#bullet_manager.remove_bullet(self)
 		# Only calculate if we died from collision, not lifespan expired
@@ -184,7 +175,6 @@ func _physics_process(_delta):
 
 ## Applies AoE damage to all objects in area. Returns array of nodes that were inside the area
 func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
-	#print("Area!")
 	var aoe_applyer = aoe_scene.instantiate() as AoeDamageApplyer
 	aoe_applyer.circle_radius = modified_area_of_effect
 	aoe_applyer.damage_to_apply = damage_to_apply
@@ -198,7 +188,7 @@ func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
 ## Spawns death particles for this bullet
 func spawn_death_particles():
 	var particles : GPUParticles2DOneshotFree
-	# Different particle effects depending on if we collided or died from lifespan elapsed
+	## Different particle effects depending on if we collided or died from lifespan elapsed
 	if lifespan_expired:
 		particles = lifespan_death_particle_scene.instantiate() as GPUParticles2DOneshotFree
 	else:
@@ -208,6 +198,7 @@ func spawn_death_particles():
 	# Add particle to the root node to prevent despawning when bullet despawns
 	particles.position = position
 	get_tree().root.call_deferred("add_child", particles)
+	
 	if aoe_particle_scene != null and modified_area_of_effect > 0:
 			var aoe_particles : AoeParticles = aoe_particle_scene.instantiate() as AoeParticles
 			aoe_particles.position = position
