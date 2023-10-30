@@ -7,8 +7,8 @@ extends Node2D
 ## PackedScene of bullet to spawn when shooting
 @export var bullet_scene : PackedScene
 
-## Bullet manager all new bullets will be added to
-@export var bullet_manager : BulletManager
+## Scene Node that all spawned bullets will be parented to
+@export var scene_parent : Node
 
 ## RigidBody of the parent of this bullet. Used to get values such as linear_velocity of the parent
 @export var spawn_rigid_body : RigidBody2D
@@ -104,7 +104,7 @@ func apply_recoil(recoil_angle : float, recoil_value : float):
 	
 ## Instantiates a bullet. Applies impulse to bullet
 func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
-	var bullet = bullet_scene.instantiate() as BasicBullet
+	var bullet = bullet_scene.instantiate() as BasicProjectile
 	
 	var spawn_velocity : Vector2 = spawn_rigid_body.linear_velocity
 	var forward_vec =  Vector2(cos(spawn_rotation), sin(spawn_rotation))
@@ -115,7 +115,7 @@ func spawn_bullet(spawn_position : Vector2, spawn_rotation : float):
 	
 	bullet.velocity = spawn_velocity + (forward_vec * modified_bullet_spawn_impulse)
 	bullet.modifiers = modifiers
-	bullet_manager.add_child(bullet)
+	scene_parent.add_child(bullet)
 	
 	var recoil_angle = spawn_rotation - PI
 	apply_recoil(recoil_angle, modified_recoil)

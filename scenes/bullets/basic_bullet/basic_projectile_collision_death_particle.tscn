@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://gnqwb6vocqoh"]
 
-[ext_resource type="Script" path="res://scenes/particles/gpu_particles_2d_oneshot_free.gd" id="1_yp8kd"]
+[ext_resource type="Script" path="res://scenes/particles/gpu_particles_2d_oneshot_free.gd" id="1_oo4mb"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_2p51x"]
 lifetime_randomness = 0.4
@@ -24,4 +24,4 @@ lifetime = 0.4
 explosiveness = 1.0
 randomness = 0.5
 fixed_fps = 60
-script = ExtResource("1_yp8kd")
+script = ExtResource("1_oo4mb")

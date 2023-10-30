@@ -1,25 +1,31 @@
-class_name BasicBullet
-extends BulletBase
-## Most basic bullet type. Round procedural projectile, no special effects by default
-## Bullet is drawn using _draw function - no sprite
+class_name BasicProjectile
+extends ProjectileBase
+## Most basic Projectile type. Round procedural projectile, no special effects by default
+## Projectile is drawn using _draw function - no sprite
 
+
+@export_category("References")
+## The health reference of this Projectile. ProjectileBase does not implement any functionality for HealthExpired.
+@export var health_ref : HealthBase
+## The DamageApplyer of this Projectile
+@export var damage_applyer_ref : DamageApplyer
 
 @export_category("Particles")
-## The scene (particles) to instantiate when this bullet collides with something
+## The scene (particles) to instantiate when this Projectile collides with something
 @export var collision_death_particle_scene : PackedScene
-## The scene (particles) to instantiate when this bullet dies due to lifespan expiration
+## The scene (particles) to instantiate when this Projectile dies due to lifespan expiration
 @export var lifespan_death_particle_scene : PackedScene
-## The scene to instantiate if this bullet has an AoE modifier greater than 0
+## The scene to instantiate if this Projectile has an AoE modifier greater than 0
 @export var aoe_particle_scene : PackedScene
 
 
 # Privates -------------------------------------------------------------
-## The radius of this bullet in pixels
+## The radius of this Projectile in pixels
 var radius : float = 3
 ## the radius value after modifiers have been applied (uses size modifier)
 var modified_radius : float
 
-## The last node that collided with this bullet. Used to rotate collision particles to ricochet off target
+## The last node that collided with this Projectile. Used to rotate collision particles to ricochet off target
 var last_collision_node : Node2D
 var last_collision_position : Vector2
 ## The normal vector of the previous collision
@@ -70,12 +76,12 @@ func _on_rigid_body_body_entered(body : Node):
 	if modified_area_of_effect > 0:
 		apply_area_damage(damage, [last_collision_node])
 
-	# Kill this bullet
+	# Kill this Projectile
 	health_ref.set_health(0)
 
 	
 func _physics_process(_delta):
-	# Move the bullet based on velocity
+	# Move the Projectile based on velocity
 	position += velocity * _delta
 	
 	if queue_death:
@@ -106,7 +112,7 @@ func apply_area_damage(damage_to_apply : float, blacklist_nodes : Array[Node]):
 	get_tree().root.call_deferred("add_child", aoe_applyer)
 	
 
-## Spawns death particles for this bullet
+## Spawns death particles for this Projectile
 func spawn_death_particles():
 	var particles : GPUParticles2DOneshotFree
 	## Different particle effects depending on if we collided or died from lifespan elapsed
@@ -116,7 +122,7 @@ func spawn_death_particles():
 		particles = collision_death_particle_scene.instantiate() as GPUParticles2DOneshotFree
 		# Set particle angle (direction of scatter) to the normal of the previous collision
 		particles.rotation = previous_collision_normal.angle()
-	# Add particle to the root node to prevent despawning when bullet despawns
+	# Add particle to the root node to prevent despawning when Projectile despawns
 	particles.position = position
 	get_tree().root.call_deferred("add_child", particles)
 	

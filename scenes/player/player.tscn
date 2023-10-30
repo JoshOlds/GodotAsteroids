@@ -5,9 +5,9 @@
 [ext_resource type="Script" path="res://scenes/player/asteroid_player_movement_controller.gd" id="2_4b80y"]
 [ext_resource type="PackedScene" uid="uid://kqyoccq5u5dt" path="res://scenes/player/player_death_particles.tscn" id="2_a04da"]
 [ext_resource type="Script" path="res://scenes/guns/gun_manager/gun_manager.gd" id="3_0wm37"]
-[ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://scenes/bullets/basic_bullet/basic_bullet.tscn" id="4_urpsu"]
 [ext_resource type="PackedScene" uid="uid://df7megh5r7oxv" path="res://scenes/systems/damage/damage_receiver/damage_receiver.tscn" id="5_degbh"]
 [ext_resource type="PackedScene" uid="uid://def1canx5i6at" path="res://scenes/systems/health/health.tscn" id="6_hdalh"]
+[ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://scenes/bullets/basic_bullet/basic_projectile.tscn" id="6_wbar8"]
 [ext_resource type="Script" path="res://scenes/systems/modifiers/modifiers.gd" id="7_ige3e"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_diq1j"]
@@ -43,7 +43,7 @@ rotational_torque = 10000.0
 
 [node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body", "modifiers")]
 script = ExtResource("3_0wm37")
-bullet_scene = ExtResource("4_urpsu")
+bullet_scene = ExtResource("6_wbar8")
 spawn_rigid_body = NodePath("..")
 modifiers = NodePath("Modifiers")
 bullet_spawn_impulse = 500.0
