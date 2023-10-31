@@ -79,27 +79,33 @@ var modifiers : Modifiers
 ## Used to determine if Pierce/Fork/Chain should affect collided body.
 var previously_collided_nodes : Array[Node] = []
 
+## If true, this instance is a copy (for use in Pierce/Fork/Chain). Modifiers will not be reapplied
+var _is_copy : bool = false
+
 
 func _ready():
-	# Check for missing modifiers - soft error if missing
-	if modifiers == null:
-		push_warning("ProjectileBase: Modifiers is null on _ready(). No modifiers will be processed. Please assign modifiers before adding to scene.")
-		modifiers = Modifiers.new()
-	apply_modifiers()
-	
-	# Roll for crit
-	is_crit = roll_for_crit()
-	if is_crit:
-		damage = damage * modified_crit_damage_multiplier
+	# Do not execute if this instance is a copy
+	if not _is_copy:
+		# Check for missing modifiers - soft error if missing
+		if modifiers == null:
+			push_warning("ProjectileBase: Modifiers is null on _ready(). No modifiers will be processed. Please assign modifiers before adding to scene.")
+			modifiers = Modifiers.new()
+		else:
+			apply_modifiers()
+		
+		# Roll for crit
+		is_crit = roll_for_crit()
+		if is_crit:
+			damage = damage * modified_crit_damage_multiplier
 
-	# Set up lifespan timer
-	lifespan_timer = Timer.new()
-	lifespan_timer.name = "LifespanTimer"
-	add_child(lifespan_timer)
-	lifespan_timer.wait_time = modified_lifespan
-	lifespan_timer.one_shot = true
-	lifespan_timer.timeout.connect(_on_lifespan_elapsed)
-	lifespan_timer.start()
+		# Set up lifespan timer
+		lifespan_timer = Timer.new()
+		lifespan_timer.name = "LifespanTimer"
+		add_child(lifespan_timer)
+		lifespan_timer.wait_time = modified_lifespan
+		lifespan_timer.one_shot = true
+		lifespan_timer.timeout.connect(_on_lifespan_elapsed)
+		lifespan_timer.start()
 	
 	
 ## Default for ProjectileBase - moves Node based on velocity
@@ -134,7 +140,38 @@ func roll_for_crit() -> bool:
 		return true
 	return false
 
-	
+
+func clone(projectile_scene : PackedScene) -> ProjectileBase:
+	var proj = projectile_scene.instantiate() as ProjectileBase
+	proj._is_copy = true
+	proj.position = position
+	proj.rotation = rotation
+	proj.velocity = velocity
+	proj.base_mass = base_mass
+	proj.modified_base_mass = modified_base_mass
+	proj.damage = damage
+	proj.modified_damage = modified_damage
+	proj.crit_chance = crit_chance
+	proj.modified_crit_chance = modified_crit_chance
+	proj.crit_damage_multiplier = modified_crit_damage_multiplier
+	proj.size = size
+	proj.modified_size = modified_size
+	proj.area_of_effect = area_of_effect
+	proj.modified_area_of_effect = modified_area_of_effect
+	proj.aoe_scene = aoe_scene
+	proj.lifespan = lifespan
+	proj.modified_lifespan = modified_lifespan
+	proj.pierce = pierce
+	proj.modified_pierce = modified_pierce
+	proj.fork = fork
+	proj.modified_fork = modified_fork
+	proj.chain = chain
+	proj.modified_chain = modified_chain
+	proj.is_crit = is_crit
+	proj.lifespan_expired = lifespan_expired
+	proj.modifiers = modifiers
+	proj.previously_collided_nodes = previously_collided_nodes.duplicate()
+	return proj
 
 	
 
