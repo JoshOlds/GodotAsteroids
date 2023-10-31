@@ -31,7 +31,7 @@ var modified_radius : float
 func _ready():
 	super()
 
-	## Modify size
+	# Modify size
 	modified_radius = radius * modified_size
 
 	# Move self forward based on new radius (so we don't self collide with player)
@@ -80,8 +80,7 @@ func _on_rigid_body_body_entered(body : Node):
 	# Fork evaluated after pierce
 	elif modified_fork > 0:
 		modified_fork -= 1
-		spawn_forked_projectiles(self)
-		queue_free()
+		fork_projectile(self)
 	# No pierce/fork/chain, projectile dies on this collision
 	else: 
 		# spawn an AoE damage applyer to apply AoE (only when projectile terminates, not on pierce/fork/chain)
@@ -90,18 +89,22 @@ func _on_rigid_body_body_entered(body : Node):
 		health_ref.set_health(0)
 
 
-func spawn_forked_projectiles(projectile_to_fork : ProjectileBase):
+## Forks a projectile. Original projectile will change directions to act like the left forked projectile.
+## New projectile is spawned for the right forked projectile
+func fork_projectile(projectile_to_fork : ProjectileBase):
 	var parent = projectile_to_fork.get_parent()
-	var left_child = projectile_to_fork.clone(my_scene)
-	var right_child = projectile_to_fork.clone(my_scene)
-	var velocity_magnitude = velocity.length()
-	var velocity_angle = velocity.normalized()
-	left_child.velocity = left_child.velocity.rotated(-PI / 8.0)
-	right_child.velocity = right_child.velocity.rotated(PI / 8.0)
-	parent.call_deferred("add_child", left_child)
-	parent.call_deferred("add_child", right_child)
+	# Clone the projectile to fork 
+	var forked = projectile_to_fork.clone(my_scene)
+	# Connect lifespan timeout callback to original projectile's timer (So they both expire at same time)
+	forked.lifespan_timer = projectile_to_fork.lifespan_timer
+	projectile_to_fork.lifespan_timer.timeout.connect(forked._on_lifespan_elapsed) 
+	forked.velocity = forked.velocity.rotated(-PI / 8.0)
+	projectile_to_fork.velocity = projectile_to_fork.velocity.rotated(PI / 8.0)
+	# Add new projectile to original projectile's parent
+	parent.call_deferred("add_child", forked)
 		
-		
+
+## Applies damage to the target body, applies impulse based on mass and velocity, and spawns particles
 func direct_damage_target(body: Node):
 	# Store last collided body for use in particle rotation calculation
 	print("Damage: " + str(modified_damage))

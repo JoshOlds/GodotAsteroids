@@ -85,27 +85,29 @@ var _is_copy : bool = false
 
 func _ready():
 	# Do not execute if this instance is a copy
-	if not _is_copy:
-		# Check for missing modifiers - soft error if missing
-		if modifiers == null:
-			push_warning("ProjectileBase: Modifiers is null on _ready(). No modifiers will be processed. Please assign modifiers before adding to scene.")
-			modifiers = Modifiers.new()
-		else:
-			apply_modifiers()
+	if _is_copy:
+		return
 		
-		# Roll for crit
-		is_crit = roll_for_crit()
-		if is_crit:
-			damage = damage * modified_crit_damage_multiplier
+	# Check for missing modifiers - soft error if missing
+	if modifiers == null:
+		push_warning("ProjectileBase: Modifiers is null on _ready(). No modifiers will be processed. Please assign modifiers before adding to scene.")
+		modifiers = Modifiers.new()
+	else:
+		apply_modifiers()
+	
+	# Roll for crit
+	is_crit = roll_for_crit()
+	if is_crit:
+		damage = damage * modified_crit_damage_multiplier
 
-		# Set up lifespan timer
-		lifespan_timer = Timer.new()
-		lifespan_timer.name = "LifespanTimer"
-		add_child(lifespan_timer)
-		lifespan_timer.wait_time = modified_lifespan
-		lifespan_timer.one_shot = true
-		lifespan_timer.timeout.connect(_on_lifespan_elapsed)
-		lifespan_timer.start()
+	# Set up lifespan timer
+	lifespan_timer = Timer.new()
+	lifespan_timer.name = "LifespanTimer"
+	add_child(lifespan_timer)
+	lifespan_timer.wait_time = modified_lifespan
+	lifespan_timer.one_shot = true
+	lifespan_timer.timeout.connect(_on_lifespan_elapsed)
+	lifespan_timer.start()
 	
 	
 ## Default for ProjectileBase - moves Node based on velocity
