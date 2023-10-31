@@ -10,7 +10,7 @@ func _init():
 	description = "Adds 3% Critical Chance"
 	flavor_text = "Lucky shot"
 	
-	icon_texture_path = "res://images/svg/ArrowOpenBack.svgack.svg"
+	icon_texture_path = "res://images/svg/ArrowOpenBack.svg"
 	icon_texture = load(icon_texture_path)
 
 func apply_modifier(modifiers : Modifiers):

@@ -23,6 +23,7 @@ aoe_particle_scene = ExtResource("4_5vcue")
 damage = 10.0
 area_of_effect = 100.0
 lifespan = 2.5
+pierce = 1.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 

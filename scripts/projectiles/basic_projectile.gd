@@ -67,18 +67,35 @@ func _on_lifespan_elapsed():
 	
 	
 func _on_rigid_body_body_entered(body : Node):
+	# Do not collide with the same body twice
+	if previously_collided_nodes.has(body):
+		return
+	previously_collided_nodes.append(body)
+	
+	# Directly damage the target
+	direct_damage_target(body)
+
+	# Check for pierce/fork/chain
+	modified_pierce -= 1.0
+	if modified_pierce > 0:
+		if modified_pierce < 1.0:
+			modified_damage *= modified_pierce
+	# No pierce, projectile dies on this collision
+	else:
+		# spawn an AoE damage applyer to apply AoE (only when bullet terminates, not on pierce/fork/chain)
+		if modified_area_of_effect > 0:
+			apply_area_damage(damage, [last_collision_node])
+		health_ref.set_health(0)
+
+
+func direct_damage_target(body: Node):
 	# Store last collided body for use in particle rotation calculation
+	print("Damage: " + str(modified_damage))
 	last_collision_node = body
 	last_collision_position = last_collision_node.position
 	damage_applyer_ref.apply_damage_to_node(body, damage)
-
-	# spawn an AoE damage applyer to apply AoE
-	if modified_area_of_effect > 0:
-		apply_area_damage(damage, [last_collision_node])
-
-	# Kill this Projectile
-	health_ref.set_health(0)
-
+	spawn_direct_damage_particles()
+	
 	
 func _physics_process(_delta):
 	# Move the Projectile based on velocity
@@ -132,5 +149,15 @@ func spawn_death_particles():
 			aoe_particles.aoe_radius = modified_area_of_effect
 			get_tree().root.call_deferred("add_child", aoe_particles)
 	
+	
+## Spawns direct damage particles for this Projectile
+func spawn_direct_damage_particles():
+	var particles : GPUParticles2DOneshotFree
+	particles = collision_death_particle_scene.instantiate() as GPUParticles2DOneshotFree
+	# Set particle angle (direction of scatter) to the normal of the previous collision
+	particles.rotation = previous_collision_normal.angle()
+	# Add particle to the root node to prevent despawning when Projectile despawns
+	particles.position = position
+	get_tree().root.call_deferred("add_child", particles)
 
 

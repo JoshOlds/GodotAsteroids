@@ -12,7 +12,7 @@ var world_size : Vector2
 var asteroids : Array[ProcAsteroid] 
 		
 ## Timer for clearing offscreen bullets
-var _cleanup_timer : Timer		
+var _cleanup_timer : Timer	
 		
 		
 func _ready():

@@ -1,6 +1,7 @@
 extends Node
 class_name Modifiers
-## Collection of all potential modifiers. Multiple instances may be used for things such as tracking modifiers for multiple players seperately, or modifiers for enemies, etc.
+## Collection of all potential modifiers. 
+## Multiple instances of this class may be used for things such as tracking modifiers for multiple players seperately, or modifiers for enemies, etc.
 
 
 ## Emitted any time a modifier value changes. (either on set or when internal modifier value changes)
@@ -48,6 +49,29 @@ var area_of_effect_mod : ModifierValue = ModifierValue.new():
 var lifespan_mod : ModifierValue = ModifierValue.new():
 	set(new_value):
 		lifespan_mod = new_value
+		modifiers_changed.emit()
+		
+## Pierce percentage modifier.
+## Each time a projectile hits an enemy, its pierce value will be reduced by 100%. 
+## If there is any remaining positive pierce value, the projectile will pierce the enemy and have its damage reduced to the remaining pierce percentage.
+## If pierce value is over 100% after reduction, the piercing projectile will do full damage on next hit.
+var pierce_mod : ModifierValue = ModifierValue.new():
+	set(new_value):
+		pierce_mod = new_value
+		modifiers_changed.emit()
+		
+## Forking projectiles split upon being destroyed on a target collision. This only applies after all pierce is finished.
+## A fork value of 1 causes two projectiles to spawn upon projectile hit. A fork val of 2 causes three projectiles, and so on.
+var fork_mod : int = 0:
+	set(new_value):
+		fork_mod = new_value
+		modifiers_changed.emit()
+		
+## Chaining projectiles 'bounce' off of an enemy and move towards the nearest enemy. This only applies after all pierce and fork is finished.
+## Mechanically, a new projectile is spawned that moves towards the closest target with the same speed as the original projectile.
+var chain_mod : int = 0:
+	set(new_value):
+		chain_mod = new_value
 		modifiers_changed.emit()
 
 

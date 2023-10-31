@@ -1,7 +1,8 @@
 class_name ProjectileBase
 extends Area2D
 ## Base class for all Projectiles. Makes minimal assumptions about projectile implementation.
-## Handles storing and updating modifier values, Timer for Lifespan, and Crit Roll calculations
+## Handles storing and updating modifier values, Timer for Lifespan, Crit Roll calculations,
+## Pierce/Fork/Chain modifier tracking, 
 
 
 # ------------- Modifiers --------------------------------------------------------------------------
@@ -43,6 +44,21 @@ var aoe_scene = preload("res://scenes/systems/damage/aoe_damage_applyer.tscn")
 ## The lifespan value after modifiers have been applied
 var modified_lifespan : float
 
+## Pierce value of this projectile. See modifiers.gd for documentation.
+@export var pierce : float = 1.0
+## The pierce value after modifiers have been applied
+var modified_pierce : float
+
+## Fork value of this projectile. See modifiers.gd for documentation.
+@export var fork : float = 0.0
+## The pierce value after modifiers have been applied
+var modified_fork : float
+
+## Chain value of this projectile. See modifiers.gd for documentation.
+@export var chain : float = 0.0
+## The chain value after modifiers have been applied
+var modified_chain : float
+
 
 # Privates ----------------------------------------------------------------------------------------
 ## The current velocity of this projectile. 
@@ -58,6 +74,10 @@ var lifespan_expired : bool = false
 
 ## The Modifiers that this ProjectileBase will use to calculate modified values
 var modifiers : Modifiers
+
+## Array containing the Nodes that this projectile has previously collided with.
+## Used to determine if Pierce/Fork/Chain should affect collided body.
+var previously_collided_nodes : Array[Node] = []
 
 
 func _ready():
@@ -96,6 +116,9 @@ func apply_modifiers():
 	modified_size = modifiers.size_mod.get_modified_value(size)
 	modified_area_of_effect = modifiers.area_of_effect_mod.get_modified_value(area_of_effect)
 	modified_lifespan = modifiers.lifespan_mod.get_modified_value(lifespan)
+	modified_pierce = modifiers.pierce_mod.get_modified_value(pierce)
+	modified_fork = fork + modifiers.fork_mod
+	modified_chain = chain + modifiers.chain_mod
 	
 	
 ## Executes when lifespan timer elapses. Default behavior is to queue_free() and throw a warning.
