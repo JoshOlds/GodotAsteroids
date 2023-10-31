@@ -1,0 +1,45 @@
+[gd_scene load_steps=7 format=3 uid="uid://5wpnnaycvnem"]
+
+[ext_resource type="Script" path="res://scripts/asteroids/proc_asteroid.gd" id="1_win6b"]
+[ext_resource type="Script" path="res://scripts/systems/damage/damage_receiver.gd" id="2_igi3s"]
+[ext_resource type="Script" path="res://scripts/systems/damage/damage_applyer.gd" id="3_xptri"]
+[ext_resource type="Script" path="res://scripts/systems/health/health_base.gd" id="4_e2841"]
+[ext_resource type="Script" path="res://scripts/systems/damage/collision_force_damage_applyer.gd" id="5_bmj50"]
+[ext_resource type="Script" path="res://scripts/physics/collision_cooldown.gd" id="6_x1w5g"]
+
+[node name="proc_asteroid" type="RigidBody2D" groups=["asteroids"]]
+collision_layer = 4
+collision_mask = 5
+mass = 50.0
+max_contacts_reported = 10
+contact_monitor = true
+script = ExtResource("1_win6b")
+
+[node name="DamageReceiver" type="Node" parent="."]
+script = ExtResource("2_igi3s")
+
+[node name="DamageApplyer" type="Node" parent="." node_paths=PackedStringArray("parent")]
+script = ExtResource("3_xptri")
+parent = NodePath("..")
+group_blacklist = Array[String](["asteroids"])
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("4_e2841")
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+
+[node name="CollisionForceDamageApplyer" type="Node" parent="." node_paths=PackedStringArray("parent_rigid_body", "damage_applyer")]
+script = ExtResource("5_bmj50")
+parent_rigid_body = NodePath("..")
+damage_applyer = NodePath("../DamageApplyer")
+damage_multiplier = 0.01
+
+[node name="CollisionCooldown" type="Node" parent="." node_paths=PackedStringArray("rigidbody_to_connect")]
+script = ExtResource("6_x1w5g")
+rigidbody_to_connect = NodePath("..")
+
+[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]
+[connection signal="health_expired" from="Health" to="." method="on_health_expired"]
+[connection signal="body_entered" from="CollisionCooldown" to="CollisionForceDamageApplyer" method="_on_rigid_body_body_entered"]

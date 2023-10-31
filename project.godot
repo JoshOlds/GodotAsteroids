@@ -19,8 +19,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-SignalBroker="*res://scenes/asteroid_game/signal_broker/signal_broker.gd"
-AsteroidGameGlobals="*res://scenes/asteroid_game/asteroid_game_globals/asteroid_game_globals.gd"
+SignalBroker="*res://autoloads/signal_broker.gd"
+AsteroidGameGlobals="*res://autoloads/asteroid_game_globals.gd"
 
 [debug]
 

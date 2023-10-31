@@ -1,0 +1,48 @@
+[gd_scene load_steps=9 format=3 uid="uid://bmblxdubn3q71"]
+
+[ext_resource type="Script" path="res://scripts/projectiles/basic_projectile.gd" id="1_j8unk"]
+[ext_resource type="PackedScene" uid="uid://gnqwb6vocqoh" path="res://scenes/projectiles/basic_projectile/basic_projectile_collision_death_particle.tscn" id="2_4jbjd"]
+[ext_resource type="PackedScene" uid="uid://yr5a7sukpmih" path="res://scenes/projectiles/basic_projectile/basic_projectile_lifespan_death_particle.tscn" id="3_e45ow"]
+[ext_resource type="PackedScene" uid="uid://de6e7b2yn1en7" path="res://scenes/projectiles/basic_projectile/basic_aoe_explosion_particles.tscn" id="4_5vcue"]
+[ext_resource type="Script" path="res://scripts/debug/debug_circle.gd" id="5_fgqbu"]
+[ext_resource type="Script" path="res://scripts/systems/health/health_base.gd" id="6_kx5fd"]
+[ext_resource type="Script" path="res://scripts/systems/damage/damage_applyer.gd" id="7_6u3uu"]
+[ext_resource type="Script" path="res://scripts/systems/damage/damage_receiver.gd" id="8_rb5pq"]
+
+[node name="BasicProjectile" type="Area2D" node_paths=PackedStringArray("health_ref", "damage_applyer_ref") groups=["player_projectiles"]]
+position = Vector2(200, 200)
+collision_layer = 2
+collision_mask = 4
+monitorable = false
+script = ExtResource("1_j8unk")
+health_ref = NodePath("Health")
+damage_applyer_ref = NodePath("DamageApplyer")
+collision_death_particle_scene = ExtResource("2_4jbjd")
+lifespan_death_particle_scene = ExtResource("3_e45ow")
+aoe_particle_scene = ExtResource("4_5vcue")
+damage = 10.0
+area_of_effect = 100.0
+lifespan = 2.5
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="CircleDrawer" type="Node2D" parent="."]
+script = ExtResource("5_fgqbu")
+color = Color(1, 1, 1, 1)
+streak = false
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("6_kx5fd")
+health = 10.0
+
+[node name="DamageApplyer" type="Node" parent="." node_paths=PackedStringArray("parent")]
+script = ExtResource("7_6u3uu")
+parent = NodePath("..")
+group_blacklist = Array[String](["player_projectiles"])
+
+[node name="DamageReceiver" type="Node" parent="."]
+script = ExtResource("8_rb5pq")
+
+[connection signal="body_entered" from="." to="." method="_on_rigid_body_body_entered"]
+[connection signal="health_expired" from="Health" to="." method="_on_health_expired"]
+[connection signal="damage_received" from="DamageReceiver" to="Health" method="_on_damage_received"]

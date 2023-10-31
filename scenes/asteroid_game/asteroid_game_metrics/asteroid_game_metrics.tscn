@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://1b84bo1266so"]
-
-[ext_resource type="Script" path="res://scenes/asteroid_game/asteroid_game_metrics/asteroid_game_metrics.gd" id="1_eerps"]
-
-[node name="AsteroidGameMetrics" type="Node"]
-script = ExtResource("1_eerps")

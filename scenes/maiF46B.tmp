@@ -1,30 +1,29 @@
 [gd_scene load_steps=17 format=3 uid="uid://diftxdy4qwugg"]
 
-[ext_resource type="Script" path="res://scripts/asteroids/asteroid_spawn_manager.gd" id="1_2bohu"]
+[ext_resource type="Script" path="res://scenes/gameplay_managers/asteroid_spawn_manager.gd" id="1_2bohu"]
+[ext_resource type="PackedScene" uid="uid://xsvlmxdiaitn" path="res://scenes/levels/asteroid_level/asteroid_level.tscn" id="1_47v8o"]
 [ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://scenes/player/player.tscn" id="1_e7s2v"]
-[ext_resource type="Script" path="res://scripts/levels/basic_asteroid_level/asteroid_level.gd" id="1_ijmy2"]
 [ext_resource type="PackedScene" uid="uid://clta6frbe4k0r" path="res://scenes/asteroids/asteroid_generator.tscn" id="2_x8we5"]
-[ext_resource type="Script" path="res://scripts/asteroids/asteroid_cleaner.gd" id="4_eimha"]
-[ext_resource type="Script" path="res://scripts/debug/fps_counter.gd" id="7_2o81d"]
+[ext_resource type="Script" path="res://scenes/gameplay_managers/asteroid_manager.gd" id="4_eimha"]
+[ext_resource type="PackedScene" uid="uid://qseewheqjvi0" path="res://scenes/debug/fps_counter/fps_counter.tscn" id="6_chemb"]
 [ext_resource type="PackedScene" uid="uid://cf6xjra7orbi3" path="res://scenes/user_interface/player_health_bar/player_health_bar.tscn" id="8_d3snr"]
 [ext_resource type="PackedScene" uid="uid://djtsbh35lkceg" path="res://scenes/user_interface/player_experience_bar/player_experience_bar.tscn" id="8_t8mrf"]
-[ext_resource type="Script" path="res://scripts/levels/basic_asteroid_level/world_barrier_generator.gd" id="9_33mhb"]
+[ext_resource type="Script" path="res://scenes/levels/world_barrier_generator/world_barrier_generator.gd" id="9_33mhb"]
+[ext_resource type="PackedScene" uid="uid://cvxhwxa051nn5" path="res://scenes/user_interface/quit_on_key/quit_on_key.tscn" id="10_28qfs"]
 [ext_resource type="PackedScene" uid="uid://dijb6ukr4vmvs" path="res://scenes/particles/background_star_particles.tscn" id="10_l2jfq"]
-[ext_resource type="Script" path="res://scripts/utils/restart_on_signal.gd" id="11_1anw3"]
-[ext_resource type="Script" path="res://scripts/debug/quit_on_key.gd" id="14_h8gak"]
-[ext_resource type="Script" path="res://scripts/debug/tests/modifier_incrementer.gd" id="15_aqmre"]
+[ext_resource type="PackedScene" uid="uid://cgppskqmct6sx" path="res://scenes/user_interface/restart_on_signal/restart_on_signal.tscn" id="11_xsdx2"]
+[ext_resource type="PackedScene" uid="uid://c5oy6guwmmv1t" path="res://scenes/asteroid_game/levelup_manager/levelup_manager.tscn" id="14_q5i2x"]
+[ext_resource type="Script" path="res://scenes/tests/modifier_incrementer.gd" id="15_aqmre"]
 [ext_resource type="Script" path="res://scripts/metrics/vectoroids_metrics.gd" id="16_5w0bx"]
-[ext_resource type="Script" path="res://scripts/user_interface/levelup_ui/levelup_manager.gd" id="16_dqvtj"]
-[ext_resource type="Script" path="res://scripts/debug/tests/pause_on_key.gd" id="16_qglh8"]
+[ext_resource type="Script" path="res://scenes/tests/pause_on_key.gd" id="16_qglh8"]
 
 [node name="Main" type="Node"]
 
-[node name="AsteroidLevel" type="Node" parent="." node_paths=PackedStringArray("main_camera", "asteroid_spawn_manager", "asteroid_cleaner_ref", "world_barrier_generator")]
-script = ExtResource("1_ijmy2")
+[node name="AsteroidLevel" parent="." node_paths=PackedStringArray("main_camera", "asteroid_spawn_manager", "asteroid_manager", "world_barrier_generator") instance=ExtResource("1_47v8o")]
 world_size = Vector2(3000, 3000)
 main_camera = NodePath("Player/Camera2D")
 asteroid_spawn_manager = NodePath("AsteroidSpawnManager")
-asteroid_cleaner_ref = NodePath("AsteroidCleaner")
+asteroid_manager = NodePath("AsteroidManager")
 world_barrier_generator = NodePath("WorldContainer/WorldBarrierGenerator")
 
 [node name="AsteroidSpawnManager" type="Node" parent="AsteroidLevel" node_paths=PackedStringArray("asteroid_generator", "vectoroids_metrics")]
@@ -37,9 +36,9 @@ vertices_range = Vector2i(6, 15)
 jaggedness_range = Vector2(0.03, 0.2)
 force_range = Vector2i(100, 400)
 
-[node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_cleaner_ref") instance=ExtResource("2_x8we5")]
-parent_node = NodePath("../../AsteroidCleaner")
-asteroid_cleaner_ref = NodePath("../../AsteroidCleaner")
+[node name="AsteroidGenerator" parent="AsteroidLevel/AsteroidSpawnManager" node_paths=PackedStringArray("parent_node", "asteroid_manager") instance=ExtResource("2_x8we5")]
+parent_node = NodePath("../../AsteroidManager")
+asteroid_manager = NodePath("../../AsteroidManager")
 
 [node name="PlayerStartPosition" type="Marker2D" parent="AsteroidLevel"]
 position = Vector2(960, 540)
@@ -49,13 +48,17 @@ position = Vector2(960, 540)
 rotation = -1.5708
 
 [node name="GunManager" parent="AsteroidLevel/Player" index="3" node_paths=PackedStringArray("scene_parent")]
-scene_parent = NodePath("../../../RootContainer/PlayerProjectiles")
+scene_parent = NodePath("../../../InstanceContainer/PlayerProjectiles")
 bullet_spawn_impulse = 250.0
 fire_rate = 3.0
 recoil = 10.0
 inaccuracy = 0.0
 
 [node name="UserInterface" type="CanvasLayer" parent="AsteroidLevel"]
+
+[node name="FPSCounter" parent="AsteroidLevel/UserInterface" instance=ExtResource("6_chemb")]
+offset_right = 1.0
+offset_bottom = 23.0
 
 [node name="PlayerHealthBar" parent="AsteroidLevel/UserInterface" instance=ExtResource("8_d3snr")]
 
@@ -64,12 +67,7 @@ player_health = NodePath("../../../Player/Health")
 
 [node name="PlayerExperienceBar" parent="AsteroidLevel/UserInterface" instance=ExtResource("8_t8mrf")]
 
-[node name="FPSCounter" type="Label" parent="AsteroidLevel/UserInterface"]
-offset_right = 40.0
-offset_bottom = 23.0
-script = ExtResource("7_2o81d")
-
-[node name="AsteroidCleaner" type="Node" parent="AsteroidLevel"]
+[node name="AsteroidManager" type="Node2D" parent="AsteroidLevel"]
 script = ExtResource("4_eimha")
 
 [node name="WorldContainer" type="Node" parent="AsteroidLevel"]
@@ -81,11 +79,14 @@ amount = 10000
 [node name="WorldBarrierGenerator" type="Node" parent="AsteroidLevel/WorldContainer"]
 script = ExtResource("9_33mhb")
 
-[node name="RestartOnSignal" type="Node" parent="AsteroidLevel/WorldContainer"]
-script = ExtResource("11_1anw3")
+[node name="RestartOnSignal" parent="AsteroidLevel/WorldContainer" instance=ExtResource("11_xsdx2")]
 scene_change_delay = 10.0
 use_global_signal_broker_signal = true
 signal_to_connect = "player_death"
+
+[node name="LevelupManager" parent="AsteroidLevel" node_paths=PackedStringArray("levelup_scene_parent", "modifiers") instance=ExtResource("14_q5i2x")]
+levelup_scene_parent = NodePath("../UserInterface")
+modifiers = NodePath("../Player/GunManager/Modifiers")
 
 [node name="TESTS" type="Node" parent="."]
 
@@ -97,21 +98,16 @@ script = ExtResource("15_aqmre")
 increment_time_seconds = 1.0
 modifiers_ref = NodePath("../../AsteroidLevel/Player/GunManager/Modifiers")
 
-[node name="QuitOnKey" type="Node" parent="TESTS"]
-script = ExtResource("14_h8gak")
+[node name="QuitOnKey" parent="TESTS" instance=ExtResource("10_28qfs")]
 
-[node name="RootContainer" type="Node" parent="."]
+[node name="InstanceContainer" type="Node" parent="."]
 
-[node name="PlayerProjectiles" type="Node" parent="RootContainer"]
+[node name="PlayerProjectiles" type="Node" parent="InstanceContainer"]
 
 [node name="VectoroidsMetrics" type="Node" parent="."]
 script = ExtResource("16_5w0bx")
 
-[node name="LevelupManager" type="Node" parent="." node_paths=PackedStringArray("levelup_scene_parent", "modifiers")]
-script = ExtResource("16_dqvtj")
-levelup_scene_parent = NodePath("../AsteroidLevel/UserInterface")
-modifiers = NodePath("../AsteroidLevel/Player/GunManager/Modifiers")
-
 [editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
 [editable path="AsteroidLevel/Player"]
 [editable path="AsteroidLevel/UserInterface/PlayerHealthBar"]
+[editable path="AsteroidLevel/LevelupManager"]
