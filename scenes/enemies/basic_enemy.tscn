@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=3 uid="uid://bho116wp4i4xu"]
+
+[ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://images/svg/ArrowOpenBack.svg" id="1_rkl0i"]
+[ext_resource type="Script" path="res://scripts/systems/damage/damage_receiver.gd" id="2_7vad6"]
+[ext_resource type="Script" path="res://scripts/systems/health/health_base.gd" id="3_5fayl"]
+
+[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_otasl"]
+polygon = PackedVector2Array(-15, 19, 24, 0, -15, -19, -15, -6, -22, -9, -22, 9, -15, 6)
+
+[node name="BasicEnemy" type="RigidBody2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 0, 1)
+rotation = 1.5708
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_rkl0i")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+build_mode = 1
+polygon = PackedVector2Array(-15, 19, 24, 0, -15, -19, -15, -6, -22, -9, -22, 9, -15, 6)
+
+[node name="LightOccluder2D" type="LightOccluder2D" parent="."]
+occluder = SubResource("OccluderPolygon2D_otasl")
+
+[node name="DamageReceiver" type="Node" parent="."]
+script = ExtResource("2_7vad6")
+
+[node name="Health" type="Node" parent="."]
+script = ExtResource("3_5fayl")
+health = 50.0
+max_health = 50.0

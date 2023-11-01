@@ -1,0 +1,28 @@
+[gd_scene load_steps=4 format=3 uid="uid://6sg7ew70qxfk"]
+
+[ext_resource type="Script" path="res://scripts/debug/debug_circle.gd" id="1_uffgf"]
+[ext_resource type="Script" path="res://scripts/ai/steering_behaviors/steering_behavior_manager.gd" id="2_sbiao"]
+[ext_resource type="Script" path="res://scripts/debug/mouse_position_node.gd" id="3_4c2rf"]
+
+[node name="SteeringBehaviorsTestScene" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="Circle1" type="RigidBody2D" parent="."]
+
+[node name="CircleDrawer" type="Node2D" parent="Circle1"]
+script = ExtResource("1_uffgf")
+color = Color(0.909804, 0, 0.72549, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Circle1" node_paths=PackedStringArray("rigidbody_ref", "seek_targets")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1000.0
+max_steering_force = 200.0
+seek_enabled = true
+seek_targets = [NodePath("../../MouseTracker")]
+seek_damping_radius = 500.0
+
+[node name="MouseTracker" type="Node2D" parent="."]
+script = ExtResource("3_4c2rf")
