@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://kqyoccq5u5dt" path="res://scenes/player/player_death_particles.tscn" id="2_a04da"]
 [ext_resource type="Script" path="res://scripts/guns/gun_manager.gd" id="3_0wm37"]
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://images/svg/ArrowOpenBack.svg" id="3_xhiwe"]
-[ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://scenes/projectiles/basic_projectile/basic_projectile.tscn" id="6_wbar8"]
+[ext_resource type="PackedScene" uid="uid://bmblxdubn3q71" path="res://scenes/projectiles/basic_projectile/basic_projectile.tscn" id="6_pdui6"]
 [ext_resource type="Script" path="res://scripts/systems/modifiers/modifiers.gd" id="7_ige3e"]
 [ext_resource type="Script" path="res://scripts/systems/damage/damage_receiver.gd" id="8_x6dwm"]
 [ext_resource type="Script" path="res://scripts/systems/health/health_base.gd" id="9_sdxgr"]
@@ -43,7 +43,7 @@ rotational_torque = 10000.0
 
 [node name="GunManager" type="Node2D" parent="." node_paths=PackedStringArray("spawn_rigid_body", "modifiers")]
 script = ExtResource("3_0wm37")
-bullet_scene = ExtResource("6_wbar8")
+bullet_scene = ExtResource("6_pdui6")
 spawn_rigid_body = NodePath("..")
 modifiers = NodePath("Modifiers")
 bullet_spawn_impulse = 500.0

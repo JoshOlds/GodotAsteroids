@@ -6,6 +6,9 @@
 
 [node name="SteeringBehaviorsTestScene" type="Node2D"]
 
+[node name="MouseTracker" type="Node2D" parent="."]
+script = ExtResource("3_4c2rf")
+
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="Circle1" type="RigidBody2D" parent="."]
@@ -18,11 +21,44 @@ streak = false
 [node name="SteeringBehaviorManager" type="Node" parent="Circle1" node_paths=PackedStringArray("rigidbody_ref", "seek_targets")]
 script = ExtResource("2_sbiao")
 rigidbody_ref = NodePath("..")
-max_velocity = 1000.0
-max_steering_force = 200.0
+max_velocity = 400.0
+max_acceleration = 800.0
 seek_enabled = true
 seek_targets = [NodePath("../../MouseTracker")]
-seek_damping_radius = 500.0
+seek_damping_radius = 250.0
+wander_angle_step = 0.002
 
-[node name="MouseTracker" type="Node2D" parent="."]
-script = ExtResource("3_4c2rf")
+[node name="Circle2" type="RigidBody2D" parent="."]
+
+[node name="CircleDrawer" type="Node2D" parent="Circle2"]
+script = ExtResource("1_uffgf")
+color = Color(0.988235, 0.0862745, 0, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Circle2" node_paths=PackedStringArray("rigidbody_ref", "seek_targets", "persuit_targets", "avoid_targets", "wander_debug_ref", "wander_debug_ref2")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1000.0
+max_acceleration = 1000.0
+settle_enabled = false
+wander_enabled = true
+seek_targets = [NodePath("../../Circle1")]
+acceleration_based_damping = false
+persuit_targets = [NodePath("../../Circle1")]
+avoid_targets = [NodePath("../../MouseTracker")]
+avoid_radius = 200.0
+wander_circle_distance = 10
+wander_angle_step = 0.3
+wander_velocity = 50
+wander_debug_ref = NodePath("../../PersuitDebug")
+wander_debug_ref2 = NodePath("../../PersuitDebug2")
+
+[node name="PersuitDebug2" type="Node2D" parent="."]
+script = ExtResource("1_uffgf")
+radius = 2.0
+color = Color(1, 1, 0, 1)
+
+[node name="PersuitDebug" type="Node2D" parent="."]
+script = ExtResource("1_uffgf")
+radius = 2.0
+color = Color(1, 1, 1, 1)

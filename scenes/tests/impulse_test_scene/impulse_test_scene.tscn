@@ -8,6 +8,7 @@
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="RigidBody2D" type="RigidBody2D" parent="."]
+mass = 1000.0
 script = ExtResource("1_ml6vc")
 impulse_vector = Vector2(10, 0)
 
