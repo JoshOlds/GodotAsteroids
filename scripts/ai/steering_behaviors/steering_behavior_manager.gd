@@ -66,6 +66,7 @@ var _desired_steering_acceleration : Vector2
 
 
 func _physics_process(delta):
+	
 	_desired_steering_acceleration = Vector2.ZERO
 	# Execute enabled steering functions
 	if seek_enabled:
@@ -79,8 +80,6 @@ func _physics_process(delta):
 	
 	if _desired_steering_acceleration == Vector2.ZERO and settle_enabled:
 		_settle(delta)
-		
-
 		
 	# Truncate steering acceleration if it exceeds maximum acceleration
 	if _desired_steering_acceleration.length() > max_acceleration:
@@ -173,17 +172,18 @@ func _wander(delta):
 	var forward_vector = rigidbody_ref.linear_velocity.normalized()
 	
 	if forward_vector == Vector2.ZERO:
-		forward_vector = Vector2(0, 10)
+		forward_vector = Vector2(0, 1)
 	var circle_position = rigidbody_ref.position + (forward_vector * wander_circle_distance * 3)
 	print(wander_circle_heading)
 	var circle_forward_vector = Vector2(cos(wander_circle_heading), sin(wander_circle_heading))
-	var target = circle_position + (circle_forward_vector * wander_circle_distance * 5)
+	var target = circle_position + (circle_forward_vector * wander_circle_distance * 2)
 	var position_error = target - rigidbody_ref.position
 	var desired_velocity = position_error.normalized() * wander_velocity
 	var desired_acceleration = (desired_velocity - rigidbody_ref.linear_velocity) / delta
 	_desired_steering_acceleration += desired_acceleration
-	wander_debug_ref.position = circle_position
-	wander_debug_ref2.position = target
+	wander_debug_ref.set_deferred("position", circle_position)
+	wander_debug_ref2.set_deferred("position", target)
+
 	
 	
 

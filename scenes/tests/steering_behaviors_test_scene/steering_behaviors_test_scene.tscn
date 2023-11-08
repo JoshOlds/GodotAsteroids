@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://6sg7ew70qxfk"]
+[gd_scene load_steps=6 format=3 uid="uid://6sg7ew70qxfk"]
 
 [ext_resource type="Script" path="res://scripts/debug/debug_circle.gd" id="1_uffgf"]
 [ext_resource type="Script" path="res://scripts/ai/steering_behaviors/steering_behavior_manager.gd" id="2_sbiao"]
 [ext_resource type="Script" path="res://scripts/debug/mouse_position_node.gd" id="3_4c2rf"]
+[ext_resource type="Script" path="res://scripts/ai/steering_behaviors/orbit_behavior.gd" id="4_cu2ui"]
+[ext_resource type="Script" path="res://scenes/tests/steering_behaviors_test_scene/orbit_test.gd" id="5_f4aai"]
 
 [node name="SteeringBehaviorsTestScene" type="Node2D"]
 
@@ -48,7 +50,7 @@ persuit_targets = [NodePath("../../Circle1")]
 avoid_targets = [NodePath("../../MouseTracker")]
 avoid_radius = 200.0
 wander_circle_distance = 10
-wander_angle_step = 0.3
+wander_angle_step = 0.1
 wander_velocity = 50
 wander_debug_ref = NodePath("../../PersuitDebug")
 wander_debug_ref2 = NodePath("../../PersuitDebug2")
@@ -57,8 +59,48 @@ wander_debug_ref2 = NodePath("../../PersuitDebug2")
 script = ExtResource("1_uffgf")
 radius = 2.0
 color = Color(1, 1, 0, 1)
+streak = false
 
 [node name="PersuitDebug" type="Node2D" parent="."]
 script = ExtResource("1_uffgf")
 radius = 2.0
 color = Color(1, 1, 1, 1)
+streak = false
+
+[node name="OrbitBehavior" type="Node" parent="." node_paths=PackedStringArray("target_node")]
+script = ExtResource("4_cu2ui")
+target_node = NodePath("../MouseTracker")
+orbit_radius = 100.0
+orbit_rotation_speed = 3.142
+
+[node name="Orbiter1" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+script = ExtResource("5_f4aai")
+orbit_ref = NodePath("../OrbitBehavior")
+
+[node name="Node2D" type="Node2D" parent="Orbiter1"]
+script = ExtResource("1_uffgf")
+color = Color(1, 1, 0, 1)
+
+[node name="Orbiter2" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+script = ExtResource("5_f4aai")
+orbit_ref = NodePath("../OrbitBehavior")
+
+[node name="Node2D" type="Node2D" parent="Orbiter2"]
+script = ExtResource("1_uffgf")
+color = Color(1, 1, 0, 1)
+
+[node name="Orbiter3" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+script = ExtResource("5_f4aai")
+orbit_ref = NodePath("../OrbitBehavior")
+
+[node name="Node2D" type="Node2D" parent="Orbiter3"]
+script = ExtResource("1_uffgf")
+color = Color(1, 1, 0, 1)
+
+[node name="Orbiter4" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+script = ExtResource("5_f4aai")
+orbit_ref = NodePath("../OrbitBehavior")
+
+[node name="Node2D" type="Node2D" parent="Orbiter4"]
+script = ExtResource("1_uffgf")
+color = Color(1, 1, 0, 1)
