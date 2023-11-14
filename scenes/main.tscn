@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://diftxdy4qwugg"]
+[gd_scene load_steps=20 format=3 uid="uid://diftxdy4qwugg"]
 
 [ext_resource type="Script" path="res://scripts/asteroids/asteroid_spawn_manager.gd" id="1_2bohu"]
 [ext_resource type="PackedScene" uid="uid://ch80ypvc86khs" path="res://scenes/player/player.tscn" id="1_e7s2v"]
@@ -16,6 +16,9 @@
 [ext_resource type="Script" path="res://scripts/metrics/vectoroids_metrics.gd" id="16_5w0bx"]
 [ext_resource type="Script" path="res://scripts/user_interface/levelup_ui/levelup_manager.gd" id="16_dqvtj"]
 [ext_resource type="Script" path="res://scripts/debug/tests/pause_on_key.gd" id="16_qglh8"]
+[ext_resource type="Script" path="res://scripts/enemy/spawners/spawner_basic_enemy.gd" id="17_1n7ta"]
+[ext_resource type="PackedScene" uid="uid://bho116wp4i4xu" path="res://scenes/enemies/basic_enemy.tscn" id="18_fxvxt"]
+[ext_resource type="Script" path="res://scripts/debug/debug_circle.gd" id="19_lvidt"]
 
 [node name="Main" type="Node"]
 
@@ -31,7 +34,7 @@ world_barrier_generator = NodePath("WorldContainer/WorldBarrierGenerator")
 script = ExtResource("1_2bohu")
 asteroid_generator = NodePath("AsteroidGenerator")
 vectoroids_metrics = NodePath("../../VectoroidsMetrics")
-spawn_interval_seconds = 1.0
+spawn_interval_seconds = 100.0
 radius_range = Vector2i(5, 50)
 vertices_range = Vector2i(6, 15)
 jaggedness_range = Vector2(0.03, 0.2)
@@ -112,6 +115,35 @@ script = ExtResource("16_dqvtj")
 levelup_scene_parent = NodePath("../AsteroidLevel/UserInterface")
 modifiers = NodePath("../AsteroidLevel/Player/GunManager/Modifiers")
 
+[node name="SpawnerBasicEnemy" type="Node" parent="." node_paths=PackedStringArray("target_ref", "spawn_parent_ref")]
+script = ExtResource("17_1n7ta")
+target_ref = NodePath("../AsteroidLevel/Player")
+spawn_parent_ref = NodePath(".")
+spawn_interval_seconds = 100.0
+
+[node name="BasicEnemy" parent="." node_paths=PackedStringArray("target_ref") instance=ExtResource("18_fxvxt")]
+position = Vector2(2000, 2000)
+target_ref = NodePath("../AsteroidLevel/Player")
+attack_distance = 500.0
+
+[node name="TargetDistanceHold" parent="BasicEnemy" index="5" node_paths=PackedStringArray("target_ref")]
+target_ref = NodePath("../../AsteroidLevel/Player")
+distance = 300.0
+
+[node name="Node2D" type="Node2D" parent="BasicEnemy/TargetDistanceHold" index="0"]
+visible = false
+script = ExtResource("19_lvidt")
+streak = false
+
+[node name="SteeringBehaviorManager" parent="BasicEnemy" index="6"]
+max_velocity = 1200.0
+max_acceleration = 400.0
+
+[node name="RotationPID" parent="BasicEnemy" index="7" node_paths=PackedStringArray("target_ref")]
+target_ref = NodePath("../../AsteroidLevel/Player")
+rotational_torque = 4000.0
+
 [editable path="AsteroidLevel/AsteroidSpawnManager/AsteroidGenerator"]
 [editable path="AsteroidLevel/Player"]
 [editable path="AsteroidLevel/UserInterface/PlayerHealthBar"]
+[editable path="BasicEnemy"]

@@ -1,5 +1,5 @@
 extends Node
-class_name OrbitBehavior
+class_name OrbitGenerator
 ## Generates a Vector2 position that orbits a given target_node.
 ## Handles generating multiple target positions equally spaced around the orbit of the target.
 ## Orbits are only calculated on request, so this node incurs no runtime overhead.

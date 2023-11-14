@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var orbit_ref : OrbitBehavior
+@export var orbit_ref : OrbitGenerator
 
-func _process(delta):
-	position = orbit_ref.request_steering_target(self)
+func _process(_delta):
+	position = orbit_ref.request_orbit_position(self)

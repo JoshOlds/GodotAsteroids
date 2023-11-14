@@ -96,7 +96,7 @@ func _seek(delta):
 		return
 	var seek_accelerations : Vector2 = Vector2.ZERO
 	for target in seek_targets:
-		var position_error = target.position - rigidbody_ref.position
+		var position_error = target.global_position - rigidbody_ref.global_position
 		var position_error_distance = position_error.length()
 		var desired_velocity = position_error.normalized() * max_velocity
 		var current_velocity = rigidbody_ref.linear_velocity.length()
@@ -128,10 +128,10 @@ func _persuit(delta):
 		return
 	var persuit_accelerations : Vector2 = Vector2.ZERO
 	for target in persuit_targets:
-		var position_error = target.position - rigidbody_ref.position
+		var position_error = target.global_position - rigidbody_ref.global_position
 		var time_scalar =  position_error.length() / max_velocity
-		var target_future_position = target.position + (target.linear_velocity * time_scalar)
-		var future_position_error = target_future_position - rigidbody_ref.position
+		var target_future_position = target.global_position + (target.linear_velocity * time_scalar)
+		var future_position_error = target_future_position - rigidbody_ref.global_position
 		var desired_velocity = future_position_error.normalized() * max_velocity
 		var desired_acceleration = (desired_velocity - rigidbody_ref.linear_velocity) / delta
 		persuit_accelerations += desired_acceleration
@@ -146,7 +146,7 @@ func _avoid(delta):
 	var avoid_accelerations : Vector2 = Vector2.ZERO
 	var avoid_count = 0 # Track a count for avoids that were processed, as not all targets will be processed if they are far enough away
 	for target in avoid_targets:
-		var position_error = target.position - rigidbody_ref.position
+		var position_error = target.global_position - rigidbody_ref.global_position
 		if position_error == Vector2.ZERO:
 			position_error.x = 0.1
 		var position_error_distance = position_error.length()
@@ -173,11 +173,10 @@ func _wander(delta):
 	
 	if forward_vector == Vector2.ZERO:
 		forward_vector = Vector2(0, 1)
-	var circle_position = rigidbody_ref.position + (forward_vector * wander_circle_distance * 3)
-	print(wander_circle_heading)
+	var circle_position = rigidbody_ref.global_position + (forward_vector * wander_circle_distance * 3)
 	var circle_forward_vector = Vector2(cos(wander_circle_heading), sin(wander_circle_heading))
 	var target = circle_position + (circle_forward_vector * wander_circle_distance * 2)
-	var position_error = target - rigidbody_ref.position
+	var position_error = target - rigidbody_ref.global_position
 	var desired_velocity = position_error.normalized() * wander_velocity
 	var desired_acceleration = (desired_velocity - rigidbody_ref.linear_velocity) / delta
 	_desired_steering_acceleration += desired_acceleration

@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://6sg7ew70qxfk"]
+[gd_scene load_steps=8 format=3 uid="uid://6sg7ew70qxfk"]
 
 [ext_resource type="Script" path="res://scripts/debug/debug_circle.gd" id="1_uffgf"]
 [ext_resource type="Script" path="res://scripts/ai/steering_behaviors/steering_behavior_manager.gd" id="2_sbiao"]
 [ext_resource type="Script" path="res://scripts/debug/mouse_position_node.gd" id="3_4c2rf"]
-[ext_resource type="Script" path="res://scripts/ai/steering_behaviors/orbit_behavior.gd" id="4_cu2ui"]
+[ext_resource type="Script" path="res://scripts/ai/positioning/orbit_generator.gd" id="4_cu2ui"]
 [ext_resource type="Script" path="res://scenes/tests/steering_behaviors_test_scene/orbit_test.gd" id="5_f4aai"]
+[ext_resource type="Script" path="res://scripts/ai/positioning/positioning_distance_hold.gd" id="6_l03we"]
+[ext_resource type="PackedScene" uid="uid://bho116wp4i4xu" path="res://scenes/enemies/basic_enemy.tscn" id="7_55ebr"]
 
 [node name="SteeringBehaviorsTestScene" type="Node2D"]
 
@@ -31,6 +33,7 @@ seek_damping_radius = 250.0
 wander_angle_step = 0.002
 
 [node name="Circle2" type="RigidBody2D" parent="."]
+visible = false
 
 [node name="CircleDrawer" type="Node2D" parent="Circle2"]
 script = ExtResource("1_uffgf")
@@ -67,40 +70,149 @@ radius = 2.0
 color = Color(1, 1, 1, 1)
 streak = false
 
-[node name="OrbitBehavior" type="Node" parent="." node_paths=PackedStringArray("target_node")]
+[node name="Orbiters" type="Node" parent="."]
+
+[node name="OrbitBehavior" type="Node" parent="Orbiters" node_paths=PackedStringArray("target_node")]
 script = ExtResource("4_cu2ui")
-target_node = NodePath("../MouseTracker")
-orbit_radius = 100.0
-orbit_rotation_speed = 3.142
+target_node = NodePath("../../MouseTracker")
+orbit_radius = 250.0
+orbit_rotation_speed = 0.786
 
-[node name="Orbiter1" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+[node name="Orbiter1" type="Node2D" parent="Orbiters" node_paths=PackedStringArray("orbit_ref")]
 script = ExtResource("5_f4aai")
 orbit_ref = NodePath("../OrbitBehavior")
 
-[node name="Node2D" type="Node2D" parent="Orbiter1"]
+[node name="Node2D" type="Node2D" parent="Orbiters/Orbiter1"]
 script = ExtResource("1_uffgf")
-color = Color(1, 1, 0, 1)
+color = Color(1, 1, 0, 0.196078)
 
-[node name="Orbiter2" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+[node name="Orbiter2" type="Node2D" parent="Orbiters" node_paths=PackedStringArray("orbit_ref")]
 script = ExtResource("5_f4aai")
 orbit_ref = NodePath("../OrbitBehavior")
 
-[node name="Node2D" type="Node2D" parent="Orbiter2"]
+[node name="Node2D" type="Node2D" parent="Orbiters/Orbiter2"]
 script = ExtResource("1_uffgf")
-color = Color(1, 1, 0, 1)
+color = Color(1, 1, 0, 0.196078)
 
-[node name="Orbiter3" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+[node name="Orbiter3" type="Node2D" parent="Orbiters" node_paths=PackedStringArray("orbit_ref")]
 script = ExtResource("5_f4aai")
 orbit_ref = NodePath("../OrbitBehavior")
 
-[node name="Node2D" type="Node2D" parent="Orbiter3"]
+[node name="Node2D" type="Node2D" parent="Orbiters/Orbiter3"]
 script = ExtResource("1_uffgf")
-color = Color(1, 1, 0, 1)
+color = Color(1, 1, 0, 0.196078)
 
-[node name="Orbiter4" type="Node2D" parent="." node_paths=PackedStringArray("orbit_ref")]
+[node name="Orbiter4" type="Node2D" parent="Orbiters" node_paths=PackedStringArray("orbit_ref")]
 script = ExtResource("5_f4aai")
 orbit_ref = NodePath("../OrbitBehavior")
 
-[node name="Node2D" type="Node2D" parent="Orbiter4"]
+[node name="Node2D" type="Node2D" parent="Orbiters/Orbiter4"]
 script = ExtResource("1_uffgf")
-color = Color(1, 1, 0, 1)
+color = Color(1, 1, 0, 0.196078)
+
+[node name="Circle3" type="RigidBody2D" parent="Orbiters"]
+
+[node name="CircleDrawer" type="Node2D" parent="Orbiters/Circle3"]
+script = ExtResource("1_uffgf")
+color = Color(1, 0.517647, 0, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Orbiters/Circle3" node_paths=PackedStringArray("rigidbody_ref", "seek_targets", "avoid_targets")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1500.0
+max_acceleration = 1500.0
+seek_enabled = true
+avoid_enabled = true
+seek_targets = [NodePath("../../Orbiter1")]
+seek_damping_radius = 250.0
+avoid_targets = [NodePath("../../Circle4"), NodePath("../../Circle5"), NodePath("../../Circle6")]
+avoid_radius = 50.0
+wander_angle_step = 0.002
+
+[node name="Circle4" type="RigidBody2D" parent="Orbiters"]
+
+[node name="CircleDrawer" type="Node2D" parent="Orbiters/Circle4"]
+script = ExtResource("1_uffgf")
+color = Color(1, 0.517647, 0, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Orbiters/Circle4" node_paths=PackedStringArray("rigidbody_ref", "seek_targets", "avoid_targets")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1500.0
+max_acceleration = 1500.0
+seek_enabled = true
+avoid_enabled = true
+seek_targets = [NodePath("../../Orbiter2")]
+seek_damping_radius = 250.0
+avoid_targets = [NodePath("../../Circle3"), NodePath("../../Circle5"), NodePath("../../Circle6")]
+wander_angle_step = 0.002
+
+[node name="Circle5" type="RigidBody2D" parent="Orbiters"]
+
+[node name="CircleDrawer" type="Node2D" parent="Orbiters/Circle5"]
+script = ExtResource("1_uffgf")
+color = Color(1, 0.517647, 0, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Orbiters/Circle5" node_paths=PackedStringArray("rigidbody_ref", "seek_targets", "avoid_targets")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1500.0
+max_acceleration = 1500.0
+seek_enabled = true
+avoid_enabled = true
+seek_targets = [NodePath("../../Orbiter3")]
+seek_damping_radius = 250.0
+avoid_targets = [NodePath("../../Circle3"), NodePath("../../Circle4"), NodePath("../../Circle6")]
+wander_angle_step = 0.002
+
+[node name="Circle6" type="RigidBody2D" parent="Orbiters"]
+
+[node name="CircleDrawer" type="Node2D" parent="Orbiters/Circle6"]
+script = ExtResource("1_uffgf")
+color = Color(1, 0.517647, 0, 1)
+streak = false
+
+[node name="SteeringBehaviorManager" type="Node" parent="Orbiters/Circle6" node_paths=PackedStringArray("rigidbody_ref", "seek_targets", "avoid_targets")]
+script = ExtResource("2_sbiao")
+rigidbody_ref = NodePath("..")
+max_velocity = 1500.0
+max_acceleration = 1500.0
+seek_enabled = true
+avoid_enabled = true
+seek_targets = [NodePath("../../Orbiter4")]
+seek_damping_radius = 250.0
+avoid_targets = [NodePath("../../Circle5"), NodePath("../../Circle4"), NodePath("../../Circle3")]
+wander_angle_step = 0.002
+
+[node name="PositioningDistanceHold" type="Node2D" parent="." node_paths=PackedStringArray("target_ref", "source_ref")]
+script = ExtResource("6_l03we")
+target_ref = NodePath("../MouseTracker")
+source_ref = NodePath("../Orbiters/Circle3")
+distance = 50.0
+
+[node name="HoldDistanceDebug" type="Node2D" parent="PositioningDistanceHold"]
+script = ExtResource("1_uffgf")
+color = Color(1, 1, 1, 1)
+
+[node name="BasicEnemy" parent="." node_paths=PackedStringArray("target_ref") instance=ExtResource("7_55ebr")]
+target_ref = NodePath("../MouseTracker")
+attack_distance = 100.0
+
+[node name="TargetDistanceHold" parent="BasicEnemy" index="5" node_paths=PackedStringArray("target_ref")]
+target_ref = NodePath("../../MouseTracker")
+
+[node name="Node2D" type="Node2D" parent="BasicEnemy/TargetDistanceHold" index="0"]
+script = ExtResource("1_uffgf")
+color = Color(0.282353, 0.6, 0.54902, 1)
+
+[node name="SteeringBehaviorManager" parent="BasicEnemy" index="6" node_paths=PackedStringArray("seek_targets")]
+seek_targets = [NodePath("../TargetDistanceHold/Node2D")]
+
+[node name="RotationPID" parent="BasicEnemy" index="7" node_paths=PackedStringArray("target_ref")]
+target_ref = NodePath("../../MouseTracker")
+rotational_torque = 4000.0
+
+[editable path="BasicEnemy"]

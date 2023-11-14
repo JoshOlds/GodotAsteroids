@@ -9,6 +9,12 @@
 ## Layer 3
 - Asteroids
 
+## Layer 4 
+- Enemies
+
+## Layer 5
+- Enemy Projectiles
+
 
 
 

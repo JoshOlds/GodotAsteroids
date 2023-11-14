@@ -1,13 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://bho116wp4i4xu"]
+[gd_scene load_steps=9 format=3 uid="uid://bho116wp4i4xu"]
 
+[ext_resource type="Script" path="res://scripts/enemy/basic_enemy.gd" id="1_jey7j"]
 [ext_resource type="Texture2D" uid="uid://dmb2y2fiidd6e" path="res://images/svg/ArrowOpenBack.svg" id="1_rkl0i"]
 [ext_resource type="Script" path="res://scripts/systems/damage/damage_receiver.gd" id="2_7vad6"]
 [ext_resource type="Script" path="res://scripts/systems/health/health_base.gd" id="3_5fayl"]
+[ext_resource type="Script" path="res://scripts/ai/positioning/positioning_distance_hold.gd" id="4_xsqg1"]
+[ext_resource type="Script" path="res://scripts/ai/steering_behaviors/steering_behavior_manager.gd" id="5_cc4oc"]
+[ext_resource type="Script" path="res://scripts/ai/impulse_controllers/rotation_pid.gd" id="6_76562"]
 
 [sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_otasl"]
 polygon = PackedVector2Array(-15, 19, 24, 0, -15, -19, -15, -6, -22, -9, -22, 9, -15, 6)
 
 [node name="BasicEnemy" type="RigidBody2D"]
+script = ExtResource("1_jey7j")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(1, 1, 0, 1)
@@ -16,7 +21,6 @@ scale = Vector2(0.25, 0.25)
 texture = ExtResource("1_rkl0i")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-build_mode = 1
 polygon = PackedVector2Array(-15, 19, 24, 0, -15, -19, -15, -6, -22, -9, -22, 9, -15, 6)
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="."]
@@ -29,3 +33,22 @@ script = ExtResource("2_7vad6")
 script = ExtResource("3_5fayl")
 health = 50.0
 max_health = 50.0
+
+[node name="TargetDistanceHold" type="Node2D" parent="." node_paths=PackedStringArray("source_ref")]
+script = ExtResource("4_xsqg1")
+source_ref = NodePath("..")
+distance = 100.0
+
+[node name="SteeringBehaviorManager" type="Node" parent="." node_paths=PackedStringArray("rigidbody_ref", "seek_targets")]
+script = ExtResource("5_cc4oc")
+rigidbody_ref = NodePath("..")
+max_velocity = 800.0
+max_acceleration = 800.0
+seek_enabled = true
+seek_targets = [NodePath("../TargetDistanceHold")]
+seek_damping_radius = 50.0
+
+[node name="RotationPID" type="Node" parent="." node_paths=PackedStringArray("rigidbody_ref")]
+script = ExtResource("6_76562")
+rigidbody_ref = NodePath("..")
+rotational_torque = 1000.0
