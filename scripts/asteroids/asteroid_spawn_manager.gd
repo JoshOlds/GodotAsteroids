@@ -74,11 +74,11 @@ func _on_difficulty_timer():
 	_difficulty_counter += 1
 
 	if _difficulty_counter % 10 == 9:
-		spawn_interval_seconds *= 0.98
+		spawn_interval_seconds *= 0.96
 		_asteroid_spawn_timer.wait_time = spawn_interval_seconds
-		radius_range.y *= 1.02
-		force_range.y *= 1.02
-		asteroid_generator.asteroid_health_multiplier *= 1.05
+		radius_range.y *= 1.04
+		force_range.y *= 1.04
+		asteroid_generator.asteroid_health_multiplier *= 1.025
 		print("\nSpawn Interval: " + str(spawn_interval_seconds) \
 		+ "\nRadius Max: " + str(radius_range.y) \
 		+ "\nForce Max: " + str(force_range.y) \

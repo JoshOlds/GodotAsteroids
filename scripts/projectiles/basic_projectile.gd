@@ -73,10 +73,10 @@ func _on_rigid_body_body_entered(body : Node):
 	direct_damage_target(body)
 
 	# Check for pierce/fork/chain
-	modified_pierce -= 1.0
 	if modified_pierce > 0:
 		if modified_pierce < 1.0:
 			modified_damage *= modified_pierce
+		modified_pierce -= 1.0
 	# Fork evaluated after pierce
 	elif modified_fork > 0:
 		modified_fork -= 1
@@ -95,11 +95,8 @@ func fork_projectile(projectile_to_fork : ProjectileBase):
 	var parent = projectile_to_fork.get_parent()
 	# Clone the projectile to fork 
 	var forked = projectile_to_fork.clone(my_scene)
-	# Connect lifespan timeout callback to original projectile's timer (So they both expire at same time)
-	forked.lifespan_timer = projectile_to_fork.lifespan_timer
-	projectile_to_fork.lifespan_timer.timeout.connect(forked._on_lifespan_elapsed) 
-	forked.velocity = forked.velocity.rotated(-PI / 8.0)
-	projectile_to_fork.velocity = projectile_to_fork.velocity.rotated(PI / 8.0)
+	forked.velocity = forked.velocity.rotated(PI / 8.0)
+	projectile_to_fork.velocity = projectile_to_fork.velocity.rotated(-PI / 8.0)
 	# Add new projectile to original projectile's parent
 	parent.call_deferred("add_child", forked)
 		

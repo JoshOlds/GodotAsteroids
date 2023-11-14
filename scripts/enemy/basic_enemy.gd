@@ -17,7 +17,5 @@ func _ready():
 	#var rotation_pid : RotationPid = $RotationPID as RotationPid
 	#rotation_pid.target_ref = target_ref
 	
-func _process(delta):
-	print(rotation)
 
 

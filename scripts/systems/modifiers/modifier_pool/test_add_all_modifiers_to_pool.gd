@@ -43,6 +43,10 @@ func _ready():
 	modifier_pool.epic_pool.append(extra_projectile)
 	var sniper_specialization : ModifierBase = ModifierSniperSpecialization.new()
 	modifier_pool.epic_pool.append(sniper_specialization)
+	var pierce : ModifierBase = ModifierPierce.new()
+	modifier_pool.epic_pool.append(pierce)
+	var fork : ModifierBase = ModifierFork.new()
+	modifier_pool.epic_pool.append(fork)
 	
 	# Legendary -----------------------------------------------------------------------------
 	var double_projectiles : ModifierBase = ModifierDoubleProjectiles.new()

@@ -173,6 +173,13 @@ func clone(projectile_scene : PackedScene) -> ProjectileBase:
 	proj.lifespan_expired = lifespan_expired
 	proj.modifiers = modifiers
 	proj.previously_collided_nodes = previously_collided_nodes.duplicate()
+	proj.lifespan_timer = Timer.new()
+	proj.add_child(proj.lifespan_timer)
+	proj.lifespan_timer.name = "LifespanTimer"
+	proj.lifespan_timer.wait_time = lifespan_timer.time_left
+	proj.lifespan_timer.one_shot = true
+	proj.lifespan_timer.timeout.connect(proj._on_lifespan_elapsed)
+	proj.lifespan_timer.autostart = true
 	return proj
 
 	

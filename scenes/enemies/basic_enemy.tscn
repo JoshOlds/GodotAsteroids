@@ -12,6 +12,9 @@
 polygon = PackedVector2Array(-15, 19, 24, 0, -15, -19, -15, -6, -22, -9, -22, 9, -15, 6)
 
 [node name="BasicEnemy" type="RigidBody2D"]
+collision_layer = 8
+collision_mask = 0
+mass = 2.0
 script = ExtResource("1_jey7j")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
@@ -51,4 +54,4 @@ seek_damping_radius = 50.0
 [node name="RotationPID" type="Node" parent="." node_paths=PackedStringArray("rigidbody_ref")]
 script = ExtResource("6_76562")
 rigidbody_ref = NodePath("..")
-rotational_torque = 1000.0
+rotational_torque = 4000.0
